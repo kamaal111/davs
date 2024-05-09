@@ -35,7 +35,26 @@ go-mod-tidy:
 
 # Generate Open API Specs
 generate-spec: format-spec-comments
+    #!/bin/zsh
+
     swag init -g main.go
+    just fix-generated-spec
+
+[private]
+fix-generated-spec:
+    #!/bin/zsh
+
+    files_to_update=(
+        ./docs/docs.go
+        ./docs/swagger.json
+        ./docs/swagger.yaml
+    )
+    for file in $files_to_update;
+    do
+        sed -i "s/x-nullable/nullable/g" $file
+        sed -i "s/x-omitempty/omitempty/g" $file
+        echo "Fixed $file"
+    done
 
 [private]
 format-spec-comments:

@@ -1,5 +1,68 @@
 basePath: /api/v1
 definitions:
+  contacts.createPayload:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/contacts.createPayloadAddress'
+        type: array
+      birthday:
+        example: "1990-10-12"
+        type: string
+        nullable: true
+      first_name:
+        example: Kamaal
+        minLength: 1
+        type: string
+      last_name:
+        example: Appledoe
+        minLength: 1
+        type: string
+        nullable: true
+      nickname:
+        example: K
+        minLength: 1
+        type: string
+        nullable: true
+      phones:
+        items:
+          $ref: '#/definitions/contacts.createPayloadPhone'
+        minItems: 1
+        type: array
+    required:
+    - first_name
+    - phones
+    type: object
+  contacts.createPayloadAddress:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      postalCode:
+        type: string
+      street:
+        type: string
+      types:
+        items:
+          type: string
+        type: array
+    type: object
+  contacts.createPayloadPhone:
+    properties:
+      number:
+        example: "+31611111111"
+        minLength: 5
+        type: string
+      types:
+        example:
+        - VOICE
+        items:
+          type: string
+        type: array
+    required:
+    - number
+    type: object
   contacts.createResponse:
     type: object
   healthPing.pingResponse:
@@ -22,6 +85,13 @@ paths:
       - application/json
       description: To create a contact
       operationId: createContact
+      parameters:
+      - description: Contact information used to create a contact
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/contacts.createPayload'
       produces:
       - application/json
       responses:
