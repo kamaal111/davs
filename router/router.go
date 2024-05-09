@@ -10,6 +10,7 @@ import (
 
 	"github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
+	"github.com/kamaal111/davs/contacts"
 	"github.com/kamaal111/davs/docs"
 	"github.com/kamaal111/davs/health"
 )
@@ -32,6 +33,7 @@ func initializeServer() *gin.Engine {
 
 func initializeRoutes(server *gin.Engine, basePath string) {
 	health.InitializeRouter(server, basePath)
+	contacts.InitializeRouter(server, basePath)
 	server.NoRoute(notFound)
 	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

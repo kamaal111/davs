@@ -1,5 +1,7 @@
 basePath: /api/v1
 definitions:
+  contacts.createResponse:
+    type: object
   healthPing.pingResponse:
     properties:
       message:
@@ -14,6 +16,22 @@ info:
   title: DAVS API
   version: "1.0"
 paths:
+  /contacts:
+    post:
+      consumes:
+      - application/json
+      description: To create a contact
+      operationId: createContact
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/contacts.createResponse'
+      summary: Create a contact
+      tags:
+      - contacts
   /health/ping:
     get:
       consumes:

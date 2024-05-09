@@ -19,6 +19,30 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/contacts": {
+            "post": {
+                "description": "To create a contact",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contacts"
+                ],
+                "summary": "Create a contact",
+                "operationId": "createContact",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/contacts.createResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/health/ping": {
             "get": {
                 "description": "To pings the server",
@@ -45,6 +69,9 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "contacts.createResponse": {
+            "type": "object"
+        },
         "healthPing.pingResponse": {
             "type": "object",
             "properties": {
