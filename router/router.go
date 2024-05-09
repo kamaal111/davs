@@ -11,6 +11,7 @@ import (
 	"github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/docs"
+	"github.com/kamaal111/davs/health"
 )
 
 func Start() {
@@ -28,6 +29,8 @@ func Start() {
 
 	basePath := "api/v1"
 	docs.SwaggerInfo.BasePath = fmt.Sprintf("/%s", basePath)
+
+	health.Router(engine, basePath)
 
 	engine.NoRoute(notFound)
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

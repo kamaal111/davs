@@ -1,4 +1,10 @@
 basePath: /api/v1
+definitions:
+  healthPing.pingResponse:
+    properties:
+      message:
+        type: string
+    type: object
 info:
   contact: {}
   description: API for DAVS
@@ -7,5 +13,21 @@ info:
     url: https://github.com/kamaal111/davs/blob/main/LICENSE
   title: DAVS API
   version: "1.0"
-paths: {}
+paths:
+  /health/ping:
+    get:
+      consumes:
+      - application/json
+      description: To pings the server
+      operationId: healthPing
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/healthPing.pingResponse'
+      summary: Checks if server is up or down
+      tags:
+      - health
 swagger: "2.0"
