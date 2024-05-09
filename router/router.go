@@ -15,25 +15,45 @@ import (
 )
 
 func Start() {
+	serverAddress := getServerAddress()
+	server := initializeServer()
+	basePath := "api/v1"
+	updateSwaggerInfo(swaggerInfo{basePath: basePath})
+	initializeRoutes(server, basePath)
+	server.Run(serverAddress)
+}
+
+func initializeServer() *gin.Engine {
+	engine := gin.Default()
+	engine.SetTrustedProxies(nil)
+
+	return engine
+}
+
+func initializeRoutes(server *gin.Engine, basePath string) {
+	health.InitializeRouter(server, basePath)
+	server.NoRoute(notFound)
+	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
+func getServerAddress() string {
 	serverAddress := os.Getenv("SERVER_ADDRESS")
 	if serverAddress == "" {
 		port, err := strings.Unwrap(os.Getenv("PORT"))
 		if err != nil {
 			log.Fatal("No SERVER_ADDRESS and PORT defined in env")
 		}
-		serverAddress = fmt.Sprintf(":%s", port)
+
+		return fmt.Sprintf(":%s", port)
 	}
 
-	engine := gin.Default()
-	engine.SetTrustedProxies(nil)
+	return serverAddress
+}
 
-	basePath := "api/v1"
-	docs.SwaggerInfo.BasePath = fmt.Sprintf("/%s", basePath)
+type swaggerInfo struct {
+	basePath string
+}
 
-	health.Router(engine, basePath)
-
-	engine.NoRoute(notFound)
-	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	engine.Run(serverAddress)
+func updateSwaggerInfo(info swaggerInfo) {
+	docs.SwaggerInfo.BasePath = fmt.Sprintf("/%s", info.basePath)
 }
