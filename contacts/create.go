@@ -6,6 +6,7 @@ import (
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
+	"github.com/minio/minio-go"
 )
 
 // @Summary	Create a contact
@@ -23,25 +24,27 @@ import (
 // @Success		200		{object}	createResponse
 //
 // @Router			/contacts [post]
-func createHandler(context *gin.Context) {
-	var payload createPayload
-	err := context.ShouldBindJSON(&payload)
-	if err != nil {
-		handled := ginErrors.HandleValidationErrors(context, err, "body")
-		if handled {
+func createHandler(minioClient *minio.Client) func(context *gin.Context) {
+	return func(context *gin.Context) {
+		var payload createPayload
+		err := context.ShouldBindJSON(&payload)
+		if err != nil {
+			handled := ginErrors.HandleValidationErrors(context, err, "body")
+			if handled {
+				return
+			}
+
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Status:  http.StatusBadRequest,
+				Message: "Invalid body provided",
+			})
 			return
 		}
 
-		ginErrors.ErrorHandler(context, ginErrors.Error{
-			Status:  http.StatusBadRequest,
-			Message: "Invalid body provided",
-		})
-		return
+		log.Println(payload)
+
+		context.JSON(http.StatusOK, createResponse{})
 	}
-
-	log.Println(payload)
-
-	context.JSON(http.StatusOK, createResponse{})
 }
 
 type createResponse struct {

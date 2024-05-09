@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/minio/minio-go"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -15,12 +16,12 @@ import (
 	"github.com/kamaal111/davs/health"
 )
 
-func Start() {
+func Start(minioClient *minio.Client) {
 	serverAddress := getServerAddress()
 	server := initializeServer()
 	basePath := "api/v1"
 	updateSwaggerInfo(swaggerInfo{basePath: basePath})
-	initializeRoutes(server, basePath)
+	initializeRoutes(server, basePath, minioClient)
 	server.Run(serverAddress)
 }
 
@@ -31,9 +32,9 @@ func initializeServer() *gin.Engine {
 	return engine
 }
 
-func initializeRoutes(server *gin.Engine, basePath string) {
+func initializeRoutes(server *gin.Engine, basePath string, minioClient *minio.Client) {
 	health.InitializeRouter(server, basePath)
-	contacts.InitializeRouter(server, basePath)
+	contacts.InitializeRouter(server, basePath, minioClient)
 	server.NoRoute(notFound)
 	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

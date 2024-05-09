@@ -1,4 +1,5 @@
 set export
+set dotenv-load
 
 PORT := "8000"
 CONTAINER_NAME := "davs"
@@ -26,6 +27,7 @@ run-dev:
 
     export SERVER_ADDRESS="127.0.0.1:$PORT"
     export GIN_MODE="debug"
+    export MINIO_ENDPOINT="host.docker.internal:9000"
 
     reflex -r "\.go" -s -- sh -c "go run *.go"
 

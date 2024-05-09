@@ -16,7 +16,8 @@
 				"skellock.just",
 				"streetsidesoftware.code-spell-checker",
 				"golang.go",
-				"redhat.vscode-yaml"
+				"redhat.vscode-yaml",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	},
