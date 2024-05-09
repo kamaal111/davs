@@ -1,0 +1,11 @@
+basePath: /api/v1
+info:
+  contact: {}
+  description: API for DAVS
+  license:
+    name: MIT
+    url: https://github.com/kamaal111/davs/blob/main/LICENSE
+  title: DAVS API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

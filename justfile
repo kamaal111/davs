@@ -29,6 +29,15 @@ run-dev:
 
     reflex -r "\.go" -s -- sh -c "go run src/*.go"
 
+generate-spec: format-spec-comments
+    #!/bin/zsh
+
+    cd src
+    swag init -g main.go
+
+format-spec-comments:
+    swag fmt
+
 [private]
 stop-and-remove-container:
     docker stop $CONTAINER_NAME || true
