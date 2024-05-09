@@ -27,14 +27,17 @@ run-dev:
     export SERVER_ADDRESS="127.0.0.1:$PORT"
     export GIN_MODE="debug"
 
-    reflex -r "\.go" -s -- sh -c "go run src/*.go"
+    reflex -r "\.go" -s -- sh -c "go run *.go"
 
+# Go mod tidy
+go-mod-tidy:
+    go mod tidy
+
+# Generate Open API Specs
 generate-spec: format-spec-comments
-    #!/bin/zsh
-
-    cd src
     swag init -g main.go
 
+[private]
 format-spec-comments:
     swag fmt
 
