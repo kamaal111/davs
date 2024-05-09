@@ -14,7 +14,7 @@ RUN update-ca-certificates
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
-RUN go build -ldflags="-w -s" -v -o /go/bin/davs src/*.go
+RUN go build -ldflags="-w -s" -v -o /go/bin/davs *.go
 
 # Build a smaller image with the minimum required things to run.
 FROM scratch
