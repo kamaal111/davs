@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/utils"
+	"gorm.io/gorm"
 )
 
 // @Summary	Sign up user
@@ -23,7 +24,7 @@ import (
 // @Success		200		{object}	signUpResponse
 //
 // @Router			/users [post]
-func signUpHandler() func(context *gin.Context) {
+func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 	return func(context *gin.Context) {
 		payload, handled := utils.ValidatePayload[signUpPayload](context)
 		if handled {
