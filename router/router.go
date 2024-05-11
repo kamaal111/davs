@@ -8,13 +8,14 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	"github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/contacts"
 	"github.com/kamaal111/davs/docs"
 	"github.com/kamaal111/davs/health"
 	"github.com/kamaal111/davs/users"
 )
+
+const DEFAULT_PORT = "8000"
 
 func Start() {
 	serverAddress := getServerAddress()
@@ -42,16 +43,20 @@ func initializeRoutes(server *gin.Engine, basePath string) {
 
 func getServerAddress() string {
 	serverAddress := os.Getenv("SERVER_ADDRESS")
-	if serverAddress == "" {
-		port, err := strings.Unwrap(os.Getenv("PORT"))
-		if err != nil {
-			log.Fatal("No SERVER_ADDRESS and PORT defined in env")
-		}
-
-		return fmt.Sprintf(":%s", port)
+	if serverAddress != "" {
+		return serverAddress
 	}
 
-	return serverAddress
+	port := os.Getenv("PORT")
+	if port == "" {
+		if os.Getenv("GIN_MODE") == "release" {
+			log.Fatalln("PORT or SERVER_ADDRESS is undefined")
+		}
+
+		port = DEFAULT_PORT
+	}
+
+	return fmt.Sprintf(":%s", port)
 }
 
 type swaggerInfo struct {
