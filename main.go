@@ -1,10 +1,7 @@
 package main
 
 import (
-	"log"
-
 	"github.com/kamaal111/davs/router"
-	"github.com/kamaal111/davs/storage"
 )
 
 //	@title			DAVS API
@@ -16,10 +13,5 @@ import (
 //
 // @BasePath	/api/v1
 func main() {
-	minioClient, err := storage.InitializeMinio()
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	router.Start(minioClient)
+	router.Start()
 }

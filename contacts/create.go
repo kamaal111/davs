@@ -6,7 +6,6 @@ import (
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
-	"github.com/minio/minio-go"
 )
 
 // @Summary	Create a contact
@@ -24,7 +23,7 @@ import (
 // @Success		200		{object}	createResponse
 //
 // @Router			/contacts [post]
-func createHandler(minioClient *minio.Client) func(context *gin.Context) {
+func createHandler() func(context *gin.Context) {
 	return func(context *gin.Context) {
 		var payload createPayload
 		err := context.ShouldBindJSON(&payload)
