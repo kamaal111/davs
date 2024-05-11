@@ -25,6 +25,11 @@ func Connect() (*gorm.DB, error) {
 		return nil, err
 	}
 
+	err = initializeMigrations(db)
+	if err != nil {
+		return nil, err
+	}
+
 	return db, nil
 }
 

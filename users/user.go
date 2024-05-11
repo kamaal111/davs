@@ -7,3 +7,9 @@ type User struct {
 	Email    string `gorm:"not null"`
 	Password string `gorm:"not null"`
 }
+
+func MigrationStrategyForUser(db *gorm.DB) error {
+	err := db.AutoMigrate(&User{})
+
+	return err
+}
