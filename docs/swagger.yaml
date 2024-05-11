@@ -65,10 +65,14 @@ definitions:
     type: object
   contacts.createResponse:
     type: object
-  healthPing.pingResponse:
+  health.pingResponse:
     properties:
       message:
         type: string
+    type: object
+  users.signUpPayload:
+    type: object
+  users.signUpResponse:
     type: object
 info:
   contact: {}
@@ -114,8 +118,31 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/healthPing.pingResponse'
+            $ref: '#/definitions/health.pingResponse'
       summary: Checks if server is up or down
       tags:
       - health
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: To create a user
+      operationId: signUpUser
+      parameters:
+      - description: Sign up payload to create a user
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/users.signUpPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.signUpResponse'
+      summary: Sign up user
+      tags:
+      - users
 swagger: "2.0"

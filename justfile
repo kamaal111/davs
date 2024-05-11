@@ -38,7 +38,7 @@ go-mod-tidy:
 generate-spec: format-spec-comments
     #!/bin/zsh
 
-    swag init -g main.go
+    swag init -g main.go || exit 1
     just fix-generated-spec
 
 [private]

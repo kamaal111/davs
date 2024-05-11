@@ -72,7 +72,42 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/healthPing.pingResponse"
+                            "$ref": "#/definitions/health.pingResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "description": "To create a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Sign up user",
+                "operationId": "signUpUser",
+                "parameters": [
+                    {
+                        "description": "Sign up payload to create a user",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/users.signUpPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/users.signUpResponse"
                         }
                     }
                 }
@@ -172,13 +207,19 @@ const docTemplate = `{
         "contacts.createResponse": {
             "type": "object"
         },
-        "healthPing.pingResponse": {
+        "health.pingResponse": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
                 }
             }
+        },
+        "users.signUpPayload": {
+            "type": "object"
+        },
+        "users.signUpResponse": {
+            "type": "object"
         }
     }
 }`

@@ -1,4 +1,4 @@
-package health
+package users
 
 import (
 	"github.com/Kamaalio/kamaalgo/files"
@@ -6,6 +6,6 @@ import (
 )
 
 func InitializeRouter(server *gin.Engine, basePath string) {
-	group := server.Group(files.AppendFileToPath(basePath, "health"))
-	group.GET("/ping", pingHandler)
+	group := server.Group(files.AppendFileToPath(basePath, "users"))
+	group.POST("/", signUpHandler())
 }

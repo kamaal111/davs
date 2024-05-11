@@ -1,4 +1,4 @@
-package healthPing
+package health
 
 import (
 	"net/http"
@@ -15,7 +15,7 @@ import (
 // @Produce		json
 // @Success		200	{object}	pingResponse
 // @Router			/health/ping [get]
-func PingHandler(context *gin.Context) {
+func pingHandler(context *gin.Context) {
 	context.JSON(http.StatusOK, pingResponse{Message: "pong"})
 }
 

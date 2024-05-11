@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
+	"github.com/kamaal111/davs/utils"
 )
 
 // @Summary	Create a contact
@@ -25,24 +25,14 @@ import (
 // @Router			/contacts [post]
 func createHandler() func(context *gin.Context) {
 	return func(context *gin.Context) {
-		var payload createPayload
-		err := context.ShouldBindJSON(&payload)
-		if err != nil {
-			handled := ginErrors.HandleValidationErrors(context, err, "body")
-			if handled {
-				return
-			}
-
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Status:  http.StatusBadRequest,
-				Message: "Invalid body provided",
-			})
+		payload, handled := utils.ValidatePayload[createPayload](context)
+		if handled {
 			return
 		}
 
 		log.Println(payload)
 
-		context.JSON(http.StatusOK, createResponse{})
+		context.JSON(http.StatusCreated, createResponse{})
 	}
 }
 

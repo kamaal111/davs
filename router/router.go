@@ -13,6 +13,7 @@ import (
 	"github.com/kamaal111/davs/contacts"
 	"github.com/kamaal111/davs/docs"
 	"github.com/kamaal111/davs/health"
+	"github.com/kamaal111/davs/users"
 )
 
 func Start() {
@@ -34,6 +35,7 @@ func initializeServer() *gin.Engine {
 func initializeRoutes(server *gin.Engine, basePath string) {
 	health.InitializeRouter(server, basePath)
 	contacts.InitializeRouter(server, basePath)
+	users.InitializeRouter(server, basePath)
 	server.NoRoute(notFound)
 	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
