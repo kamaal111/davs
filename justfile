@@ -33,7 +33,7 @@ run-dev:
     export DATABASE_PASSWORD="secure-password"
     export DATABASE_SSLMODE="disable"
 
-    reflex -r "\.go" -s -- sh -c "go run *.go"
+    reflex -r "\.go" -s -- sh -c "go run *.go run-server"
 
 # Go mod tidy
 go-mod-tidy:

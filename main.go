@@ -1,10 +1,7 @@
 package main
 
 import (
-	"log"
-
-	"github.com/kamaal111/davs/router"
-	"github.com/kamaal111/davs/storage"
+	"github.com/kamaal111/davs/commands"
 )
 
 // @title			DAVS API
@@ -16,10 +13,5 @@ import (
 //
 // @BasePath		/api/v1
 func main() {
-	db, err := storage.Connect()
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	router.Start(db)
+	commands.Execute()
 }

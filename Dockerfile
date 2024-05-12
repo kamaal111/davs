@@ -24,4 +24,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/bin/davs /go/bin/davs
 # Run the davs binary.
 EXPOSE 8000
-ENTRYPOINT ["/go/bin/davs"]
+ENTRYPOINT ["/go/bin/davs run-server"]
