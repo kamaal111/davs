@@ -3,6 +3,7 @@ package users
 import (
 	"log"
 	"net/http"
+	"os"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
@@ -28,12 +29,16 @@ import (
 // @Router			/users [post]
 func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 	return func(context *gin.Context) {
-		var headers signUpHeaders
-		err := context.ShouldBindHeader(&headers)
-		if err != nil {
+		headers, headersAreValid := utils.ValidateHeaders[signUpHeaders](context)
+		if !headersAreValid {
+			return
+		}
+
+		apiKey := os.Getenv("API_KEY")
+		if apiKey != headers.Authorization {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Invalid headers provided",
-				Status:  http.StatusBadRequest,
+				Message: "Unauthorized",
+				Status:  http.StatusUnauthorized,
 			})
 			return
 		}
@@ -43,12 +48,21 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		err = createUser(db)(User{Username: payload.Username, Password: payload.Password})
+		user := User{Username: payload.Username, Password: payload.Password}
+		err := user.create(db)
 		if err != nil {
 			if err == errUserExists {
 				ginErrors.ErrorHandler(context, ginErrors.Error{
 					Message: "User already exists",
 					Status:  http.StatusConflict,
+				})
+				return
+			}
+
+			if err == errInvalidUserPayload {
+				ginErrors.ErrorHandler(context, ginErrors.Error{
+					Message: "Invalid user payload provided",
+					Status:  http.StatusBadRequest,
 				})
 				return
 			}
@@ -73,6 +87,6 @@ type signUpHeaders struct {
 }
 
 type signUpPayload struct {
-	Username string `json:"username" binding:"required"`
+	Username string `json:"username" binding:"required,min=1"`
 	Password string `json:"password" binding:"required,min=5"`
 }

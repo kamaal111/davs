@@ -42,6 +42,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/contacts.createPayload"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "example": "Basic R0lGODlhAQAB",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -234,7 +241,8 @@ const docTemplate = `{
                     "minLength": 5
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1
                 }
             }
         },

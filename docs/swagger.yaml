@@ -76,6 +76,7 @@ definitions:
         minLength: 5
         type: string
       username:
+        minLength: 1
         type: string
     required:
     - password
@@ -105,6 +106,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/contacts.createPayload'
+      - example: Basic R0lGODlhAQAB
+        in: header
+        name: authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:

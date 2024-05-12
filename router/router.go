@@ -35,7 +35,7 @@ func initializeServer() *gin.Engine {
 
 func initializeRoutes(server *gin.Engine, basePath string, db *gorm.DB) {
 	health.InitializeRouter(server, basePath)
-	contacts.InitializeRouter(server, basePath)
+	contacts.InitializeRouter(server, basePath, db)
 	users.InitializeRouter(server, basePath, db)
 	server.NoRoute(notFound)
 	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

@@ -2,12 +2,20 @@ package users
 
 import (
 	"errors"
+	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 var errUserExists = errors.New("User already exists")
+var errDoesNotExist = errors.New("User does not exist")
+var errWrongPassword = errors.New("wrong password")
+var errInvalidUserPayload = errors.New("invalid user payload")
+
+var invalidUserCharacters = []string{
+	":",
+}
 
 type User struct {
 	gorm.Model
@@ -15,24 +23,52 @@ type User struct {
 	Password string `gorm:"not null"`
 }
 
-func createUser(db *gorm.DB) func(user User) error {
-	return func(user User) error {
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+func (user *User) create(db *gorm.DB) error {
+	for _, invalidCharacter := range invalidUserCharacters {
+		if strings.Contains(user.Username, invalidCharacter) || strings.Contains(user.Password, invalidCharacter) {
+			return errInvalidUserPayload
+		}
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+	if err != nil {
+		return err
+	}
+
+	existingUserResult := db.Take(&User{}, "username = ?", user.Username)
+	if !errors.Is(existingUserResult.Error, gorm.ErrRecordNotFound) {
+		return errUserExists
+	}
+
+	user.Password = string(hashedPassword)
+	db.Create(user)
+
+	return nil
+}
+
+func (user *User) Login(db *gorm.DB) func(password string) error {
+	return func(password string) error {
+		_, err := user.getByUsername(db)
 		if err != nil {
 			return err
 		}
 
-		existingUser := User{Username: user.Username}
-		existingUserResult := db.Take(&existingUser)
-		if !errors.Is(existingUserResult.Error, gorm.ErrRecordNotFound) {
-			return errUserExists
+		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+		if err != nil {
+			return errWrongPassword
 		}
-
-		user.Password = string(hashedPassword)
-		db.Create(&user)
 
 		return nil
 	}
+}
+
+func (user *User) getByUsername(db *gorm.DB) (*gorm.DB, error) {
+	result := db.Take(user, "username = ?", user.Username)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return result, errDoesNotExist
+	}
+
+	return result, nil
 }
 
 func MigrationStrategyForUser(db *gorm.DB) error {

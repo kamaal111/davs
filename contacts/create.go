@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kamaal111/davs/users"
 	"github.com/kamaal111/davs/utils"
 )
 
@@ -19,6 +20,7 @@ import (
 // @Produce		json
 //
 // @Param			payload	body		createPayload	true	"Contact information used to create a contact"
+// @Param			payload	header		createHeaders	true	"Headers to create a contact"
 //
 // @Success		200		{object}	createResponse
 //
@@ -37,6 +39,10 @@ func createHandler() func(context *gin.Context) {
 }
 
 type createResponse struct {
+}
+
+type createHeaders struct {
+	users.BasicLoginHeaders
 }
 
 type createPayload struct {

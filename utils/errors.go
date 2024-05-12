@@ -7,6 +7,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func ValidateHeaders[Headers any](context *gin.Context) (*Headers, bool) {
+	var headers Headers
+	err := context.ShouldBindHeader(&headers)
+	if err != nil {
+		ginErrors.ErrorHandler(context, ginErrors.Error{
+			Message: "Invalid headers provided",
+			Status:  http.StatusBadRequest,
+		})
+		return nil, false
+	}
+
+	return &headers, true
+}
+
 func ValidatePayload[Payload any](context *gin.Context) (*Payload, bool) {
 	var payload Payload
 	err := context.ShouldBindJSON(&payload)
