@@ -101,6 +101,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/users.signUpPayload"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "example": "Token f0071ba5740184e39e3d7bbf4f5a6e27d054458a13dc7013d93d04feb8ee8b85",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -216,7 +223,20 @@ const docTemplate = `{
             }
         },
         "users.signUpPayload": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 5
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
         },
         "users.signUpResponse": {
             "type": "object"

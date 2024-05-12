@@ -71,6 +71,15 @@ definitions:
         type: string
     type: object
   users.signUpPayload:
+    properties:
+      password:
+        minLength: 5
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
     type: object
   users.signUpResponse:
     type: object
@@ -135,6 +144,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/users.signUpPayload'
+      - example: Token f0071ba5740184e39e3d7bbf4f5a6e27d054458a13dc7013d93d04feb8ee8b85
+        in: header
+        name: authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:

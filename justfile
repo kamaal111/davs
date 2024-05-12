@@ -62,7 +62,6 @@ fix-generated-spec:
     for file in $files_to_update;
     do
         sed -i "s/x-nullable/nullable/g" $file
-        sed -i "s/x-omitempty/omitempty/g" $file
         echo "Fixed $file"
     done
 
