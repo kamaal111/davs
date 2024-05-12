@@ -46,6 +46,10 @@ generate-spec: format-spec-comments
     swag init -g main.go || exit 1
     just fix-generated-spec
 
+# Generate a API key
+generate-api-key:
+    go run *.go gen-api-key
+
 [private]
 fix-generated-spec:
     #!/bin/zsh

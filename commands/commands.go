@@ -8,6 +8,7 @@ import (
 func Execute() error {
 	var davsCommand = &cobra.Command{Use: "davs", Short: "DAVS Commands"}
 	davsCommand.AddCommand(server.RunServerCommand())
+	davsCommand.AddCommand(generateAPIKeyCommand())
 
 	return davsCommand.Execute()
 }
