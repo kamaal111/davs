@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -69,6 +70,20 @@ func (user *User) getByUsername(db *gorm.DB) (*gorm.DB, error) {
 	}
 
 	return result, nil
+}
+
+func GetUserFromContext(context *gin.Context) *User {
+	userInContext, loggedIn := context.Get("user")
+	if !loggedIn {
+		return nil
+	}
+
+	convertedUser, isValid := userInContext.(User)
+	if !isValid {
+		return nil
+	}
+
+	return &convertedUser
 }
 
 func MigrationStrategyForUser(db *gorm.DB) error {

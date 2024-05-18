@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/users"
 	"github.com/kamaal111/davs/utils"
@@ -27,6 +28,12 @@ import (
 // @Router			/contacts [post]
 func createHandler() func(context *gin.Context) {
 	return func(context *gin.Context) {
+		user := users.GetUserFromContext(context)
+		if user == nil {
+			ginErrors.ErrorHandler(context, ginErrors.Error{Message: "Forbidden", Status: http.StatusForbidden})
+			return
+		}
+
 		payload, handled := utils.ValidatePayload[createPayload](context)
 		if handled {
 			return
