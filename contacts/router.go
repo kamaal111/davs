@@ -12,5 +12,5 @@ func InitializeRouter(server *gin.Engine, basePath string, db *gorm.DB) {
 
 	group.Use(users.BasicAuthMiddleware(db))
 
-	group.POST("/", createHandler())
+	group.PUT("/", putHandler())
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/kamaal111/davs/storage"
 )
 
-func run(args []string) error {
+func run() error {
 	db, err := storage.Connect()
 	if err != nil {
 		return err

@@ -39,36 +39,6 @@ run-dev:
 go-mod-tidy:
     go mod tidy
 
-# Generate Open API Specs
-generate-spec: format-spec-comments
-    #!/bin/zsh
-
-    swag init -g main.go || exit 1
-    just fix-generated-spec
-
-# Generate a API key
-generate-api-key:
-    go run *.go gen-api-key
-
-[private]
-fix-generated-spec:
-    #!/bin/zsh
-
-    files_to_update=(
-        ./docs/docs.go
-        ./docs/swagger.json
-        ./docs/swagger.yaml
-    )
-    for file in $files_to_update;
-    do
-        sed -i "s/x-nullable/nullable/g" $file
-        echo "Fixed $file"
-    done
-
-[private]
-format-spec-comments:
-    swag fmt
-
 [private]
 stop-and-remove-container:
     docker stop $CONTAINER_NAME || true

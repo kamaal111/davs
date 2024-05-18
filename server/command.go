@@ -9,7 +9,7 @@ func RunServerCommand() *cobra.Command {
 		Use:   "run-server",
 		Short: "Command to run the server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return run(args)
+			return run()
 		},
 	}
 

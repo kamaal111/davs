@@ -8,7 +8,6 @@ post-create: setup-zsh-environment setup-go-environment install-atuin
 [private]
 setup-go-environment:
     go install github.com/cespare/reflex@latest
-    go install github.com/swaggo/swag/cmd/swag@latest
 
 [private]
 setup-zsh-environment:

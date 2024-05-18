@@ -11,22 +11,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// @Summary	Sign up user
-// @Schemes
-// @Description	To create a user
-//
-// @Tags			users
-// @ID				signUpUser
-//
-// @Accept			json
-// @Produce		json
-//
-// @Param			payload	body		signUpPayload	true	"Sign up payload to create a user"
-// @Param			payload	header		signUpHeaders	true	"Sign up headers"
-//
-// @Success		200		{object}	signUpResponse
-//
-// @Router			/users [post]
 func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 	return func(context *gin.Context) {
 		headers, headersAreValid := utils.ValidateHeaders[signUpHeaders](context)

@@ -7,11 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/contacts"
-	"github.com/kamaal111/davs/docs"
 	"github.com/kamaal111/davs/health"
 	"github.com/kamaal111/davs/users"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -21,7 +18,6 @@ func Start(db *gorm.DB) {
 	serverAddress := getServerAddress()
 	server := initializeServer()
 	basePath := "api/v1"
-	updateSwaggerInfo(swaggerInfo{basePath: basePath})
 	initializeRoutes(server, basePath, db)
 	server.Run(serverAddress)
 }
@@ -38,7 +34,6 @@ func initializeRoutes(server *gin.Engine, basePath string, db *gorm.DB) {
 	contacts.InitializeRouter(server, basePath, db)
 	users.InitializeRouter(server, basePath, db)
 	server.NoRoute(notFound)
-	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
 
 func getServerAddress() string {
@@ -57,12 +52,4 @@ func getServerAddress() string {
 	}
 
 	return fmt.Sprintf(":%s", port)
-}
-
-type swaggerInfo struct {
-	basePath string
-}
-
-func updateSwaggerInfo(info swaggerInfo) {
-	docs.SwaggerInfo.BasePath = fmt.Sprintf("/%s", info.basePath)
 }
