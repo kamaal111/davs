@@ -14,6 +14,11 @@ run-dev-server:
 run-dev-web:
     just web/run-dev
 
+lint-js:
+    #!/bin/zsh
+
+    bun run lint
+
 bootstrap:
     #!/bin/zsh
 

@@ -1,11 +1,14 @@
 {
   "name": "davs",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint web/src"
+  },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
     "@types/bun": "latest",
     "eslint": "9.x",
+    "eslint-plugin-formatjs": "^4.13.3",
     "globals": "^15.2.0",
     "prettier": "^3.2.5",
     "typescript-eslint": "^7.9.0"

@@ -2,13 +2,18 @@
 
 import { IntlProvider as ReactIntlProvider } from 'react-intl';
 
-const DEFAULT_LANGUAGE = 'en';
+import { DEFAULT_LANGUAGE, getLocale, getMessages } from '@/messages';
 
 function IntlProvider({ children }: { children: React.ReactNode }) {
-  const locale = navigator.language?.slice(0, 2) ?? DEFAULT_LANGUAGE;
+  const locale = getLocale();
+  const messages = getMessages();
 
   return (
-    <ReactIntlProvider locale={locale} defaultLocale={DEFAULT_LANGUAGE}>
+    <ReactIntlProvider
+      locale={locale}
+      messages={messages}
+      defaultLocale={DEFAULT_LANGUAGE}
+    >
       {children}
     </ReactIntlProvider>
   );
