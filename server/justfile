@@ -39,6 +39,12 @@ run-dev:
 go-mod-tidy:
     go mod tidy
 
+bootstrap: setup-go-environment go-mod-tidy
+
+[private]
+setup-go-environment:
+    go install github.com/cespare/reflex@latest
+
 [private]
 stop-and-remove-container:
     docker stop $CONTAINER_NAME || true

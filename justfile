@@ -10,3 +10,10 @@ build-server:
 
 run-dev-server:
     just server/run-dev
+
+run-dev-web:
+    just web/run-dev
+
+bootstrap:
+    just server/bootstrap
+    just web/bootstrap

@@ -3,11 +3,8 @@ default:
     just --list --unsorted --list-heading $'Available commands\n'
 
 # Set up dev container. This step runs after building the dev container
-post-create: setup-zsh-environment setup-go-environment install-atuin
-
-[private]
-setup-go-environment:
-    go install github.com/cespare/reflex@latest
+post-create: setup-zsh-environment install-atuin
+    just ../bootstrap
 
 [private]
 setup-zsh-environment:

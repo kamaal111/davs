@@ -1,8 +1,8 @@
 {
 	"name": "${localWorkspaceFolderBasename}",
 	"dockerComposeFile": [
+		"docker-compose.code.yml",
 		"../docker/docker-compose.services.yml",
-		"docker-compose.code.yml"
 	],
 	"service": "code",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
@@ -17,7 +17,12 @@
 				"streetsidesoftware.code-spell-checker",
 				"golang.go",
 				"redhat.vscode-yaml",
-				"ms-azuretools.vscode-docker"
+				"ms-azuretools.vscode-docker",
+				"oven.bun-vscode",
+				"dbaeumer.vscode-eslint",
+				"aaron-bond.better-comments",
+				"naumovs.color-highlight",
+				"eamodio.gitlens"
 			]
 		}
 	},
@@ -28,6 +33,7 @@
 	"forwardPorts": [
 		8000,
 		8080,
-		5432
+		5432,
+		3000
 	]
 }

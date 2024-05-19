@@ -1,0 +1,20 @@
+# List available commands
+default:
+    just --list --unsorted --list-heading $'Available commands\n'
+
+run-dev: install-modules
+    #!/bin/zsh
+
+    bun run dev
+
+bootstrap:
+    #!/bin/zsh
+
+    curl -fsSL https://bun.sh/install | bash
+    just install-modules
+
+[private]
+install-modules:
+    #!/bin/zsh
+
+    bun i
