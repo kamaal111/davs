@@ -22,7 +22,8 @@
 				"dbaeumer.vscode-eslint",
 				"aaron-bond.better-comments",
 				"naumovs.color-highlight",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"esbenp.prettier-vscode"
 			]
 		}
 	},

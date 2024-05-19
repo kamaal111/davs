@@ -15,5 +15,8 @@ run-dev-web:
     just web/run-dev
 
 bootstrap:
+    #!/bin/zsh
+
+    bun i
     just server/bootstrap
     just web/bootstrap
