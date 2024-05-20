@@ -14,6 +14,9 @@ run-dev-server:
 run-dev-web:
     just web/run-dev
 
+build-web-locales:
+    just web/build-locales
+
 lint-js:
     #!/bin/zsh
 

@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "locales:build": "bun run scripts/build-locales.ts"
   },
   "dependencies": {
+    "@kamaalio/kamaal": "^0.4.0",
     "@radix-ui/themes": "^3.0.5",
     "next": "14.2.3",
     "react": "^18",
@@ -16,6 +18,7 @@
     "react-intl": "^6.6.8"
   },
   "devDependencies": {
+    "@formatjs/cli-lib": "^6.4.2",
     "@types/bun": "latest",
     "@types/react": "^18",
     "@types/react-dom": "^18",

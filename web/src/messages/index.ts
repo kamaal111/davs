@@ -1,7 +1,7 @@
+import flatten from '@kamaalio/kamaal/objects/flatten';
+
 import en from './en';
 import nl from './nl';
-
-import flattenObject from '@/utils/objects/flattenObject';
 
 type Locale = 'en' | 'nl';
 type NestedMessages = typeof en;
@@ -13,7 +13,7 @@ type Messages = Record<string, string>;
 const flattenedMessages = Object.entries(messages).reduce(
   (allMessages, [locale, nestedMessages]) => ({
     ...allMessages,
-    [locale]: flattenObject(nestedMessages),
+    [locale]: flatten(nestedMessages),
   }),
   {} as Record<Locale, Messages>
 );

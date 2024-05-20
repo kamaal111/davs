@@ -13,6 +13,11 @@ bootstrap:
     curl -fsSL https://bun.sh/install | bash
     just install-modules
 
+build-locales: install-modules
+    #!/bin/zsh
+
+    bun run locales:build
+
 [private]
 install-modules:
     #!/bin/zsh
