@@ -2,7 +2,10 @@
   "name": "davs",
   "type": "module",
   "scripts": {
-    "lint": "eslint web/src"
+    "lint": "eslint web/src",
+    "prepare": "husky",
+    "format": "prettier --write web/src",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
@@ -10,6 +13,8 @@
     "eslint": "9.x",
     "eslint-plugin-formatjs": "^4.13.3",
     "globals": "^15.2.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "typescript-eslint": "^7.9.0"
   },

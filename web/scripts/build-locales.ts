@@ -12,8 +12,12 @@ async function main() {
 
   await Bun.write(
     'src/messages/en.json',
-    JSON.stringify(unflattenMessages, null, 2)
+    appendNewLineToString(JSON.stringify(unflattenMessages, null, 2))
   );
+}
+
+function appendNewLineToString(value: string) {
+  return `${value}\n`;
 }
 
 async function extractDefaultMessages(messagesFiles: string[]) {

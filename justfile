@@ -17,6 +17,16 @@ run-dev-web:
 build-web-locales:
     just web/build-locales
 
+format-js:
+    #!/bin/zsh
+
+    bun run format
+
+lint-staged:
+    #!/bin/zsh
+
+    bun run lint-staged
+
 lint-js:
     #!/bin/zsh
 
