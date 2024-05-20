@@ -2,7 +2,7 @@
 default:
     just --list --unsorted --list-heading $'Available commands\n'
 
-run-dev: install-modules
+run-dev: build-locales
     #!/bin/zsh
 
     bun run dev
