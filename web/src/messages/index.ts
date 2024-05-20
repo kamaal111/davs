@@ -1,7 +1,7 @@
 import flatten from '@kamaalio/kamaal/objects/flatten';
 
-import en from './en';
-import nl from './nl';
+import en from './en.json';
+import nl from './nl.json';
 
 type Locale = 'en' | 'nl';
 type NestedMessages = typeof en;
