@@ -1,3 +1,0 @@
-{
-  "*.{ts,tsx}": ["just build-web-locales", "just format-js"]
-}

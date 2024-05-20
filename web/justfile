@@ -18,6 +18,11 @@ build-locales: install-modules
 
     bun run locales:build
 
+typecheck: install-modules
+    #!/bin/zsh
+
+    bun run typecheck
+
 [private]
 install-modules:
     #!/bin/zsh

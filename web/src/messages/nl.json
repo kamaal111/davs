@@ -4,6 +4,9 @@
     "USERNAME_FIELD_LABEL": "Gebruikersnaam",
     "PASSWORD_FIELD_LABEL": "Wachtwoord",
     "FORGOT_PASSWORD_LINK": "Wachtwoord vergeten?",
-    "SUBMIT_BUTTON": "Account aanmaken"
+    "SUBMIT_BUTTON": "Account aanmaken",
+    "PASSWORD_FIELD_PLACEHOLDER": "Voer uw wachtwoord in",
+    "USERNAME_FIELD_PLACEHOLDER": "Voer uw gebruikersnaam in",
+    "SIGN_IN_BUTTON": "Aanmelden"
   }
 }

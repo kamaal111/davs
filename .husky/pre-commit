@@ -1,1 +1,3 @@
-just lint-staged
+just build-web-locales
+just format-js
+just typecheck-js

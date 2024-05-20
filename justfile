@@ -22,15 +22,15 @@ format-js:
 
     bun run format
 
-lint-staged:
-    #!/bin/zsh
-
-    bun run lint-staged
-
 lint-js:
     #!/bin/zsh
 
     bun run lint
+
+typecheck-js:
+    #!/bin/zsh
+
+    just web/typecheck    
 
 bootstrap:
     #!/bin/zsh

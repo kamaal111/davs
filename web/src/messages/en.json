@@ -3,7 +3,10 @@
     "FORGOT_PASSWORD_LINK": "Forgot password?",
     "HEADER": "Sign up",
     "PASSWORD_FIELD_LABEL": "Password",
+    "PASSWORD_FIELD_PLACEHOLDER": "Enter your password",
+    "SIGN_IN_BUTTON": "Sign in",
     "SUBMIT_BUTTON": "Create an account",
-    "USERNAME_FIELD_LABEL": "Username"
+    "USERNAME_FIELD_LABEL": "Username",
+    "USERNAME_FIELD_PLACEHOLDER": "Enter your username"
   }
 }

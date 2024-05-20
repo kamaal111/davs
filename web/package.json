@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "locales:build": "bun run scripts/build-locales.ts"
+    "locales:build": "bun run scripts/build-locales.ts",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@kamaalio/kamaal": "^0.4.0",

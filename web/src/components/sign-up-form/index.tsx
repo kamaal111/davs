@@ -10,11 +10,13 @@ import {
   Text,
   TextField,
 } from '@radix-ui/themes';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import messages from './messages';
 
 function SignUpForm() {
+  const intl = useIntl();
+
   return (
     <form>
       <Card size="4">
@@ -29,7 +31,7 @@ function SignUpForm() {
             </Text>
           </Flex>
           <TextField.Root
-            placeholder="Enter your username"
+            placeholder={intl.formatMessage(messages.usernameFieldPlaceholder)}
             id="username-field"
           />
         </Box>
@@ -44,7 +46,7 @@ function SignUpForm() {
             </Link>
           </Flex>
           <TextField.Root
-            placeholder="Enter your password"
+            placeholder={intl.formatMessage(messages.passwordFieldPlaceholder)}
             id="password-field"
           />
         </Box>
@@ -53,7 +55,7 @@ function SignUpForm() {
           <Button variant="outline">
             <FormattedMessage {...messages.submitButton} />
           </Button>
-          <Button>Sign in</Button>
+          <FormattedMessage {...messages.signInButton} />
         </Flex>
       </Card>
     </form>
