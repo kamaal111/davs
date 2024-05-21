@@ -3,9 +3,12 @@
 import React from 'react';
 import { Button, Card, Flex, Heading, Text, Link } from '@radix-ui/themes';
 import { FormattedMessage, useIntl } from 'react-intl';
+import toast from 'react-hot-toast';
 
 import TextField from '../text-field';
 import messages from './messages';
+import fetchJSONResult from '@/utils/fetchResult';
+import METHODS from '@/common/http/methods';
 
 function SignUpForm() {
   const [formData, setFormData] = React.useState({
@@ -15,10 +18,22 @@ function SignUpForm() {
 
   const intl = useIntl();
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    console.log('formData', formData);
+    const result = await fetchJSONResult('/api/users', {
+      method: METHODS.POST,
+    });
+
+    if (result.isErr()) {
+      const { details } = result.unwrapErr();
+      toast(details ?? 'Failed to create a user');
+      return;
+    }
+
+    const success = result.ok();
+    console.log('success', success);
+
     clearForm();
   }
 
