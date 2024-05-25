@@ -6,9 +6,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import toast from 'react-hot-toast';
 
 import messages from './messages';
-import fetchJSONResult from '@/utils/fetchResult';
-import METHODS from '@/common/http/methods';
 import TextField from '@/components/text-field';
+import { useSignUpMutation } from '@/users/api/api';
 
 function SignUpForm() {
   const [formData, setFormData] = React.useState({
@@ -18,21 +17,22 @@ function SignUpForm() {
 
   const intl = useIntl();
 
+  const [signUp, signUpResult] = useSignUpMutation();
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const result = await fetchJSONResult('/api/users', {
-      method: METHODS.POST,
-    });
-
-    if (result.isErr()) {
-      const { details } = result.unwrapErr();
-      toast(details ?? 'Failed to create a user');
+    const result = await signUp(formData);
+    if (result.error != null) {
+      const details =
+        'data' in result.error ? result.error.data?.details : null;
+      toast.error(details ?? 'Failed to create a user');
       return;
     }
 
-    const success = result.ok();
-    console.log('success', success);
+    console.log('result.data', result.data);
+
+    // console.log('success', success);
 
     clearForm();
   }
@@ -47,6 +47,8 @@ function SignUpForm() {
   function handleFieldChange(field: keyof typeof formData) {
     return (value: string) => setFormData({ ...formData, [field]: value });
   }
+
+  const signUpFormIsLoading = signUpResult.isLoading;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -65,6 +67,7 @@ function SignUpForm() {
             </Text>
           )}
           onChange={handleFieldChange('username')}
+          disabled={signUpFormIsLoading}
         />
 
         <TextField
@@ -83,10 +86,15 @@ function SignUpForm() {
             </>
           )}
           onChange={handleFieldChange('password')}
+          disabled={signUpFormIsLoading}
         />
 
-        <Flex mt="6" justify="end" gap="3">
-          <Button variant="outline" type="submit">
+        <Flex mt="6" justify="end" gap="3" align="center">
+          <Button
+            variant="outline"
+            type="submit"
+            disabled={signUpFormIsLoading}
+          >
             <FormattedMessage {...messages.submitButton} />
           </Button>
           <FormattedMessage {...messages.signInButton} />

@@ -1,4 +1,7 @@
 {
+  "SIGN_UP_API": {
+    "FAILED_TO_CREATE_USER_ERROR": "Failed to create user"
+  },
   "SIGN_UP_FORM": {
     "FORGOT_PASSWORD_LINK": "Forgot password?",
     "HEADER": "Sign up",

@@ -1,4 +1,4 @@
-const METHODS = { POST: 'POST' } as const;
+const METHODS = { POST: 'POST', GET: 'GET' } as const;
 
 export type Method = keyof typeof METHODS;
 

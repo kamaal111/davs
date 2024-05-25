@@ -8,9 +8,18 @@ type Props = {
   onChange: (text: string) => void;
   value: string;
   type?: Parameters<typeof RadixTextField.Root>[0]['type'];
+  disabled?: boolean;
 };
 
-function TextField({ label, placeholder, id, onChange, value, type }: Props) {
+function TextField({
+  label,
+  placeholder,
+  id,
+  onChange,
+  value,
+  type,
+  disabled,
+}: Props) {
   return (
     <Box mb="5" position="relative">
       <Flex align="baseline" justify="between" mb="1">
@@ -22,6 +31,7 @@ function TextField({ label, placeholder, id, onChange, value, type }: Props) {
         placeholder={placeholder}
         id={id}
         onChange={e => onChange(e.target.value)}
+        disabled={disabled}
       />
     </Box>
   );

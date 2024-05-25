@@ -1,4 +1,7 @@
 {
+  "SIGN_UP_API": {
+    "FAILED_TO_CREATE_USER_ERROR": "Gebruiker kon niet aangemaakt worden"
+  },
   "SIGN_UP_FORM": {
     "HEADER": "Aanmelden",
     "USERNAME_FIELD_LABEL": "Gebruikersnaam",
