@@ -8,11 +8,11 @@ type ExtractedMessages = Record<string, MessageDescriptor>;
 
 async function main() {
   const messagesFiles = await getMessagesFiles();
-  const unflattenMessages = await extractDefaultMessages(messagesFiles);
+  const messages = await extractDefaultMessages(messagesFiles);
 
   await Bun.write(
-    'src/messages/en.json',
-    appendNewLineToString(JSON.stringify(unflattenMessages, null, 2))
+    'src/translations/messages/en.json',
+    appendNewLineToString(JSON.stringify(messages, null, 2))
   );
 }
 

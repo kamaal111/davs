@@ -2,7 +2,7 @@
 
 import { IntlProvider as ReactIntlProvider } from 'react-intl';
 
-import { DEFAULT_LANGUAGE, getLocale, getMessages } from '@/messages';
+import { DEFAULT_LANGUAGE, getLocale, getMessages } from './messages';
 
 function IntlProvider({ children }: { children: React.ReactNode }) {
   const locale = getLocale();

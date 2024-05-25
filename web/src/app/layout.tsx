@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 
-import AppProviders from '@/providers';
+import Theme from '@/theme/theme-provider';
+import IntlProvider from '@/translations/intl-provider';
 
 import '@radix-ui/themes/styles.css';
 import './globals.css';
@@ -21,7 +23,12 @@ function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AppProviders>{children}</AppProviders>
+        <Theme>
+          <IntlProvider>
+            {children}
+            <Toaster />
+          </IntlProvider>
+        </Theme>
       </body>
     </html>
   );

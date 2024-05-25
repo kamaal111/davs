@@ -5,10 +5,10 @@ import { Button, Card, Flex, Heading, Text, Link } from '@radix-ui/themes';
 import { FormattedMessage, useIntl } from 'react-intl';
 import toast from 'react-hot-toast';
 
-import TextField from '../text-field';
 import messages from './messages';
 import fetchJSONResult from '@/utils/fetchResult';
 import METHODS from '@/common/http/methods';
+import TextField from '@/components/text-field';
 
 function SignUpForm() {
   const [formData, setFormData] = React.useState({
