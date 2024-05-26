@@ -1,6 +1,6 @@
 import flatten from '@kamaalio/kamaal/objects/flatten';
 
-import messages, { Locale } from '../messages';
+import messages, { type Locale } from '../messages';
 import { type Messages } from '../types';
 
 const flattenedMessages = Object.entries(messages).reduce(

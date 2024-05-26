@@ -1,18 +1,14 @@
 import { type NextRequest } from 'next/server';
 
-import { type MessageDescriptor } from 'react-intl';
 import { getLocaleForAPI } from './get-locale';
+import getMessages from './get-messages';
+import { type MessageKeys } from '../types';
 
-function getAPIMessage(
-  headers: NextRequest['headers'],
-  descriptor: MessageDescriptor['id']
-) {
+function getAPIMessage(headers: NextRequest['headers'], id: MessageKeys) {
   const locale = getLocaleForAPI(headers);
-  //   const intl = getImperativeIntl()[locale];
+  const messages = getMessages(locale);
 
-  console.log('🐸🐸🐸 descriptor', descriptor);
-  //   return intl.formatMessage(descriptor);
-  return 'yes';
+  return messages[id];
 }
 
 export default getAPIMessage;
