@@ -1,6 +1,7 @@
 {
   "SIGN_UP_API": {
-    "FAILED_TO_CREATE_USER_ERROR": "Gebruiker kon niet aangemaakt worden"
+    "FAILED_TO_CREATE_USER_ERROR": "Gebruiker kon niet aangemaakt worden",
+    "INVALID_SIGN_UP_PAYLOAD_ERROR": "Ongeldige aanmeldingsinformatie gegeven"
   },
   "SIGN_UP_FORM": {
     "HEADER": "Aanmelden",
