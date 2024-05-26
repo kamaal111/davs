@@ -35,6 +35,9 @@ typecheck-js:
 bootstrap:
     #!/bin/zsh
 
+    BUN_INSTALL="$HOME/.bun"
+    PATH=$BUN_INSTALL/bin:$PATH
+
     bun i
     just server/bootstrap
     just web/bootstrap

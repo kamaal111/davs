@@ -27,4 +27,7 @@ typecheck: install-modules
 install-modules:
     #!/bin/zsh
 
+    BUN_INSTALL="$HOME/.bun"
+    PATH=$BUN_INSTALL/bin:$PATH
+
     bun i
