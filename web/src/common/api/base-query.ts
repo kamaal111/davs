@@ -25,6 +25,7 @@ function baseQuery({ baseUrl }: { baseUrl: string }) {
           url: args.url ?? '',
           method: args.method ?? METHODS.GET,
           body: args.body ? JSON.stringify(args.body) : null,
+          headers: {},
         },
         api,
         {}

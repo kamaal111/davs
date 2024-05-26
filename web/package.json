@@ -26,8 +26,10 @@
   "devDependencies": {
     "@formatjs/cli-lib": "^6.4.2",
     "@types/bun": "latest",
+    "@types/jscodeshift": "^0.11.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "jscodeshift": "^0.15.2",
     "npm": "^10.8.0",
     "typescript": "^5"
   }
