@@ -19,5 +19,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  console.log('body', body);
+
   return Response.json({ details: 'hello' });
 }

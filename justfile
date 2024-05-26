@@ -20,12 +20,12 @@ build-web-locales:
 format-js:
     #!/bin/zsh
 
-    bun run format
+    npm run format
 
 lint-js:
     #!/bin/zsh
 
-    bun run lint
+    npm run lint
 
 typecheck-js:
     #!/bin/zsh
@@ -35,9 +35,6 @@ typecheck-js:
 bootstrap:
     #!/bin/zsh
 
-    BUN_INSTALL="$HOME/.bun"
-    PATH=$BUN_INSTALL/bin:$PATH
-
-    bun i
+    npm i
     just server/bootstrap
     just web/bootstrap

@@ -12,7 +12,7 @@ type ExtractedMessages = Record<string, MessageDescriptor>;
 const GENERATED_CONSTANTS_FILE_PATH =
   'scripts/build-locales-generated-constants.ts';
 
-const CODEMOD_TIMEOUT_IN_MILLISECONDS = 1500;
+const CODEMOD_TIMEOUT_IN_MILLISECONDS = 2000;
 
 class TimeoutError extends Error {
   constructor(millis: number) {
@@ -75,7 +75,7 @@ async function withTimeout<Result>(
   millis: number,
   promise: Promise<Result>
 ): Promise<Result> {
-  let timeoutPid: Timer;
+  let timeoutPid: NodeJS.Timeout;
   const timeout = new Promise(
     (_resolve, reject) =>
       (timeoutPid = setTimeout(() => reject(new TimeoutError(millis)), millis))

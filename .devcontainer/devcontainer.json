@@ -18,7 +18,6 @@
 				"golang.go",
 				"redhat.vscode-yaml",
 				"ms-azuretools.vscode-docker",
-				"oven.bun-vscode",
 				"dbaeumer.vscode-eslint",
 				"aaron-bond.better-comments",
 				"naumovs.color-highlight",

@@ -5,29 +5,25 @@ default:
 run-dev: build-locales
     #!/bin/zsh
 
-    bun run dev
+    npm run dev
 
 bootstrap:
     #!/bin/zsh
 
-    curl -fsSL https://bun.sh/install | bash
     just install-modules
 
 build-locales: install-modules
     #!/bin/zsh
 
-    bun run locales:build
+    npm run locales:build
 
 typecheck: install-modules
     #!/bin/zsh
 
-    bun run typecheck
+    npm run typecheck
 
 [private]
 install-modules:
     #!/bin/zsh
 
-    BUN_INSTALL="$HOME/.bun"
-    PATH=$BUN_INSTALL/bin:$PATH
-
-    bun i
+    npm i
