@@ -1,7 +1,7 @@
-import { Glob } from 'bun';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 
+import fg from 'fast-glob';
 import { extract } from '@formatjs/cli-lib';
 import unflatten from '@kamaalio/kamaal/objects/unflatten';
 import { run as jscodeshift } from 'jscodeshift/src/Runner';
@@ -36,7 +36,7 @@ async function main() {
           JSON.stringify(messages.unflattenMessages, null, 2)
         ),
       },
-    ].map(({ destination, data }) => Bun.write(destination, data))
+    ].map(({ destination, data }) => fs.writeFile(destination, data))
   );
 
   let error: Error | undefined;
@@ -46,15 +46,13 @@ async function main() {
     error = e as Error;
   }
 
-  const generatedFile = Bun.file(GENERATED_CONSTANTS_FILE_PATH);
   if (error == null || error instanceof TimeoutError) {
-    await Bun.write('src/translations/messages/constants.ts', generatedFile);
+    const generatedFile = await fs.readFile(GENERATED_CONSTANTS_FILE_PATH);
+    await fs.writeFile('src/translations/messages/constants.ts', generatedFile);
   }
 
-  if (error != null) {
-    await fs.unlink(GENERATED_CONSTANTS_FILE_PATH);
-    throw error;
-  }
+  await fs.unlink(GENERATED_CONSTANTS_FILE_PATH);
+  if (error != null) throw error;
 }
 
 async function makeConstants() {
@@ -114,13 +112,7 @@ function reformatMessagesWithJustDefaults(
 }
 
 async function getMessagesFiles() {
-  const glob = new Glob('src/**/messages.ts');
-  const filepaths: string[] = [];
-  for await (const filepath of glob.scan('.')) {
-    filepaths.push(filepath);
-  }
-
-  return filepaths;
+  return fg.glob(['src/**/messages.ts']);
 }
 
 main();
