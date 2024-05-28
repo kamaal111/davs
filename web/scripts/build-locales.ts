@@ -51,7 +51,6 @@ async function main() {
     await fs.writeFile('src/translations/messages/constants.ts', generatedFile);
   }
 
-  await fs.unlink(GENERATED_CONSTANTS_FILE_PATH);
   if (error != null) throw error;
 }
 

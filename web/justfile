@@ -5,6 +5,10 @@ default:
 run-dev: build-locales
     #!/bin/zsh
 
+    export ENCRYPTION_SECRET_KEY="secret-key"
+    export ENCRYPTION_SECRET_IV="secret-iv"
+    export ENCRYPTION_METHOD="AES-256-CBC"
+
     npm run dev
 
 bootstrap:
