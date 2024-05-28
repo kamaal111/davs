@@ -1,6 +1,10 @@
 {
+  "COMMON": {
+    "API": {
+      "INVALID_JSON_ERROR": "Ongeldige payload geleverd"
+    }
+  },
   "SIGN_UP_API": {
-    "FAILED_TO_CREATE_USER_ERROR": "Gebruiker kon niet aangemaakt worden",
     "INVALID_SIGN_UP_PAYLOAD_ERROR": "Ongeldige aanmeldingsinformatie gegeven"
   },
   "SIGN_UP_FORM": {

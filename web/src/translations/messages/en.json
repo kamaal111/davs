@@ -1,6 +1,10 @@
 {
+  "COMMON": {
+    "API": {
+      "INVALID_JSON_ERROR": "Invalid payload provided"
+    }
+  },
   "SIGN_UP_API": {
-    "FAILED_TO_CREATE_USER_ERROR": "Failed to create user",
     "INVALID_SIGN_UP_PAYLOAD_ERROR": "Invalid sign up information given"
   },
   "SIGN_UP_FORM": {
