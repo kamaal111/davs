@@ -6,6 +6,11 @@ import InvalidSignUpPayloadError from './errors/invalid-sign-up-payload-error';
 import apiErrorHandler from '@/common/errors/api-error-handler';
 import parseAPIPayload from '@/common/api/parse-api-payload';
 import encryption from '@/encryption/encryption';
+import METHODS from '@/common/http/methods';
+
+const { DAVS_API_KEY } = process.env;
+
+if (!DAVS_API_KEY) throw new Error('DAVS_API_KEY not defined in .nev');
 
 export function POST(request: NextRequest) {
   return apiErrorHandler(async () => {
@@ -16,10 +21,18 @@ export function POST(request: NextRequest) {
       throw new InvalidSignUpPayloadError(request, { cause: error as Error });
     }
 
-    console.log('raw body', body);
     const encryptedBody = encryption.encrypt(body);
-    console.log('encryptedBody', encryptedBody);
-    console.log('body', body, encryption.decrypt(encryptedBody));
+    const response = await fetch(
+      'http://host.docker.internal:8000/api/v1/users',
+      {
+        method: METHODS.POST,
+        body: JSON.stringify({ message: encryptedBody }),
+        headers: { authorization: `Token ${DAVS_API_KEY!}` },
+      }
+    );
+    console.log('response', await response.json());
+
+    console.log('body', encryption.decrypt(encryptedBody));
     return Response.json({ details: 'hello' });
   });
 }

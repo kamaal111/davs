@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
@@ -19,7 +20,8 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 		}
 
 		apiKey := os.Getenv("API_KEY")
-		if apiKey != headers.Authorization {
+		splittedHeadersToken := strings.Split(headers.Authorization, "Token ")
+		if apiKey != splittedHeadersToken[len(splittedHeadersToken)-1] {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Unauthorized",
 				Status:  http.StatusUnauthorized,
@@ -32,32 +34,34 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		user := User{Username: payload.Username, Password: payload.Password}
-		err := user.create(db)
-		if err != nil {
-			if err == errUserExists {
-				ginErrors.ErrorHandler(context, ginErrors.Error{
-					Message: "User already exists",
-					Status:  http.StatusConflict,
-				})
-				return
-			}
+		log.Println(payload)
 
-			if err == errInvalidUserPayload {
-				ginErrors.ErrorHandler(context, ginErrors.Error{
-					Message: "Invalid user payload provided",
-					Status:  http.StatusBadRequest,
-				})
-				return
-			}
+		// user := User{Username: payload.Username, Password: payload.Password}
+		// err := user.create(db)
+		// if err != nil {
+		// 	if err == errUserExists {
+		// 		ginErrors.ErrorHandler(context, ginErrors.Error{
+		// 			Message: "User already exists",
+		// 			Status:  http.StatusConflict,
+		// 		})
+		// 		return
+		// 	}
 
-			log.Printf("Failed to create the user; error=%v", err)
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Failed to create the user",
-				Status:  http.StatusInternalServerError,
-			})
-			return
-		}
+		// 	if err == errInvalidUserPayload {
+		// 		ginErrors.ErrorHandler(context, ginErrors.Error{
+		// 			Message: "Invalid user payload provided",
+		// 			Status:  http.StatusBadRequest,
+		// 		})
+		// 		return
+		// 	}
+
+		// 	log.Printf("Failed to create the user; error=%v", err)
+		// 	ginErrors.ErrorHandler(context, ginErrors.Error{
+		// 		Message: "Failed to create the user",
+		// 		Status:  http.StatusInternalServerError,
+		// 	})
+		// 	return
+		// }
 
 		context.JSON(http.StatusCreated, signUpResponse{})
 	}
@@ -71,6 +75,7 @@ type signUpHeaders struct {
 }
 
 type signUpPayload struct {
-	Username string `json:"username" binding:"required,min=1"`
-	Password string `json:"password" binding:"required,min=5"`
+	// Username string `json:"username" binding:"required,min=1"`
+	// Password string `json:"password" binding:"required,min=5"`
+	Message string `json:"message" binding:"required,min=10"`
 }
