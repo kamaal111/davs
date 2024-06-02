@@ -12,10 +12,12 @@
     "HEADER": "Aanmelden",
     "USERNAME_FIELD_LABEL": "Gebruikersnaam",
     "PASSWORD_FIELD_LABEL": "Wachtwoord",
-    "FORGOT_PASSWORD_LINK": "Wachtwoord vergeten?",
+    "PASSWORD_NOT_SAME_AS_VERIFICATION_PASSWORD": "Wachtwoord is niet hetzelfde als het verificatiewachtwoord",
     "SUBMIT_BUTTON": "Account aanmaken",
     "PASSWORD_FIELD_PLACEHOLDER": "Voer uw wachtwoord in",
     "USERNAME_FIELD_PLACEHOLDER": "Voer uw gebruikersnaam in",
-    "SIGN_IN_BUTTON": "Aanmelden"
+    "SIGN_IN_BUTTON": "Aanmelden",
+    "VERIFY_PASSWORD_FIELD_LABEL": "Je wachtwoord verifiëren",
+    "VERIFY_PASSWORD_FIELD_PLACEHOLDER": "Je wachtwoord verifiëren"
   }
 }

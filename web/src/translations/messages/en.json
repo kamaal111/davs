@@ -9,13 +9,15 @@
     "USER_ALREADY_EXISTS_ERROR": "User already exists"
   },
   "SIGN_UP_FORM": {
-    "FORGOT_PASSWORD_LINK": "Forgot password?",
     "HEADER": "Sign up",
     "PASSWORD_FIELD_LABEL": "Password",
     "PASSWORD_FIELD_PLACEHOLDER": "Enter your password",
+    "PASSWORD_NOT_SAME_AS_VERIFICATION_PASSWORD": "Password is not the same as the verification password",
     "SIGN_IN_BUTTON": "Sign in",
     "SUBMIT_BUTTON": "Create an account",
     "USERNAME_FIELD_LABEL": "Username",
-    "USERNAME_FIELD_PLACEHOLDER": "Enter your username"
+    "USERNAME_FIELD_PLACEHOLDER": "Enter your username",
+    "VERIFY_PASSWORD_FIELD_LABEL": "Verify password",
+    "VERIFY_PASSWORD_FIELD_PLACEHOLDER": "Verify your password"
   }
 }

@@ -21,15 +21,26 @@ const messages = defineMessages({
     defaultMessage: 'Password',
     description: 'Sign up forms password field label',
   },
+  verifyPasswordFieldLabel: {
+    id: 'SIGN_UP_FORM.VERIFY_PASSWORD_FIELD_LABEL',
+    defaultMessage: 'Verify password',
+    description: 'Sign up forms verify password field label',
+  },
   passwordFieldPlaceholder: {
     id: 'SIGN_UP_FORM.PASSWORD_FIELD_PLACEHOLDER',
     defaultMessage: 'Enter your password',
     description: 'Sign up forms password field placeholder',
   },
-  forgotPasswordLink: {
-    id: 'SIGN_UP_FORM.FORGOT_PASSWORD_LINK',
-    defaultMessage: 'Forgot password?',
-    description: 'Sign up forms forgot password link',
+  verifyPasswordFieldPlaceholder: {
+    id: 'SIGN_UP_FORM.VERIFY_PASSWORD_FIELD_PLACEHOLDER',
+    defaultMessage: 'Verify your password',
+    description: 'Sign up forms verify password field placeholder',
+  },
+  passwordNotSameAsVerificationPassword: {
+    id: 'SIGN_UP_FORM.PASSWORD_NOT_SAME_AS_VERIFICATION_PASSWORD',
+    defaultMessage: 'Password is not the same as the verification password',
+    description:
+      'Sign up forms verify password is not the same as the given password',
   },
   submitButton: {
     id: 'SIGN_UP_FORM.SUBMIT_BUTTON',

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Flex, TextField as RadixTextField } from '@radix-ui/themes';
 
+import styles from './text-field.module.css';
+
 type Props = {
   label: () => React.ReactNode;
   placeholder?: string;
@@ -9,32 +11,46 @@ type Props = {
   value: string;
   type?: Parameters<typeof RadixTextField.Root>[0]['type'];
   disabled?: boolean;
+  isInvalid?: boolean;
+  invalidMessage?: string;
 };
 
-function TextField({
-  label,
-  placeholder,
-  id,
-  onChange,
-  value,
-  type,
-  disabled,
-}: Props) {
-  return (
-    <Box mb="5" position="relative">
-      <Flex align="baseline" justify="between" mb="1">
-        {label()}
-      </Flex>
-      <RadixTextField.Root
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        id={id}
-        onChange={e => onChange(e.target.value)}
-        disabled={disabled}
-      />
-    </Box>
-  );
-}
+const TextField = React.forwardRef<HTMLInputElement, Props>(
+  (
+    {
+      label,
+      placeholder,
+      id,
+      onChange,
+      value,
+      type,
+      disabled,
+      isInvalid,
+      invalidMessage,
+    },
+    ref
+  ) => {
+    return (
+      <Box mb="5" position="relative">
+        <Flex align="baseline" justify="between" mb="1">
+          {label()}
+        </Flex>
+        <RadixTextField.Root
+          ref={ref}
+          className={isInvalid ? styles.isInvalid : undefined}
+          type={type}
+          value={value}
+          placeholder={placeholder}
+          id={id}
+          onChange={e => onChange(e.target.value)}
+          disabled={disabled}
+        />
+        {isInvalid && invalidMessage ? (
+          <p className={styles.invalidMessage}>{invalidMessage}</p>
+        ) : null}
+      </Box>
+    );
+  }
+);
 
 export default TextField;
