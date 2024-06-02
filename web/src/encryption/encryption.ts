@@ -6,6 +6,14 @@ import InvalidEncryptedMessage from './errors/invalid-encrypted-message';
 import InvalidSecretKey from './errors/invalid-secret-key';
 
 export class Encryption {
+  aes: AES;
+
+  constructor(params: { secretKey: string }) {
+    this.aes = new AES({ secretKey: params.secretKey });
+  }
+}
+
+class AES {
   private secretKey: string;
 
   private static ENCRYPTION_IV_BYTES_LENGTH = 8;
@@ -22,7 +30,7 @@ export class Encryption {
 
   encrypt = (data: string) => {
     const encryptionIV = crypto
-      .randomBytes(Encryption.ENCRYPTION_IV_BYTES_LENGTH)
+      .randomBytes(AES.ENCRYPTION_IV_BYTES_LENGTH)
       .toString('hex');
     const encryptedMessage = CryptoJS.AES.encrypt(data, this.parsedSecretKey, {
       iv: CryptoJS.enc.Utf8.parse(encryptionIV),
@@ -34,7 +42,7 @@ export class Encryption {
 
   decrypt = (encryptedData: string) => {
     const [encryptionIV, encryptedMessage] = encryptedData.split(':');
-    if (encryptionIV.length < Encryption.REQUIRED_IV_LENGTH) {
+    if (encryptionIV.length < AES.REQUIRED_IV_LENGTH) {
       throw new InvalidIV();
     }
     if (encryptedMessage == null) {
@@ -55,7 +63,7 @@ export class Encryption {
 
   private get parsedSecretKey() {
     const secretKey = this.secretKey;
-    if (secretKey.length < Encryption.REQUIRED_SECRET_KEY_LENGTH) {
+    if (secretKey.length < AES.REQUIRED_SECRET_KEY_LENGTH) {
       throw new InvalidSecretKey();
     }
 

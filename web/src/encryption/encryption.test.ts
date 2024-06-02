@@ -6,9 +6,9 @@ describe('encryption', () => {
   describe('decrypt', () => {
     it('should decrypt encrypted message', () => {
       const payload = { message: 'test' };
-      const encryptedMessage = encryption.encryptObject(payload);
+      const encryptedMessage = encryption.aes.encryptObject(payload);
 
-      const result = encryption.decrypt(encryptedMessage);
+      const result = encryption.aes.decrypt(encryptedMessage);
 
       expect(JSON.parse(result)).toEqual(payload);
     });
@@ -16,7 +16,7 @@ describe('encryption', () => {
 
   describe('encryptObject', () => {
     it('should have a result with the IV having exactly 16 characters', () => {
-      const encryptedMessage = encryption
+      const encryptedMessage = encryption.aes
         .encryptObject({ hello: 'hi' })
         .split(':');
 
@@ -24,7 +24,7 @@ describe('encryption', () => {
     });
 
     it('should contain both IV and encrypted object', () => {
-      const encryptedMessage = encryption
+      const encryptedMessage = encryption.aes
         .encryptObject({ hello: 'world' })
         .split(':');
 
