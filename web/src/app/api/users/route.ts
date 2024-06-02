@@ -21,7 +21,7 @@ export function POST(request: NextRequest) {
       throw new InvalidSignUpPayloadError(request, { cause: error as Error });
     }
 
-    const encryptedBody = encryption.encrypt(body);
+    const encryptedBody = encryption.encryptObject(body);
     const response = await fetch(
       'http://host.docker.internal:8000/api/v1/users',
       {

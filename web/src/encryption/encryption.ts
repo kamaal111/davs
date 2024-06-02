@@ -1,89 +1,70 @@
 import crypto from 'node:crypto';
+import CryptoJS from 'crypto-js';
 
-class Encryption {
-  encryptionMethod: string;
+import InvalidIV from './errors/invalid-iv';
+import InvalidEncryptedMessage from './errors/invalid-encrypted-message';
+import InvalidSecretKey from './errors/invalid-secret-key';
 
-  private key: string;
-  private encryptionIV: string;
+export class Encryption {
+  private secretKey: string;
 
-  constructor(params: {
-    secretKey: string;
-    secretEncryptionIV: string;
-    keysEncryptionMethod: string;
-    encryptionMethod: string;
-  }) {
-    const key = crypto
-      .createHash(params.keysEncryptionMethod)
-      .update(params.secretKey)
-      .digest('hex')
-      .substring(0, 32);
-    const encryptionIV = crypto
-      .createHash(params.keysEncryptionMethod)
-      .update(params.secretEncryptionIV)
-      .digest('hex')
-      .substring(0, 16);
+  private static ENCRYPTION_IV_BYTES_LENGTH = 8;
+  private static REQUIRED_IV_LENGTH = 16;
+  private static REQUIRED_SECRET_KEY_LENGTH = 16;
 
-    this.key = key;
-    this.encryptionIV = encryptionIV;
-    this.encryptionMethod = params.encryptionMethod;
+  constructor(params: { secretKey: string }) {
+    this.secretKey = params.secretKey;
   }
 
-  encrypt = (data: Record<string, unknown>) => {
-    const cipher = crypto.createCipheriv(
-      this.encryptionMethod,
-      this.key,
-      this.encryptionIV
-    );
+  encryptObject = (data: Record<string, unknown>) => {
+    return this.encrypt(JSON.stringify(data));
+  };
 
-    const encryptedData =
-      cipher.update(JSON.stringify(data), 'utf8', 'hex') + cipher.final('hex');
+  encrypt = (data: string) => {
+    const encryptionIV = crypto
+      .randomBytes(Encryption.ENCRYPTION_IV_BYTES_LENGTH)
+      .toString('hex');
+    const encryptedMessage = CryptoJS.AES.encrypt(data, this.parsedSecretKey, {
+      iv: CryptoJS.enc.Utf8.parse(encryptionIV),
+      padding: CryptoJS.pad.Pkcs7,
+    }).toString();
 
-    return Buffer.from(encryptedData).toString('base64');
+    return `${encryptionIV}:${encryptedMessage}`;
   };
 
   decrypt = (encryptedData: string) => {
-    const buff = Buffer.from(encryptedData, 'base64');
-    const decipher = crypto.createDecipheriv(
-      this.encryptionMethod,
-      this.key,
-      this.encryptionIV
-    );
+    const [encryptionIV, encryptedMessage] = encryptedData.split(':');
+    if (encryptionIV.length < Encryption.REQUIRED_IV_LENGTH) {
+      throw new InvalidIV();
+    }
+    if (encryptedMessage == null) {
+      throw new InvalidEncryptedMessage();
+    }
 
-    const decryptedData =
-      decipher.update(buff.toString('utf8'), 'hex', 'utf8') +
-      decipher.final('utf8');
+    const decryptedData = CryptoJS.AES.decrypt(
+      encryptedMessage,
+      this.parsedSecretKey,
+      {
+        iv: CryptoJS.enc.Utf8.parse(encryptionIV),
+        padding: CryptoJS.pad.Pkcs7,
+      }
+    ).toString(CryptoJS.enc.Utf8);
 
     return decryptedData;
   };
-}
 
-const ENV_KEYS = [
-  'ENCRYPTION_SECRET_KEY',
-  'ENCRYPTION_SECRET_IV',
-  'ENCRYPTION_METHOD',
-] as const;
-
-function loadEnv() {
-  const envs: Partial<Record<(typeof ENV_KEYS)[number], string>> = {};
-  for (const key of ENV_KEYS) {
-    const env = process.env[key];
-    if (!env) {
-      throw new Error(`${key} not defined in .env`);
+  private get parsedSecretKey() {
+    const secretKey = this.secretKey;
+    if (secretKey.length < Encryption.REQUIRED_SECRET_KEY_LENGTH) {
+      throw new InvalidSecretKey();
     }
-    envs[key] = env;
-  }
 
-  return envs as Required<typeof envs>;
+    return CryptoJS.enc.Utf8.parse(this.secretKey);
+  }
 }
 
-const { ENCRYPTION_METHOD, ENCRYPTION_SECRET_IV, ENCRYPTION_SECRET_KEY } =
-  loadEnv();
+const { ENCRYPTION_SECRET_KEY } = process.env;
 
-const encryption = new Encryption({
-  encryptionMethod: ENCRYPTION_METHOD,
-  secretEncryptionIV: ENCRYPTION_SECRET_IV,
-  secretKey: ENCRYPTION_SECRET_KEY,
-  keysEncryptionMethod: 'SHA512',
-});
+const encryption = new Encryption({ secretKey: ENCRYPTION_SECRET_KEY ?? '' });
 
 export default encryption;

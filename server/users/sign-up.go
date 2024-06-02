@@ -1,13 +1,14 @@
 package users
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
+	"github.com/kamaal111/davs/crypto"
 	"github.com/kamaal111/davs/utils"
 	"gorm.io/gorm"
 )
@@ -34,7 +35,15 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		log.Println(payload)
+		decryptedPayload, err := crypto.AESDecrypt([]byte(os.Getenv("ENCRYPTION_SECRET_KEY")), []byte(payload.Message))
+		if err != nil {
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Message: "Invalid body provided",
+				Status:  http.StatusBadRequest,
+			})
+			return
+		}
+		fmt.Println("🐸🐸🐸", string(decryptedPayload))
 
 		// user := User{Username: payload.Username, Password: payload.Password}
 		// err := user.create(db)

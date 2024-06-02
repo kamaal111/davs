@@ -19,6 +19,10 @@ run: stop-and-remove-container
 build:
     docker build -t $CONTAINER_NAME .
 
+# Run unit tests
+test:
+    go test ./...
+
 # Build and run main Docker container
 build-run: build run
 
@@ -32,6 +36,7 @@ run-dev:
     export DATABASE_USER="davs-user"
     export DATABASE_PASSWORD="secure-password"
     export DATABASE_SSLMODE="disable"
+    export ENCRYPTION_SECRET_KEY="super_secret-123"
 
     reflex -r "\.go" -s -- sh -c "go run *.go run-server"
 

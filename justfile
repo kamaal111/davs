@@ -14,6 +14,16 @@ run-dev-server:
 run-dev-web:
     just web/run-dev
 
+test-server:
+    just server/test
+
+test-web:
+    just web/test
+
+test:
+    just server/test
+    just web/test
+
 build-web-locales:
     just web/build-locales
 
