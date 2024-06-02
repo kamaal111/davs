@@ -50,17 +50,8 @@ function SignUpForm() {
       return;
     }
 
+    // To be continued .... to login probably
     console.log('result.data', result.data);
-
-    clearForm();
-  }
-
-  function clearForm() {
-    setFormData({
-      username: '',
-      password: '',
-      verificationPassword: '',
-    });
   }
 
   function handleFieldChange(field: keyof typeof formData) {

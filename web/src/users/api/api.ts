@@ -1,10 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
+import type { z } from 'zod';
 
 import METHODS from '@/common/http/methods';
 import baseQuery from '@/common/api/base-query';
+import type signUpPayload from '../validators/sign-up-payload';
 
 type SignUpUserResponse = { details: string };
-type SignUpUserPayload = { username: string; password: string };
+type SignUpUserPayload = z.infer<typeof signUpPayload>;
 
 const usersAPI = createApi({
   reducerPath: 'usersAPI',

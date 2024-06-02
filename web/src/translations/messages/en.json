@@ -4,6 +4,9 @@
       "INVALID_JSON_ERROR": "Invalid payload provided"
     }
   },
+  "LOGIN_FORM": {
+    "HEADER": "Login"
+  },
   "SIGN_UP_API": {
     "INVALID_SIGN_UP_PAYLOAD_ERROR": "Invalid sign up information given",
     "USER_ALREADY_EXISTS_ERROR": "User already exists"

@@ -4,6 +4,9 @@
       "INVALID_JSON_ERROR": "Ongeldige payload geleverd"
     }
   },
+  "LOGIN_FORM": {
+    "HEADER": "Inloggen"
+  },
   "SIGN_UP_API": {
     "INVALID_SIGN_UP_PAYLOAD_ERROR": "Ongeldige aanmeldingsinformatie gegeven",
     "USER_ALREADY_EXISTS_ERROR": "Gebruiker bestaat al"
