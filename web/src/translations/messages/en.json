@@ -6,6 +6,8 @@
   },
   "LOGIN_FORM": {
     "HEADER": "Login",
+    "PASSWORD_FIELD_LABEL": "Password",
+    "PASSWORD_FIELD_PLACEHOLDER": "Enter your password",
     "USERNAME_FIELD_LABEL": "Username",
     "USERNAME_FIELD_PLACEHOLDER": "Enter your username"
   },

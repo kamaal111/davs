@@ -6,6 +6,8 @@
   },
   "LOGIN_FORM": {
     "HEADER": "Inloggen",
+    "PASSWORD_FIELD_LABEL": "Wachtwoord",
+    "PASSWORD_FIELD_PLACEHOLDER": "Voer uw wachtwoord in",
     "USERNAME_FIELD_LABEL": "Gebruikersnaam",
     "USERNAME_FIELD_PLACEHOLDER": "Voer uw gebruikersnaam in"
   },

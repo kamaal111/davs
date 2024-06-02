@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import messages from './messages';
 import TextField from '@/components/text-field';
 import { useSignUpMutation } from '@/users/api/api';
-import useInputStates from '@/common/hooks/use-input-states';
+import useInputsStates from '@/common/hooks/use-inputs-states';
 
 function SignUpForm() {
   const [formData, setFormData] = React.useState({
@@ -17,10 +17,11 @@ function SignUpForm() {
     verificationPassword: '',
   });
 
-  const {
-    inputRef: verificationPasswordInputRef,
-    state: verificationPasswordInputState,
-  } = useInputStates({ events: ['blur', 'focus'], defaultEvent: 'blur' });
+  const { inputRefs: inputRefsForStates, states: statesForInputs } =
+    useInputsStates({
+      keys: ['validationPassword'],
+      events: ['blur', 'focus'],
+    });
 
   const intl = useIntl();
 
@@ -95,7 +96,9 @@ function SignUpForm() {
         />
 
         <TextField
-          ref={verificationPasswordInputRef}
+          ref={ref => {
+            inputRefsForStates.current.validationPassword = ref;
+          }}
           value={formData.verificationPassword}
           placeholder={intl.formatMessage(
             messages.verifyPasswordFieldPlaceholder
@@ -113,7 +116,7 @@ function SignUpForm() {
             !passwordVerified &&
             formData.verificationPassword.length > 0 &&
             formData.password.length > 0 &&
-            verificationPasswordInputState !== 'focus'
+            statesForInputs.validationPassword !== 'focus'
           }
           invalidMessage={intl.formatMessage(
             messages.passwordNotSameAsVerificationPassword

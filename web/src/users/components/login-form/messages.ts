@@ -16,6 +16,16 @@ const messages = defineMessages({
     defaultMessage: 'Enter your username',
     description: 'Login forms username field placeholder',
   },
+  passwordFieldLabel: {
+    id: 'LOGIN_FORM.PASSWORD_FIELD_LABEL',
+    defaultMessage: 'Password',
+    description: 'Login forms password field label',
+  },
+  passwordFieldPlaceholder: {
+    id: 'LOGIN_FORM.PASSWORD_FIELD_PLACEHOLDER',
+    defaultMessage: 'Enter your password',
+    description: 'Login forms password field placeholder',
+  },
 });
 
 export default messages;

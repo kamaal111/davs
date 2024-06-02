@@ -1,4 +1,4 @@
-type StringUnion<TargetKey extends string> = `${TargetKey}`;
+import type { StringUnion } from '@/types';
 
 function loadRequiredEnv<TargetKey extends string>(
   keys: Array<StringUnion<TargetKey>>
