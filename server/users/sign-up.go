@@ -90,11 +90,12 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		context.JSON(http.StatusCreated, signUpResponse{})
+		context.JSON(http.StatusCreated, signUpResponse{Details: "Created"})
 	}
 }
 
 type signUpResponse struct {
+	Details string `json:"details"`
 }
 
 type signUpHeaders struct {

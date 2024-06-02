@@ -7,10 +7,14 @@ import apiErrorHandler from '@/common/errors/api-error-handler';
 import parseAPIPayload from '@/common/api/parse-api-payload';
 import encryption from '@/encryption/encryption';
 import METHODS from '@/common/http/methods';
+import loadRequiredEnv from '@/common/env/load-required-env';
+import UserAlreadyExists from './errors/user-already-exists';
+import FailedToCreateUser from './errors/failed-to-create-user';
 
-const { DAVS_API_KEY } = process.env;
-
-if (!DAVS_API_KEY) throw new Error('DAVS_API_KEY not defined in .nev');
+const { DAVS_API_KEY, DAVS_SERVER_BASE_URL } = loadRequiredEnv([
+  'DAVS_API_KEY',
+  'DAVS_SERVER_BASE_URL',
+]);
 
 export function POST(request: NextRequest) {
   return apiErrorHandler(async () => {
@@ -22,17 +26,16 @@ export function POST(request: NextRequest) {
     }
 
     const encryptedBody = encryption.aes.encryptObject(body);
-    const response = await fetch(
-      'http://host.docker.internal:8000/api/v1/users',
-      {
-        method: METHODS.POST,
-        body: JSON.stringify({ message: encryptedBody }),
-        headers: { authorization: `Token ${DAVS_API_KEY!}` },
-      }
-    );
-    console.log('response', await response.json());
+    const response = await fetch(`${DAVS_SERVER_BASE_URL}/api/v1/users`, {
+      method: METHODS.POST,
+      body: JSON.stringify({ message: encryptedBody }),
+      headers: { authorization: `Token ${DAVS_API_KEY!}` },
+    });
+    if (!response.ok) {
+      if (response.status === 409) throw new UserAlreadyExists(request);
+      else throw new FailedToCreateUser(request, response.status);
+    }
 
-    console.log('body', encryption.aes.decrypt(encryptedBody));
-    return Response.json({ details: 'hello' });
+    return Response.json({ details: 'OK' }, { status: 201 });
   });
 }

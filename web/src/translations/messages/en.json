@@ -5,7 +5,8 @@
     }
   },
   "SIGN_UP_API": {
-    "INVALID_SIGN_UP_PAYLOAD_ERROR": "Invalid sign up information given"
+    "INVALID_SIGN_UP_PAYLOAD_ERROR": "Invalid sign up information given",
+    "USER_ALREADY_EXISTS_ERROR": "User already exists"
   },
   "SIGN_UP_FORM": {
     "FORGOT_PASSWORD_LINK": "Forgot password?",

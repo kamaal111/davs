@@ -5,7 +5,8 @@
     }
   },
   "SIGN_UP_API": {
-    "INVALID_SIGN_UP_PAYLOAD_ERROR": "Ongeldige aanmeldingsinformatie gegeven"
+    "INVALID_SIGN_UP_PAYLOAD_ERROR": "Ongeldige aanmeldingsinformatie gegeven",
+    "USER_ALREADY_EXISTS_ERROR": "Gebruiker bestaat al"
   },
   "SIGN_UP_FORM": {
     "HEADER": "Aanmelden",
