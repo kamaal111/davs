@@ -5,7 +5,9 @@
     }
   },
   "LOGIN_FORM": {
-    "HEADER": "Inloggen"
+    "HEADER": "Inloggen",
+    "USERNAME_FIELD_LABEL": "Gebruikersnaam",
+    "USERNAME_FIELD_PLACEHOLDER": "Voer uw gebruikersnaam in"
   },
   "SIGN_UP_API": {
     "INVALID_SIGN_UP_PAYLOAD_ERROR": "Ongeldige aanmeldingsinformatie gegeven",

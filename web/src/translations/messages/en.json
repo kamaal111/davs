@@ -5,7 +5,9 @@
     }
   },
   "LOGIN_FORM": {
-    "HEADER": "Login"
+    "HEADER": "Login",
+    "USERNAME_FIELD_LABEL": "Username",
+    "USERNAME_FIELD_PLACEHOLDER": "Enter your username"
   },
   "SIGN_UP_API": {
     "INVALID_SIGN_UP_PAYLOAD_ERROR": "Invalid sign up information given",
