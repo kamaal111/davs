@@ -6,13 +6,13 @@ import { Card, Heading, Text } from '@radix-ui/themes';
 import TextField from '../text-field';
 import useInputsStates from '@/common/hooks/use-inputs-states';
 
-function Form<Schema extends z.AnyZodObject>({
+function Form({
   schema,
   fields,
   header,
 }: {
   header: MessageDescriptor;
-  schema: z.infer<Schema>;
+  schema: z.infer<z.AnyZodObject>;
   fields: Array<{
     id: string;
     placeholder: MessageDescriptor;
