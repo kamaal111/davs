@@ -1,41 +1,33 @@
 import React from 'react';
 
-import type { StringUnion } from '@/types';
-
 function useInputsStates<
   Event extends keyof HTMLElementEventMap,
   TargetKey extends string,
->({
-  events,
-  keys,
-}: {
-  events: Array<Event>;
-  keys: Array<StringUnion<TargetKey>>;
-}) {
+>({ events, keys }: { events: Array<Event>; keys: Array<TargetKey> }) {
   const [states, setStates] = React.useState(
     keys.reduce(
       (acc, key) => ({ ...acc, [key]: null }),
-      {} as Record<StringUnion<TargetKey>, Event | null>
+      {} as Record<TargetKey, Event | null>
     )
   );
 
   const inputRefs = React.useRef(
     keys.reduce(
       (acc, key) => ({ ...acc, [key]: null }),
-      {} as Record<StringUnion<TargetKey>, HTMLInputElement | null>
+      {} as Record<TargetKey, HTMLInputElement | null>
     )
   );
   const listenersHaveBeenAttachedToRefs = React.useRef(
     keys.reduce(
       (acc, key) => ({ ...acc, [key]: false }),
-      {} as Record<StringUnion<TargetKey>, boolean>
+      {} as Record<TargetKey, boolean>
     )
   );
 
   React.useEffect(() => {
     (
       Object.entries(inputRefs.current) as Array<
-        [StringUnion<TargetKey>, HTMLInputElement | null]
+        [TargetKey, HTMLInputElement | null]
       >
     ).forEach(([key, ref]) => {
       if (!ref) return;

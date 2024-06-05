@@ -4,6 +4,7 @@ import type { z } from 'zod';
 import { Card, Heading, Text } from '@radix-ui/themes';
 
 import TextField from '../text-field';
+import useInputsStates from '@/common/hooks/use-inputs-states';
 
 function Form<Schema extends z.AnyZodObject>({
   schema,
@@ -13,20 +14,27 @@ function Form<Schema extends z.AnyZodObject>({
   header: MessageDescriptor;
   schema: z.infer<Schema>;
   fields: Array<{
-    id: keyof z.infer<Schema>;
+    id: string;
     placeholder: MessageDescriptor;
     label: MessageDescriptor;
     type?: Parameters<typeof TextField>[0]['type'];
   }>;
 }) {
+  const fieldIds = fields.map(field => field.id);
+
   const [formData, setFormData] = React.useState<typeof schema>(
-    Object.keys(schema).reduce(
+    fieldIds.reduce(
       (acc, current) => {
         return { ...acc, [current]: '' };
       },
       {} as typeof schema
     )
   );
+
+  const { inputRefs } = useInputsStates({
+    events: ['blur', 'focus'],
+    keys: fieldIds,
+  });
 
   const intl = useIntl();
 
@@ -51,6 +59,9 @@ function Form<Schema extends z.AnyZodObject>({
 
           return (
             <TextField
+              ref={ref => {
+                inputRefs.current[idString] = ref;
+              }}
               key={idString}
               value={formData[idString]}
               placeholder={intl.formatMessage(placeholder)}
