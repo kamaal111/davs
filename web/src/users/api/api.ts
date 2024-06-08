@@ -13,7 +13,11 @@ const usersAPI = createApi({
   baseQuery: baseQuery({ baseUrl: '/api/users' }),
   endpoints: builder => ({
     signUp: builder.mutation<SignUpUserResponse, SignUpUserPayload>({
-      query: payload => ({ method: METHODS.POST, body: payload }),
+      query: payload => ({
+        url: '/sign-up',
+        method: METHODS.POST,
+        body: payload,
+      }),
     }),
   }),
 });
