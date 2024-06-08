@@ -19,33 +19,47 @@ function SignUpForm() {
 
   const signUpFormIsLoading = signUpResult.isLoading;
 
-  const fieldFields: Array<FormField<keyof FormInput>> = [
-    {
-      id: 'username',
-      placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
-      label: intl.formatMessage(messages.usernameFieldLabel),
-    },
-    {
-      id: 'password',
-      placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
-      label: intl.formatMessage(messages.passwordFieldLabel),
-      type: 'password',
-    },
-    {
-      id: 'verificationPassword',
-      placeholder: intl.formatMessage(messages.verifyPasswordFieldPlaceholder),
-      label: intl.formatMessage(messages.verifyPasswordFieldLabel),
-      type: 'password',
-      errorMessages: {
-        extra: intl.formatMessage(
-          messages.passwordNotSameAsVerificationPassword
+  const fieldFields: Array<FormField<keyof FormInput>> = React.useMemo(
+    () => [
+      {
+        id: 'username',
+        placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
+        label: intl.formatMessage(messages.usernameFieldLabel),
+        errorMessages: {
+          too_small: intl.formatMessage(messages.usernameMinimumLengthError),
+        },
+      },
+      {
+        id: 'password',
+        placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
+        label: intl.formatMessage(messages.passwordFieldLabel),
+        type: 'password',
+        errorMessages: {
+          too_small: intl.formatMessage(messages.passwordMinimumLengthError),
+        },
+      },
+      {
+        id: 'verificationPassword',
+        placeholder: intl.formatMessage(
+          messages.verifyPasswordFieldPlaceholder
         ),
+        label: intl.formatMessage(messages.verifyPasswordFieldLabel),
+        type: 'password',
+        errorMessages: {
+          extra: intl.formatMessage(
+            messages.passwordNotSameAsVerificationPassword
+          ),
+          too_small: intl.formatMessage(
+            messages.verifyPasswordMinimumLengthError
+          ),
+        },
+        extraValidation: ({ value, payload }) => {
+          return value === (payload as FormInput).password;
+        },
       },
-      extraValidation: ({ value, payload }) => {
-        return value === (payload as FormInput).password;
-      },
-    },
-  ];
+    ],
+    []
+  );
 
   async function handleSubmit(formData: FormInput) {
     const result = await signUp(formData);

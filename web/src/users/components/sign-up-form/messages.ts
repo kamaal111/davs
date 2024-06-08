@@ -52,6 +52,24 @@ const messages = defineMessages({
     defaultMessage: 'Sign in',
     description: 'Sign up forms sign in button',
   },
+  usernameMinimumLengthError: {
+    id: 'SIGN_UP_FORM.USERNAME_MINIMUM_LENGTH_ERROR',
+    defaultMessage: 'Username should be at least 1 character long',
+    description:
+      'Error message user gets when they provide a too small of a username',
+  },
+  passwordMinimumLengthError: {
+    id: 'SIGN_UP_FORM.PASSWORD_MINIMUM_LENGTH_ERROR',
+    defaultMessage: 'Password should be at least 5 character long',
+    description:
+      'Error message user gets when they provide a too small of a password',
+  },
+  verifyPasswordMinimumLengthError: {
+    id: 'SIGN_UP_FORM.VERIFY_PASSWORD_MINIMUM_LENGTH_ERROR',
+    defaultMessage: 'Password should be at least 5 character long',
+    description:
+      'Error message user gets when they provide a too small of a password',
+  },
 });
 
 export default messages;

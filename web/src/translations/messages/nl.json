@@ -26,10 +26,13 @@
     "PASSWORD_NOT_SAME_AS_VERIFICATION_PASSWORD": "Wachtwoord is niet hetzelfde als het verificatiewachtwoord",
     "SUBMIT_BUTTON": "Account aanmaken",
     "PASSWORD_FIELD_PLACEHOLDER": "Voer uw wachtwoord in",
+    "PASSWORD_MINIMUM_LENGTH_ERROR": "Wachtwoord moet minstens 5 tekens lang zijn",
     "USERNAME_FIELD_PLACEHOLDER": "Voer uw gebruikersnaam in",
+    "USERNAME_MINIMUM_LENGTH_ERROR": "De gebruikersnaam moet minstens 1 teken lang zijn",
     "SIGN_IN_BUTTON": "Aanmelden",
     "VERIFY_PASSWORD_FIELD_LABEL": "Je wachtwoord verifiëren",
-    "VERIFY_PASSWORD_FIELD_PLACEHOLDER": "Je wachtwoord verifiëren"
+    "VERIFY_PASSWORD_FIELD_PLACEHOLDER": "Je wachtwoord verifiëren",
+    "VERIFY_PASSWORD_MINIMUM_LENGTH_ERROR": "Wachtwoord moet minstens 5 tekens lang zijn"
   },
   "USERS_VALIDATORS": {
     "PASSWORD_MINIMUM_LENGTH_ERROR": "Wachtwoord moet minstens 5 tekens lang zijn",
