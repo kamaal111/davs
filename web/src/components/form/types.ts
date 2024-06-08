@@ -7,5 +7,12 @@ export type FormField<ID extends string = string> = {
   placeholder: string;
   label: string;
   type?: Parameters<typeof TextField>[0]['type'];
-  errorMessages?: Partial<Record<z.ZodIssueCode, string>>;
+  errorMessages?: Partial<Record<z.ZodIssueCode | 'extra', string>>;
+  extraValidation?: ({
+    value,
+    payload,
+  }: {
+    value: unknown;
+    payload: unknown;
+  }) => boolean;
 };

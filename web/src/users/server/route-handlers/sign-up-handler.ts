@@ -4,7 +4,7 @@ import type { z } from 'zod';
 import type { NextRequest } from 'next/server';
 
 import apiErrorHandler from '@/common/errors/api-error-handler';
-import signUpPayload from '../../validators/sign-up-payload';
+import SignUpPayload from '../../validators/sign-up-payload';
 import parseAPIPayload from '@/common/api/parse-api-payload';
 import InvalidSignUpPayloadError from '@/users/server/errors/invalid-sign-up-payload-error';
 import encryption from '@/encryption/encryption';
@@ -20,9 +20,9 @@ const { DAVS_API_KEY, DAVS_SERVER_BASE_URL } = loadRequiredEnv([
 
 function signUpHandler(request: NextRequest) {
   return apiErrorHandler(async () => {
-    let body: z.infer<typeof signUpPayload>;
+    let body: z.infer<typeof SignUpPayload>;
     try {
-      body = await parseAPIPayload(request, signUpPayload);
+      body = await parseAPIPayload(request, SignUpPayload);
     } catch (error) {
       throw new InvalidSignUpPayloadError(request, { cause: error as Error });
     }

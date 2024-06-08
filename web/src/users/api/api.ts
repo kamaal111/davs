@@ -3,10 +3,10 @@ import type { z } from 'zod';
 
 import METHODS from '@/common/http/methods';
 import baseQuery from '@/common/api/base-query';
-import type signUpPayload from '../validators/sign-up-payload';
+import type SignUpPayload from '../validators/sign-up-payload';
 
 type SignUpUserResponse = { details: string };
-type SignUpUserPayload = z.infer<typeof signUpPayload>;
+type SignUpUserPayload = z.infer<typeof SignUpPayload>;
 
 const usersAPI = createApi({
   reducerPath: 'usersAPI',

@@ -17,12 +17,14 @@ function Form<
   fields,
   header,
   submitButtonText,
+  disabled,
   onSubmit,
 }: {
   header: string;
   submitButtonText: string;
   schema: Schema;
   fields: Array<FormField<FieldIDS>>;
+  disabled?: boolean;
   onSubmit: (payload: Payload) => void;
 }) {
   const fieldIds = fields.map(field => field.id);
@@ -44,6 +46,8 @@ function Form<
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (disabled) return;
 
     const result = schema.safeParse(formData);
     if (!result.success) {
@@ -72,6 +76,20 @@ function Form<
       return;
     }
 
+    for (const { extraValidation, id, errorMessages } of fields) {
+      if (extraValidation == null) continue;
+
+      const value = formData[id];
+      const isValid = extraValidation({ value, payload: formData });
+      if (isValid) continue;
+
+      const errorMessage =
+        errorMessages?.extra ??
+        intl.formatMessage(messages.defaultFormValidationError);
+      toast.error(errorMessage);
+      return;
+    }
+
     onSubmit(result.data as Payload);
   }
 
@@ -87,37 +105,49 @@ function Form<
         <Heading as="h3" size="6" trim="start" mb="5">
           {header}
         </Heading>
-        {fields.map(({ id, placeholder, label, type, errorMessages }) => {
-          const idString = id as string;
-          const value = formData[idString];
-          const { isValid, errorMessage } = validateField({
-            value: formData[idString],
-            isFocused: focusedField === idString,
-            schema: validators[idString],
+        {fields.map(
+          ({
+            id,
+            placeholder,
+            label,
+            type,
             errorMessages,
-          });
+            extraValidation,
+          }) => {
+            const idString = id as string;
+            const value = formData[idString];
+            const { isValid, errorMessage } = validateField({
+              value: formData[idString],
+              isFocused: focusedField === idString,
+              schema: validators[idString],
+              errorMessages,
+              extraValidation,
+              payload: formData,
+            });
 
-          return (
-            <TextField
-              key={idString}
-              value={value}
-              placeholder={placeholder}
-              id={idString}
-              type={type}
-              label={() => (
-                <Text as="label" htmlFor={idString} size="2" weight="bold">
-                  {label}
-                </Text>
-              )}
-              onChange={handleFieldChange(idString)}
-              onFocus={() => setFocusedField(idString)}
-              isInvalid={!isValid}
-              invalidMessage={errorMessage}
-            />
-          );
-        })}
+            return (
+              <TextField
+                key={idString}
+                value={value}
+                placeholder={placeholder}
+                id={idString}
+                type={type}
+                label={() => (
+                  <Text as="label" htmlFor={idString} size="2" weight="bold">
+                    {label}
+                  </Text>
+                )}
+                onChange={handleFieldChange(idString)}
+                onFocus={() => setFocusedField(idString)}
+                isInvalid={!isValid}
+                invalidMessage={errorMessage}
+                disabled={disabled}
+              />
+            );
+          }
+        )}
         <Flex mt="6" justify="end" gap="3" align="center">
-          <Button variant="outline" type="submit">
+          <Button variant="outline" type="submit" disabled={disabled}>
             {submitButtonText}
           </Button>
         </Flex>
@@ -126,37 +156,63 @@ function Form<
   );
 }
 
-function validateField<TargetValue>({
+function validateField<TargetValue, Payload extends Record<string, unknown>>({
   value,
   isFocused,
   schema,
   errorMessages,
+  payload,
+  extraValidation,
 }: {
   value: TargetValue;
   isFocused: boolean;
   schema: z.ZodAny;
-  errorMessages?: Partial<Record<z.ZodIssueCode, string>>;
-}) {
+  payload: Payload;
+  errorMessages?: Partial<Record<z.ZodIssueCode | 'extra', string>>;
+  extraValidation?: ({
+    value,
+    payload,
+  }: {
+    value: unknown;
+    payload: unknown;
+  }) => boolean;
+}): {
+  isValid: boolean;
+  errorMessage: string | null;
+} {
   let isValid = isFocused || String(value).length === 0;
   let parseResult: z.SafeParseReturnType<unknown, unknown> | null = null;
   if (!isValid) {
     parseResult = schema.safeParse(value);
     isValid = parseResult.success;
-  }
 
-  let errorMessage: string | null | undefined = null;
-  if (parseResult != null && errorMessages != null) {
-    const extractedMessage =
-      extractErrorMessagesFromValidationResult(parseResult);
-    const errorCode = extractedMessage?.find(
-      ({ code }) => errorMessages[code] != null
-    )?.code;
-    if (errorCode != null) {
-      errorMessage = errorMessages[errorCode];
+    if (isValid && extraValidation != null && errorMessages != null) {
+      isValid = extraValidation({ value, payload });
+      if (!isValid) {
+        const errorMessage = errorMessages['extra'];
+        if (errorMessage != null) {
+          return { isValid: false, errorMessage };
+        }
+      }
     }
   }
 
-  return { isValid, errorMessage };
+  if (errorMessages == null) return { isValid, errorMessage: null };
+
+  if (isValid || parseResult == null) {
+    return { isValid: true, errorMessage: null };
+  }
+
+  const extractedMessage =
+    extractErrorMessagesFromValidationResult(parseResult);
+  const errorCode = extractedMessage?.find(
+    ({ code }) => errorMessages[code] != null
+  )?.code;
+  if (errorCode != null) {
+    return { isValid: false, errorMessage: errorMessages[errorCode] ?? null };
+  }
+
+  return { isValid, errorMessage: null };
 }
 
 function extractErrorMessagesFromValidationResult(
@@ -166,7 +222,7 @@ function extractErrorMessagesFromValidationResult(
   if (message == null) return null;
 
   return JSON.parse(message) as Array<{
-    code: z.ZodIssueCode;
+    code: z.ZodIssueCode | 'extra';
     path?: Array<string>;
   }>;
 }

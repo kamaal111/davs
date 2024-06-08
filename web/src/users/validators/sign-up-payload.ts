@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
-const signUpPayload = z.object({
-  username: z.string().min(1),
-  password: z.string().min(5),
-});
+import LoginPayload from './login-payload';
 
-export default signUpPayload;
+const SignUpPayload = LoginPayload.merge(
+  z.object({ verificationPassword: LoginPayload.shape.password })
+);
+
+export default SignUpPayload;

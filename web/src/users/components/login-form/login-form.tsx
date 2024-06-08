@@ -5,10 +5,10 @@ import type { z } from 'zod';
 import { useIntl } from 'react-intl';
 
 import messages from './messages';
-import loginPayload from '@/users/validators/login-payload';
-import Form, { FormField } from '@/components/form';
+import LoginPayload from '@/users/validators/login-payload';
+import Form, { type FormField } from '@/components/form';
 
-type FormInput = z.infer<typeof loginPayload>;
+type FormInput = z.infer<typeof LoginPayload>;
 
 function LoginForm() {
   const intl = useIntl();
@@ -39,7 +39,7 @@ function LoginForm() {
   return (
     <Form
       fields={formFields}
-      schema={loginPayload}
+      schema={LoginPayload}
       submitButtonText={intl.formatMessage(messages.submitButton)}
       header={intl.formatMessage(messages.header)}
       onSubmit={payload => {
