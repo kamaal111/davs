@@ -38,6 +38,11 @@ const messages = defineMessages({
     description:
       'Error message user gets when they provide a too small of a password',
   },
+  submitButton: {
+    id: 'LOGIN_FORM.SUBMIT_BUTTON',
+    defaultMessage: 'Login',
+    description: 'Login button',
+  },
 });
 
 export default messages;

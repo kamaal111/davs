@@ -4,10 +4,14 @@
       "INVALID_JSON_ERROR": "Invalid payload provided"
     }
   },
+  "FORM": {
+    "DEFAULT_INVALID_FIELD_ERROR": "Form has been not been filled in correctly"
+  },
   "LOGIN_FORM": {
     "HEADER": "Login",
     "PASSWORD_FIELD_LABEL": "Password",
     "PASSWORD_FIELD_PLACEHOLDER": "Enter your password",
+    "SUBMIT_BUTTON": "Login",
     "USERNAME_FIELD_LABEL": "Username",
     "USERNAME_FIELD_PLACEHOLDER": "Enter your username"
   },

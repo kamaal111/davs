@@ -37,7 +37,11 @@ function LoginForm() {
     <Form
       fields={formFields}
       schema={loginPayload}
+      submitButtonText={intl.formatMessage(messages.submitButton)}
       header={intl.formatMessage(messages.header)}
+      onSubmit={payload => {
+        console.log('🐸🐸🐸 payload', payload);
+      }}
     />
   );
 }

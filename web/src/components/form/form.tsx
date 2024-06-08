@@ -1,32 +1,42 @@
 import React from 'react';
 import type { z } from 'zod';
-import { Card, Heading, Text } from '@radix-ui/themes';
+import { Button, Card, Flex, Heading, Text } from '@radix-ui/themes';
+import { useIntl } from 'react-intl';
+import toast from 'react-hot-toast';
 
 import TextField from '../text-field';
 import type { FormField } from './types';
+import messages from './messages';
 
-function Form({
+function Form<
+  FieldIDS extends string,
+  Schema extends z.AnyZodObject,
+  Payload extends z.infer<Schema>,
+>({
   schema,
   fields,
   header,
+  submitButtonText,
+  onSubmit,
 }: {
   header: string;
-  schema: z.AnyZodObject;
-  fields: Array<FormField>;
+  submitButtonText: string;
+  schema: Schema;
+  fields: Array<FormField<FieldIDS>>;
+  onSubmit: (payload: Payload) => void;
 }) {
   const fieldIds = fields.map(field => field.id);
 
-  const [formData, setFormData] = React.useState<z.infer<typeof schema>>(
-    fieldIds.reduce(
-      (acc, current) => {
-        return { ...acc, [current]: '' };
-      },
-      {} as z.infer<typeof schema>
-    )
+  const [formData, setFormData] = React.useState<Payload>(
+    fieldIds.reduce((acc, current) => {
+      return { ...acc, [current]: '' };
+    }, {} as Payload)
   );
-  const [focusedField, setFocusedField] = React.useState<
-    keyof z.infer<typeof schema> | null
-  >(null);
+  const [focusedField, setFocusedField] = React.useState<keyof Payload | null>(
+    null
+  );
+
+  const intl = useIntl();
 
   const validators: Record<string, z.ZodAny> = Object.fromEntries(
     fieldIds.map(field => [field, schema.shape[field]])
@@ -34,9 +44,38 @@ function Form({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const result = schema.safeParse(formData);
+    if (!result.success) {
+      const errorMessages =
+        extractErrorMessagesFromValidationResult(result) ?? [];
+      for (const {
+        path: errorMessagePaths,
+        code: errorMessageCode,
+      } of errorMessages) {
+        if (errorMessagePaths == null) continue;
+
+        const errorMessagePath = errorMessagePaths[0];
+        if (errorMessagePath == null) continue;
+
+        const field = fields.find(({ id }) => id === errorMessagePath);
+        if (field == null) continue;
+
+        const fieldErrorMessage = field.errorMessages?.[errorMessageCode];
+        if (fieldErrorMessage == null) continue;
+
+        toast.error(fieldErrorMessage);
+        return;
+      }
+
+      toast.error(intl.formatMessage(messages.defaultFormValidationError));
+      return;
+    }
+
+    onSubmit(result.data as Payload);
   }
 
-  function handleFieldChange(key: keyof z.infer<typeof schema>) {
+  function handleFieldChange(key: keyof Payload) {
     return (value: string) => {
       setFormData({ ...formData, [key]: value });
     };
@@ -77,6 +116,11 @@ function Form({
             />
           );
         })}
+        <Flex mt="6" justify="end" gap="3" align="center">
+          <Button variant="outline" type="submit">
+            {submitButtonText}
+          </Button>
+        </Flex>
       </Card>
     </form>
   );
@@ -121,7 +165,10 @@ function extractErrorMessagesFromValidationResult(
   const message = result.error?.message;
   if (message == null) return null;
 
-  return JSON.parse(message) as Array<{ code: z.ZodIssueCode }>;
+  return JSON.parse(message) as Array<{
+    code: z.ZodIssueCode;
+    path?: Array<string>;
+  }>;
 }
 
 export default Form;
