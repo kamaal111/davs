@@ -26,6 +26,18 @@ const messages = defineMessages({
     defaultMessage: 'Enter your password',
     description: 'Login forms password field placeholder',
   },
+  usernameMinimumLengthError: {
+    id: 'USERS_VALIDATORS.USERNAME_MINIMUM_LENGTH_ERROR',
+    defaultMessage: 'Username should be at least 1 character long',
+    description:
+      'Error message user gets when they provide a too small of a username',
+  },
+  passwordMinimumLengthError: {
+    id: 'USERS_VALIDATORS.PASSWORD_MINIMUM_LENGTH_ERROR',
+    defaultMessage: 'Password should be at least 5 character long',
+    description:
+      'Error message user gets when they provide a too small of a password',
+  },
 });
 
 export default messages;

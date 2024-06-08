@@ -26,5 +26,9 @@
     "SIGN_IN_BUTTON": "Aanmelden",
     "VERIFY_PASSWORD_FIELD_LABEL": "Je wachtwoord verifiëren",
     "VERIFY_PASSWORD_FIELD_PLACEHOLDER": "Je wachtwoord verifiëren"
+  },
+  "USERS_VALIDATORS": {
+    "PASSWORD_MINIMUM_LENGTH_ERROR": "Wachtwoord moet minstens 5 tekens lang zijn",
+    "USERNAME_MINIMUM_LENGTH_ERROR": "De gebruikersnaam moet minstens 1 teken lang zijn"
   }
 }

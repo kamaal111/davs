@@ -26,5 +26,9 @@
     "USERNAME_FIELD_PLACEHOLDER": "Enter your username",
     "VERIFY_PASSWORD_FIELD_LABEL": "Verify password",
     "VERIFY_PASSWORD_FIELD_PLACEHOLDER": "Verify your password"
+  },
+  "USERS_VALIDATORS": {
+    "PASSWORD_MINIMUM_LENGTH_ERROR": "Password should be at least 5 character long",
+    "USERNAME_MINIMUM_LENGTH_ERROR": "Username should be at least 1 character long"
   }
 }

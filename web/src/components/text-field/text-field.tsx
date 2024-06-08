@@ -12,7 +12,8 @@ type Props = {
   type?: Parameters<typeof RadixTextField.Root>[0]['type'];
   disabled?: boolean;
   isInvalid?: boolean;
-  invalidMessage?: string;
+  invalidMessage?: string | null;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement, Element>) => void;
 };
 
 const TextField = React.forwardRef<HTMLInputElement, Props>(
@@ -27,6 +28,7 @@ const TextField = React.forwardRef<HTMLInputElement, Props>(
       disabled,
       isInvalid,
       invalidMessage,
+      onFocus,
     },
     ref
   ) => {
@@ -44,6 +46,7 @@ const TextField = React.forwardRef<HTMLInputElement, Props>(
           id={id}
           onChange={e => onChange(e.target.value)}
           disabled={disabled}
+          onFocus={onFocus}
         />
         {isInvalid && invalidMessage ? (
           <p className={styles.invalidMessage}>{invalidMessage}</p>
