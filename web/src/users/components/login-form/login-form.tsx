@@ -13,25 +13,28 @@ type FormInput = z.infer<typeof loginPayload>;
 function LoginForm() {
   const intl = useIntl();
 
-  const formFields: Array<FormField<keyof FormInput>> = [
-    {
-      id: 'username',
-      placeholder: intl.formatMessage(messages.usernameFieldPlaceholder),
-      label: intl.formatMessage(messages.usernameFieldLabel),
-      errorMessages: {
-        too_small: intl.formatMessage(messages.usernameMinimumLengthError),
+  const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
+    () => [
+      {
+        id: 'username',
+        placeholder: intl.formatMessage(messages.usernameFieldPlaceholder),
+        label: intl.formatMessage(messages.usernameFieldLabel),
+        errorMessages: {
+          too_small: intl.formatMessage(messages.usernameMinimumLengthError),
+        },
       },
-    },
-    {
-      id: 'password',
-      placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
-      label: intl.formatMessage(messages.passwordFieldLabel),
-      type: 'password',
-      errorMessages: {
-        too_small: intl.formatMessage(messages.passwordMinimumLengthError),
+      {
+        id: 'password',
+        placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
+        label: intl.formatMessage(messages.passwordFieldLabel),
+        type: 'password',
+        errorMessages: {
+          too_small: intl.formatMessage(messages.passwordMinimumLengthError),
+        },
       },
-    },
-  ];
+    ],
+    []
+  );
 
   return (
     <Form
