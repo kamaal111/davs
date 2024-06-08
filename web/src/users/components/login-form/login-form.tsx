@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { z } from 'zod';
-import { useIntl } from 'react-intl';
+import { type IntlShape, useIntl } from 'react-intl';
 
 import messages from './messages';
 import LoginPayload from '@/users/validators/login-payload';
@@ -14,25 +14,7 @@ function LoginForm() {
   const intl = useIntl();
 
   const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
-    () => [
-      {
-        id: 'username',
-        placeholder: intl.formatMessage(messages.usernameFieldPlaceholder),
-        label: intl.formatMessage(messages.usernameFieldLabel),
-        errorMessages: {
-          too_small: intl.formatMessage(messages.usernameMinimumLengthError),
-        },
-      },
-      {
-        id: 'password',
-        placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
-        label: intl.formatMessage(messages.passwordFieldLabel),
-        type: 'password',
-        errorMessages: {
-          too_small: intl.formatMessage(messages.passwordMinimumLengthError),
-        },
-      },
-    ],
+    () => makeFormFields(intl),
     []
   );
 
@@ -47,6 +29,28 @@ function LoginForm() {
       }}
     />
   );
+}
+
+function makeFormFields(intl: IntlShape): Array<FormField<keyof FormInput>> {
+  return [
+    {
+      id: 'username',
+      placeholder: intl.formatMessage(messages.usernameFieldPlaceholder),
+      label: intl.formatMessage(messages.usernameFieldLabel),
+      errorMessages: {
+        too_small: intl.formatMessage(messages.usernameMinimumLengthError),
+      },
+    },
+    {
+      id: 'password',
+      placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
+      label: intl.formatMessage(messages.passwordFieldLabel),
+      type: 'password',
+      errorMessages: {
+        too_small: intl.formatMessage(messages.passwordMinimumLengthError),
+      },
+    },
+  ];
 }
 
 export default LoginForm;

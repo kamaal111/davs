@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { type IntlShape, useIntl } from 'react-intl';
 import toast from 'react-hot-toast';
 import type { z } from 'zod';
 
@@ -19,45 +19,8 @@ function SignUpForm() {
 
   const signUpFormIsLoading = signUpResult.isLoading;
 
-  const fieldFields: Array<FormField<keyof FormInput>> = React.useMemo(
-    () => [
-      {
-        id: 'username',
-        placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
-        label: intl.formatMessage(messages.usernameFieldLabel),
-        errorMessages: {
-          too_small: intl.formatMessage(messages.usernameMinimumLengthError),
-        },
-      },
-      {
-        id: 'password',
-        placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
-        label: intl.formatMessage(messages.passwordFieldLabel),
-        type: 'password',
-        errorMessages: {
-          too_small: intl.formatMessage(messages.passwordMinimumLengthError),
-        },
-      },
-      {
-        id: 'verificationPassword',
-        placeholder: intl.formatMessage(
-          messages.verifyPasswordFieldPlaceholder
-        ),
-        label: intl.formatMessage(messages.verifyPasswordFieldLabel),
-        type: 'password',
-        errorMessages: {
-          extra: intl.formatMessage(
-            messages.passwordNotSameAsVerificationPassword
-          ),
-          too_small: intl.formatMessage(
-            messages.verifyPasswordMinimumLengthError
-          ),
-        },
-        extraValidation: ({ value, payload }) => {
-          return value === (payload as FormInput).password;
-        },
-      },
-    ],
+  const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
+    () => makeFormFields(intl),
     []
   );
 
@@ -78,7 +41,7 @@ function SignUpForm() {
 
   return (
     <Form
-      fields={fieldFields}
+      fields={formFields}
       schema={SignUpPayload}
       submitButtonText={intl.formatMessage(messages.submitButton)}
       header={intl.formatMessage(messages.header)}
@@ -86,6 +49,45 @@ function SignUpForm() {
       onSubmit={handleSubmit}
     />
   );
+}
+
+function makeFormFields(intl: IntlShape): Array<FormField<keyof FormInput>> {
+  return [
+    {
+      id: 'username',
+      placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
+      label: intl.formatMessage(messages.usernameFieldLabel),
+      errorMessages: {
+        too_small: intl.formatMessage(messages.usernameMinimumLengthError),
+      },
+    },
+    {
+      id: 'password',
+      placeholder: intl.formatMessage(messages.passwordFieldPlaceholder),
+      label: intl.formatMessage(messages.passwordFieldLabel),
+      type: 'password',
+      errorMessages: {
+        too_small: intl.formatMessage(messages.passwordMinimumLengthError),
+      },
+    },
+    {
+      id: 'verificationPassword',
+      placeholder: intl.formatMessage(messages.verifyPasswordFieldPlaceholder),
+      label: intl.formatMessage(messages.verifyPasswordFieldLabel),
+      type: 'password',
+      errorMessages: {
+        extra: intl.formatMessage(
+          messages.passwordNotSameAsVerificationPassword
+        ),
+        too_small: intl.formatMessage(
+          messages.verifyPasswordMinimumLengthError
+        ),
+      },
+      extraValidation: ({ value, payload }) => {
+        return value === (payload as FormInput).password;
+      },
+    },
+  ];
 }
 
 export default SignUpForm;
