@@ -1,4 +1,4 @@
-import crypto from 'node:crypto';
+import crypto from 'crypto';
 import CryptoJS from 'crypto-js';
 
 import InvalidIV from './errors/invalid-iv';
