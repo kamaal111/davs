@@ -7,6 +7,9 @@
   "FORM": {
     "DEFAULT_INVALID_FIELD_ERROR": "Form has been not been filled in correctly"
   },
+  "LOGIN_API": {
+    "INVALID_LOGIN_PAYLOAD_ERROR": "Invalid login information given"
+  },
   "LOGIN_FORM": {
     "HEADER": "Login",
     "PASSWORD_FIELD_LABEL": "Password",

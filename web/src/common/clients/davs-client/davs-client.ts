@@ -1,5 +1,3 @@
-'use server';
-
 import loadRequiredEnv from '@/common/env/load-required-env';
 import DavsUsersClient from './users';
 

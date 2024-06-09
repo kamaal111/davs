@@ -1,5 +1,3 @@
-'use server';
-
 import type { z } from 'zod';
 
 import type SignUpPayload from '@/users/validators/sign-up-payload';

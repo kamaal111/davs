@@ -7,6 +7,9 @@
   "FORM": {
     "DEFAULT_INVALID_FIELD_ERROR": "Het formulier werd niet correct ingevuld"
   },
+  "LOGIN_API": {
+    "INVALID_LOGIN_PAYLOAD_ERROR": "Ongeldige inloginformatie gegeven"
+  },
   "LOGIN_FORM": {
     "HEADER": "Inloggen",
     "PASSWORD_FIELD_LABEL": "Wachtwoord",
