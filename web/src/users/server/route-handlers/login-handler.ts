@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import type { z } from 'zod';
+import { cookies } from 'next/headers';
 
 import apiErrorHandler from '@/common/errors/api-error-handler';
 import LoginPayload from '@/users/validators/login-payload';
@@ -24,10 +25,11 @@ function loginHandler(request: NextRequest) {
     }
 
     const responseJSON: { authorization_token: string } = await response.json();
-    return Response.json(
-      { authorization_token: responseJSON.authorization_token },
-      { status: 200 }
-    );
+    const cookieStore = cookies();
+    cookieStore.set('Session', responseJSON.authorization_token, {
+      sameSite: 'strict',
+    });
+    return Response.json({ details: 'OK' }, { status: 200 });
   });
 }
 
