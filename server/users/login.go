@@ -9,7 +9,7 @@ import (
 
 func loginHandler(db *gorm.DB) func(context *gin.Context) {
 	return func(context *gin.Context) {
-		context.JSON(http.StatusOK, signUpResponse{Details: "Created"})
+		context.JSON(http.StatusOK, loginResponse{Details: "Created"})
 	}
 }
 

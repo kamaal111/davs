@@ -17,6 +17,9 @@ func InitializeRouter(server *gin.Engine, basePath string, db *gorm.DB) {
 	}
 
 	group := server.Group(files.AppendFileToPath(basePath, "users"))
+
+	group.Use(apiKeyAuthMiddleware())
+
 	group.POST("/sign-up", signUpHandler(db))
 	group.POST("/login", loginHandler(db))
 }

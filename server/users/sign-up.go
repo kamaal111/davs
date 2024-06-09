@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	kamaalStrings "github.com/Kamaalio/kamaalgo/strings"
@@ -17,21 +16,6 @@ import (
 
 func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 	return func(context *gin.Context) {
-		headers, headersAreValid := utils.ValidateHeaders[signUpHeaders](context)
-		if !headersAreValid {
-			return
-		}
-
-		apiKey := os.Getenv("API_KEY")
-		splittedHeadersToken := strings.Split(headers.Authorization, "Token ")
-		if apiKey != splittedHeadersToken[len(splittedHeadersToken)-1] {
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Unauthorized",
-				Status:  http.StatusUnauthorized,
-			})
-			return
-		}
-
 		payload, handled := utils.ValidatePayload[signUpPayload](context)
 		if handled {
 			return
@@ -96,10 +80,6 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 
 type signUpResponse struct {
 	Details string `json:"details"`
-}
-
-type signUpHeaders struct {
-	Authorization string `header:"authorization" binding:"required,len=70" example:"Token f0071ba5740184e39e3d7bbf4f5a6e27d054458a13dc7013d93d04feb8ee8b85"`
 }
 
 type signUpPayload struct {
