@@ -26,7 +26,7 @@ function loginHandler(request: NextRequest) {
 
     const responseJSON: { authorization_token: string } = await response.json();
     const cookieStore = cookies();
-    cookieStore.set('Session', responseJSON.authorization_token, {
+    cookieStore.set('davs_session', responseJSON.authorization_token, {
       sameSite: 'strict',
     });
     return Response.json({ details: 'OK' }, { status: 200 });

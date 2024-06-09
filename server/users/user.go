@@ -72,6 +72,19 @@ func (user *User) getByUsername(db *gorm.DB) (*gorm.DB, error) {
 	return result, nil
 }
 
+func getUserByID(db *gorm.DB) func(id string) *User {
+	return func(id string) *User {
+		var user User
+		result := db.Take(&user, id)
+		if result.Error != nil {
+			return nil
+		}
+
+		return &user
+	}
+
+}
+
 func GetUserFromContext(context *gin.Context) *User {
 	userInContext, loggedIn := context.Get("user")
 	if !loggedIn {

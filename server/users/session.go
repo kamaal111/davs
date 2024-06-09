@@ -4,14 +4,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-func sessionHandler(db *gorm.DB) func(context *gin.Context) {
+func sessionHandler() func(context *gin.Context) {
 	return func(context *gin.Context) {
-		context.JSON(http.StatusOK, sessionResponse{})
+		user := GetUserFromContext(context)
+		context.JSON(http.StatusOK, sessionResponse{Username: user.Username})
 	}
 }
 
 type sessionResponse struct {
+	Username string `json:"username"`
 }
