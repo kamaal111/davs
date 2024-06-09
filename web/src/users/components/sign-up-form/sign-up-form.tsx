@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import type { z } from 'zod';
 
 import messages from './messages';
-import { useSignUpMutation } from '@/users/api/api';
+import { useSignUpMutation } from '@/users/api';
 import Form, { type FormField } from '@/components/form';
 import SignUpPayload from '@/users/validators/sign-up-payload';
 

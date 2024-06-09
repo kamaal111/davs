@@ -38,7 +38,7 @@ function signUpHandler(request: NextRequest) {
       else throw new FailedToCreateUser(request, response.status);
     }
 
-    return Response.json({ details: 'OK' }, { status: 201 });
+    return Response.json({ details: 'Created' }, { status: 201 });
   });
 }
 

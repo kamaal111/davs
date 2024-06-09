@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import usersSlice from '@/users/store/slice';
-import usersAPI from '@/users/api/api';
+import usersAPI from '@/users/api';
 
 const store = configureStore({
   reducer: {

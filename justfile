@@ -20,9 +20,7 @@ test-server:
 test-web:
     just web/test
 
-test:
-    just server/test
-    just web/test
+test: test-web test-server
 
 build-web-locales:
     just web/build-locales
