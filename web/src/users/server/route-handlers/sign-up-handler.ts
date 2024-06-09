@@ -23,7 +23,7 @@ function signUpHandler(request: NextRequest) {
     const response = await davsClient.users.signUp(body);
     if (!response.ok) {
       if (response.status === 409) throw new UserAlreadyExists(request);
-      else throw new FailedToCreateUser(request, response.status);
+      throw new FailedToCreateUser(request, response.status);
     }
 
     return Response.json({ details: 'Created' }, { status: 201 });

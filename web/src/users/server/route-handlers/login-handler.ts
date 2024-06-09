@@ -6,6 +6,7 @@ import LoginPayload from '@/users/validators/login-payload';
 import parseAPIPayload from '@/common/api/parse-api-payload';
 import InvalidLoginPayloadError from '../errors/invalid-login-payload-error';
 import davsClient from '@/common/clients/davs-client';
+import InvalidCredentialsError from '../errors/invalid-credentials-error';
 
 function loginHandler(request: NextRequest) {
   return apiErrorHandler(async () => {
@@ -18,6 +19,7 @@ function loginHandler(request: NextRequest) {
 
     const response = await davsClient.users.login(body);
     if (!response.ok) {
+      if (response.status === 403) throw new InvalidCredentialsError(request);
       throw new InvalidLoginPayloadError(request, { status: response.status });
     }
 

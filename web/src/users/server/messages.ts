@@ -16,6 +16,11 @@ const messages = defineMessages({
     defaultMessage: 'Invalid login information given',
     description: 'User provided invalid login information',
   },
+  invalidLoginCredentials: {
+    id: 'LOGIN_API.INVALID_LOGIN_CREDENTIALS_ERROR',
+    defaultMessage: 'Invalid login credentials given',
+    description: 'User provided invalid login credentials',
+  },
 });
 
 export default messages;

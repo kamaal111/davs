@@ -2,7 +2,6 @@ package users
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -49,7 +48,14 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 		}
 
 		user := User{Username: decryptedPayloadJSON.Username, Password: decryptedPayloadJSON.Password}
-		fmt.Println(user)
+		err = user.Login(db)(decryptedPayloadJSON.Password)
+		if err != nil {
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Message: "Forbidden",
+				Status:  http.StatusForbidden,
+			})
+			return
+		}
 
 		context.JSON(http.StatusOK, loginResponse{Details: "Created"})
 	}
