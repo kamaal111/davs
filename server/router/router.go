@@ -3,12 +3,12 @@ package router
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/contacts"
 	"github.com/kamaal111/davs/health"
 	"github.com/kamaal111/davs/users"
+	"github.com/kamaal111/davs/utils"
 	"gorm.io/gorm"
 )
 
@@ -37,14 +37,14 @@ func initializeRoutes(server *gin.Engine, basePath string, db *gorm.DB) {
 }
 
 func getServerAddress() string {
-	serverAddress := os.Getenv("SERVER_ADDRESS")
-	if serverAddress != "" {
-		return serverAddress
+	environment := utils.GetEnvironment()
+	if environment.ServerAddress != "" {
+		return environment.ServerAddress
 	}
 
-	port := os.Getenv("PORT")
+	port := environment.Port
 	if port == "" {
-		if os.Getenv("GIN_MODE") == "release" {
+		if environment.IsReleaseMode {
 			log.Fatalln("PORT or SERVER_ADDRESS is undefined")
 		}
 

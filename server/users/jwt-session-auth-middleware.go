@@ -5,12 +5,10 @@ import (
 	"log"
 	"math"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
-	kamaalStrings "github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/kamaal111/davs/utils"
@@ -46,17 +44,8 @@ func jwtSessionAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 				return nil, fmt.Errorf("unexpected signing method: %v", algorithm)
 			}
 
-			jwtSecret, err := kamaalStrings.Unwrap(os.Getenv("JWT_SECRET"))
-			if err != nil {
-				log.Println("JWT_SECRET not defined in .env")
-				ginErrors.ErrorHandler(context, ginErrors.Error{
-					Message: "Something went wrong",
-					Status:  http.StatusInternalServerError,
-				})
-				return nil, err
-			}
-
-			return []byte(jwtSecret), nil
+			environment := utils.GetEnvironment()
+			return []byte(environment.JWTSecret), nil
 		})
 		if err != nil || !token.Valid {
 			ginErrors.ErrorHandler(context, ginErrors.Error{

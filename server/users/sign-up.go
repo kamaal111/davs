@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
-	kamaalStrings "github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/crypto"
 	"github.com/kamaal111/davs/utils"
@@ -21,14 +19,8 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		encryptionKey, err := kamaalStrings.Unwrap(os.Getenv("ENCRYPTION_SECRET_KEY"))
-		if err != nil {
-			log.Printf("Failed to get encryption key; error=%v", err)
-			ginErrors.ErrorHandler(context, ginErrors.Error{Message: "Something went wrong", Status: http.StatusInternalServerError})
-			return
-		}
-
-		decryptedPayload, err := crypto.AESDecrypt([]byte(encryptionKey), []byte(payload.Message))
+		environment := utils.GetEnvironment()
+		decryptedPayload, err := crypto.AESDecrypt([]byte(environment.EncryptionSecretKey), []byte(payload.Message))
 		if err != nil {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Invalid body provided",

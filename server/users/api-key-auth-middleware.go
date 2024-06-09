@@ -2,7 +2,6 @@ package users
 
 import (
 	"net/http"
-	"os"
 	"strings"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
@@ -21,9 +20,9 @@ func apiKeyAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		apiKey := os.Getenv("API_KEY")
+		environment := utils.GetEnvironment()
 		splittedHeadersToken := strings.Split(headers.Authorization, "Token ")
-		if apiKey != splittedHeadersToken[len(splittedHeadersToken)-1] {
+		if environment.APIKey != splittedHeadersToken[len(splittedHeadersToken)-1] {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Unauthorized",
 				Status:  http.StatusUnauthorized,

@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
-	kamaalStrings "github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/kamaal111/davs/crypto"
@@ -23,14 +21,8 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		encryptionKey, err := kamaalStrings.Unwrap(os.Getenv("ENCRYPTION_SECRET_KEY"))
-		if err != nil {
-			log.Printf("Failed to get encryption key; error=%v", err)
-			ginErrors.ErrorHandler(context, ginErrors.Error{Message: "Something went wrong", Status: http.StatusInternalServerError})
-			return
-		}
-
-		decryptedPayload, err := crypto.AESDecrypt([]byte(encryptionKey), []byte(payload.Message))
+		environment := utils.GetEnvironment()
+		decryptedPayload, err := crypto.AESDecrypt([]byte(environment.EncryptionSecretKey), []byte(payload.Message))
 		if err != nil {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Invalid body provided",
@@ -59,22 +51,12 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		jwtSecret, err := kamaalStrings.Unwrap(os.Getenv("JWT_SECRET"))
-		if err != nil {
-			log.Println("JWT_SECRET not defined in .env")
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Something went wrong",
-				Status:  http.StatusInternalServerError,
-			})
-			return
-		}
-
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 			"sub": user.ID,
 			// Valid for 30 days
 			"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 		})
-		tokenString, err := token.SignedString([]byte(jwtSecret))
+		tokenString, err := token.SignedString([]byte(environment.JWTSecret))
 		if err != nil {
 			log.Println("Token could not be signed")
 			ginErrors.ErrorHandler(context, ginErrors.Error{
