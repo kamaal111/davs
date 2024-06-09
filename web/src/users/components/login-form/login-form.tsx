@@ -3,14 +3,18 @@
 import React from 'react';
 import type { z } from 'zod';
 import { type IntlShape, useIntl } from 'react-intl';
+import toast from 'react-hot-toast';
 
 import messages from './messages';
 import LoginPayload from '@/users/validators/login-payload';
 import Form, { type FormField } from '@/components/form';
+import { useLoginMutation } from '@/users/api';
 
 type FormInput = z.infer<typeof LoginPayload>;
 
 function LoginForm() {
+  const [login, loginResult] = useLoginMutation();
+
   const intl = useIntl();
 
   const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
@@ -18,15 +22,31 @@ function LoginForm() {
     []
   );
 
+  const loginFormIsLoading = loginResult.isLoading;
+
+  async function handleSubmit(formData: FormInput) {
+    const result = await login(formData);
+    if (result.error != null) {
+      let details: string | undefined = undefined;
+      if ('data' in result.error) {
+        details = result.error.data?.details;
+      }
+      toast.error(details ?? 'Failed to login');
+      return;
+    }
+
+    // To be continued ....
+    console.log('result.data', result.data);
+  }
+
   return (
     <Form
       fields={formFields}
       schema={LoginPayload}
       submitButtonText={intl.formatMessage(messages.submitButton)}
       header={intl.formatMessage(messages.header)}
-      onSubmit={payload => {
-        console.log('🐸🐸🐸 payload', payload);
-      }}
+      disabled={loginFormIsLoading}
+      onSubmit={handleSubmit}
     />
   );
 }

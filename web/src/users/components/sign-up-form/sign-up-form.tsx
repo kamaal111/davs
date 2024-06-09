@@ -17,12 +17,12 @@ function SignUpForm() {
 
   const intl = useIntl();
 
-  const signUpFormIsLoading = signUpResult.isLoading;
-
   const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
     () => makeFormFields(intl),
     []
   );
+
+  const signUpFormIsLoading = signUpResult.isLoading;
 
   async function handleSubmit(formData: FormInput) {
     const result = await signUp(formData);
