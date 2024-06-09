@@ -9,11 +9,19 @@ type LoginUserPayload = z.infer<typeof LoginPayload>;
 
 function loginQuery(builder: EndpointBuilder) {
   return builder.mutation<LoginUserResponse, LoginUserPayload>({
-    query: payload => ({
-      url: '/login',
-      method: METHODS.POST,
-      body: payload,
-    }),
+    queryFn: async (payload, _api, _extraOptions, baseQuery) => {
+      const response = await baseQuery({
+        url: '/login',
+        method: METHODS.POST,
+        body: payload,
+      });
+      if (response.error != null) return response;
+
+      const responseData = response.data as { authorization_token: string };
+      document.cookie = `Session=${responseData.authorization_token}; SameSite=Strict;`;
+
+      return { data: { details: 'OK' } };
+    },
   });
 }
 

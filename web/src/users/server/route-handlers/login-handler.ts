@@ -23,7 +23,11 @@ function loginHandler(request: NextRequest) {
       throw new InvalidLoginPayloadError(request, { status: response.status });
     }
 
-    return Response.json({ details: 'OK' }, { status: 201 });
+    const responseJSON: { authorization_token: string } = await response.json();
+    return Response.json(
+      { authorization_token: responseJSON.authorization_token },
+      { status: 200 }
+    );
   });
 }
 

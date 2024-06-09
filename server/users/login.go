@@ -5,10 +5,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	kamaalStrings "github.com/Kamaalio/kamaalgo/strings"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/kamaal111/davs/crypto"
 	"github.com/kamaal111/davs/utils"
 	"gorm.io/gorm"
@@ -57,7 +59,32 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		context.JSON(http.StatusOK, loginResponse{Details: "Created"})
+		jwtSecret, err := kamaalStrings.Unwrap(os.Getenv("JWT_SECRET"))
+		if err != nil {
+			log.Println("JWT_SECRET not defined in .env")
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Message: "Something went wrong",
+				Status:  http.StatusInternalServerError,
+			})
+			return
+		}
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"sub": user.ID,
+			// Valid for 30 days
+			"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+		})
+		tokenString, err := token.SignedString([]byte(jwtSecret))
+		if err != nil {
+			log.Println("Token could not be signed")
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Message: "Something went wrong",
+				Status:  http.StatusInternalServerError,
+			})
+			return
+		}
+
+		context.JSON(http.StatusOK, loginResponse{AuthorizationToken: tokenString})
 	}
 }
 
@@ -71,5 +98,5 @@ type decryptedLoginPayload struct {
 }
 
 type loginResponse struct {
-	Details string `json:"details"`
+	AuthorizationToken string `json:"authorization_token"`
 }

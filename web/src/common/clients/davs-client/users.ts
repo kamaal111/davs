@@ -30,7 +30,9 @@ class DavsUsersClient {
     });
   };
 
-  private encryptedCall = async <Body extends Record<string, unknown>>({
+  private encryptedCall = async <
+    Body extends Record<string, unknown> | Array<unknown>,
+  >({
     body,
     path,
     method,

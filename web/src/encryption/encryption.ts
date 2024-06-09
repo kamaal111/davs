@@ -24,7 +24,7 @@ class AES {
     this.secretKey = params.secretKey;
   }
 
-  encryptObject = (data: Record<string, unknown>) => {
+  encryptObject = (data: Record<string, unknown> | Array<unknown>) => {
     return this.encrypt(JSON.stringify(data));
   };
 

@@ -22,4 +22,5 @@ func InitializeRouter(server *gin.Engine, basePath string, db *gorm.DB) {
 
 	group.POST("/sign-up", signUpHandler(db))
 	group.POST("/login", loginHandler(db))
+	group.POST("/session", sessionHandler(db))
 }
