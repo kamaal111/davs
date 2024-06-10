@@ -10,6 +10,7 @@ import InvalidSignUpPayloadError from '@/users/server/errors/invalid-sign-up-pay
 import FailedToCreateUser from '../errors/failed-to-create-user';
 import UserAlreadyExists from '../errors/user-already-exists';
 import davsClient from '@/common/clients/davs-client';
+import cookies from '@/common/api/cookies';
 
 function signUpHandler(request: NextRequest) {
   return apiErrorHandler(async () => {
@@ -25,6 +26,9 @@ function signUpHandler(request: NextRequest) {
       if (response.status === 409) throw new UserAlreadyExists(request);
       throw new FailedToCreateUser(request, response.status);
     }
+
+    const responseJSON: { authorization_token: string } = await response.json();
+    cookies.setSession(responseJSON.authorization_token);
 
     return Response.json({ details: 'Created' }, { status: 201 });
   });

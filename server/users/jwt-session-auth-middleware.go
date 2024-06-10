@@ -2,15 +2,12 @@ package users
 
 import (
 	"fmt"
-	"log"
 	"math"
 	"net/http"
 	"strings"
-	"time"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/kamaal111/davs/utils"
 	"gorm.io/gorm"
 )
@@ -36,35 +33,8 @@ func jwtSessionAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		tokenString := splittedHeadersToken[len(splittedHeadersToken)-1]
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			_, ok := token.Method.(*jwt.SigningMethodHMAC)
-			if !ok {
-				algorithm := token.Header["alg"]
-				log.Printf("Unexpected signing method: %v", algorithm)
-				return nil, fmt.Errorf("unexpected signing method: %v", algorithm)
-			}
-
-			environment := utils.GetEnvironment()
-			return []byte(environment.JWTSecret), nil
-		})
-		if err != nil || !token.Valid {
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Forbidden",
-				Status:  http.StatusForbidden,
-			})
-			return
-		}
-
-		claims, ok := token.Claims.(jwt.MapClaims)
-		if !ok {
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Forbidden",
-				Status:  http.StatusForbidden,
-			})
-			return
-		}
-
-		if float64(time.Now().Unix()) > claims["exp"].(float64) {
+		claims, err := verifyUserToken(tokenString)
+		if err != nil {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Forbidden",
 				Status:  http.StatusForbidden,

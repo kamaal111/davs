@@ -66,12 +66,22 @@ func signUpHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		context.JSON(http.StatusCreated, signUpResponse{Details: "Created"})
+		tokenString, err := signUserToken(user)
+		if err != nil {
+			log.Println("Token could not be signed")
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Message: "Something went wrong",
+				Status:  http.StatusInternalServerError,
+			})
+			return
+		}
+
+		context.JSON(http.StatusCreated, signUpResponse{AuthorizationToken: tokenString})
 	}
 }
 
 type signUpResponse struct {
-	Details string `json:"details"`
+	AuthorizationToken string `json:"authorization_token"`
 }
 
 type signUpPayload struct {

@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server';
 import type { z } from 'zod';
-import { cookies } from 'next/headers';
 
 import apiErrorHandler from '@/common/errors/api-error-handler';
 import LoginPayload from '@/users/validators/login-payload';
@@ -8,6 +7,7 @@ import parseAPIPayload from '@/common/api/parse-api-payload';
 import InvalidLoginPayloadError from '../errors/invalid-login-payload-error';
 import davsClient from '@/common/clients/davs-client';
 import InvalidCredentialsError from '../errors/invalid-credentials-error';
+import cookies from '@/common/api/cookies';
 
 function loginHandler(request: NextRequest) {
   return apiErrorHandler(async () => {
@@ -25,12 +25,7 @@ function loginHandler(request: NextRequest) {
     }
 
     const responseJSON: { authorization_token: string } = await response.json();
-    const cookieStore = cookies();
-    const oneDay = 24 * 60 * 60 * 1000;
-    cookieStore.set('davs_session', responseJSON.authorization_token, {
-      sameSite: 'strict',
-      expires: Date.now() + oneDay * 90,
-    });
+    cookies.setSession(responseJSON.authorization_token);
 
     return Response.json({ details: 'OK' }, { status: 200 });
   });

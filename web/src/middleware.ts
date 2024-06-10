@@ -1,21 +1,20 @@
-import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
 
 import davsClient from './common/clients/davs-client';
+import cookies from './common/api/cookies';
 
 export async function middleware(request: NextRequest) {
   if (['/login', '/sign-up'].includes(request.nextUrl.pathname)) {
     return NextResponse.next();
   }
 
-  const cookieStore = cookies();
-  const davsSessions = cookieStore.get('davs_session');
+  const davsSessions = cookies.getSession();
   if (davsSessions == null) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
   const sessionResponse = await davsClient.users.session({
-    jwt: davsSessions.value,
+    jwt: davsSessions,
   });
   if (!sessionResponse.ok) {
     return NextResponse.redirect(new URL('/login', request.url));

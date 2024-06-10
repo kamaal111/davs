@@ -38,8 +38,7 @@ function SignUpForm() {
       return;
     }
 
-    // To be continued .... to login probably
-    console.log('result.data', result.data);
+    router.push('/');
   }
 
   function handleLogin() {

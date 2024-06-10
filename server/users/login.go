@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"time"
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/kamaal111/davs/crypto"
 	"github.com/kamaal111/davs/utils"
 	"gorm.io/gorm"
@@ -51,12 +49,7 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"sub": user.ID,
-			// Valid for 30 days
-			"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
-		})
-		tokenString, err := token.SignedString([]byte(environment.JWTSecret))
+		tokenString, err := signUserToken(user)
 		if err != nil {
 			log.Println("Token could not be signed")
 			ginErrors.ErrorHandler(context, ginErrors.Error{
