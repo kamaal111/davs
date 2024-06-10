@@ -1,11 +1,11 @@
 {
+  "ADD_CONTACT_BUTTON": {
+    "ADD_CONTACT_BUTTON_LABEL": "Add contact"
+  },
   "COMMON": {
     "API": {
       "INVALID_JSON_ERROR": "Invalid payload provided"
     }
-  },
-  "CONTACTS_NAVIGATION_BAR": {
-    "ADD_CONTACT_BUTTON_LABEL": "Add contact"
   },
   "FORM": {
     "DEFAULT_INVALID_FIELD_ERROR": "Form has been not been filled in correctly"
