@@ -4,6 +4,7 @@ import React from 'react';
 import type { z } from 'zod';
 import { type IntlShape, useIntl } from 'react-intl';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 import messages from './messages';
 import LoginPayload from '@/users/validators/login-payload';
@@ -16,6 +17,8 @@ function LoginForm() {
   const [login, loginResult] = useLoginMutation();
 
   const intl = useIntl();
+
+  const router = useRouter();
 
   const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
     () => makeFormFields(intl),
@@ -35,8 +38,7 @@ function LoginForm() {
       return;
     }
 
-    // To be continued ....
-    console.log('result.data', result.data);
+    router.push('/');
   }
 
   return (

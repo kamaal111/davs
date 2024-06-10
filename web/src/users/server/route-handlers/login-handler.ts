@@ -26,9 +26,12 @@ function loginHandler(request: NextRequest) {
 
     const responseJSON: { authorization_token: string } = await response.json();
     const cookieStore = cookies();
+    const oneDay = 24 * 60 * 60 * 1000;
     cookieStore.set('davs_session', responseJSON.authorization_token, {
       sameSite: 'strict',
+      expires: Date.now() + oneDay * 90,
     });
+
     return Response.json({ details: 'OK' }, { status: 200 });
   });
 }
