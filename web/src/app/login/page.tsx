@@ -1,6 +1,6 @@
 import LoginForm from '@/users/components/login-form';
 
-import styles from './page.module.css';
+import styles from './page.module.sass';
 
 function Login() {
   return (

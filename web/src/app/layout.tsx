@@ -7,7 +7,7 @@ import IntlProvider from '@/translations/intl-provider';
 import StoreProvider from '@/store/store-provider';
 
 import '@radix-ui/themes/styles.css';
-import './globals.css';
+import '@/styles/globals.sass';
 
 const inter = Inter({ subsets: ['latin'] });
 

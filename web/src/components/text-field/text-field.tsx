@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex, TextField as RadixTextField } from '@radix-ui/themes';
 
-import styles from './text-field.module.css';
+import styles from './text-field.module.sass';
 
 type Props = {
   label: () => React.ReactNode;

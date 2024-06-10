@@ -1,6 +1,6 @@
 import SignUpForm from '@/users/components/sign-up-form';
 
-import styles from './page.module.css';
+import styles from './page.module.sass';
 
 function SignUp() {
   return (
