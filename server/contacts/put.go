@@ -1,10 +1,10 @@
 package contacts
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
-	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/users"
 	"github.com/kamaal111/davs/utils"
@@ -13,10 +13,10 @@ import (
 func putHandler() func(context *gin.Context) {
 	return func(context *gin.Context) {
 		user := users.GetUserFromContext(context)
-		if user == nil {
-			ginErrors.ErrorHandler(context, ginErrors.Error{Message: "Forbidden", Status: http.StatusForbidden})
-			return
-		}
+		fmt.Println(user)
+
+		filename := context.Param("filename")
+		fmt.Println(filename)
 
 		payload, handled := utils.ValidatePayload[putPayload](context)
 		if handled {
@@ -24,7 +24,6 @@ func putHandler() func(context *gin.Context) {
 		}
 
 		log.Println(payload)
-
 		context.JSON(http.StatusCreated, putResponse{})
 	}
 }

@@ -1,12 +1,13 @@
-import { headers } from 'next/headers';
+import ContactsList from '@/contacts/components/contacts-list';
+import ContactsNavigationBar from '@/contacts/components/contacts-navigation-bar';
+
+import styles from './page.module.css';
 
 function Home() {
-  const headersList = headers();
-  const session: { username: string } = JSON.parse(headersList.get('session')!);
-
   return (
-    <main>
-      <h1>{session.username}</h1>
+    <main className={styles.main}>
+      <ContactsNavigationBar />
+      <ContactsList />
     </main>
   );
 }

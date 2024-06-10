@@ -4,8 +4,18 @@ import React from 'react';
 import { Provider } from 'react-redux';
 
 import store from './store';
+import type { Session } from '@/types';
+import { setSession } from '@/users/store';
 
-function StoreProvider({ children }: { children: React.ReactNode }) {
+type Props = { children: React.ReactNode; session?: Session | null };
+
+function StoreProvider({ children, session }: Props) {
+  React.useEffect(() => {
+    if (session != null) {
+      store.dispatch(setSession(session));
+    }
+  }, []);
+
   return <Provider store={store}>{children}</Provider>;
 }
 

@@ -4,6 +4,9 @@
       "INVALID_JSON_ERROR": "Ongeldige payload geleverd"
     }
   },
+  "CONTACTS_NAVIGATION_BAR": {
+    "ADD_CONTACT_BUTTON_LABEL": "Contact toevoegen"
+  },
   "FORM": {
     "DEFAULT_INVALID_FIELD_ERROR": "Het formulier werd niet correct ingevuld"
   },
