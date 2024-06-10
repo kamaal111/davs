@@ -49,8 +49,8 @@ const messages = defineMessages({
   },
   signInButton: {
     id: 'SIGN_UP_FORM.SIGN_IN_BUTTON',
-    defaultMessage: 'Sign in',
-    description: 'Sign up forms sign in button',
+    defaultMessage: 'Log in',
+    description: 'Sign up forms log in button',
   },
   usernameMinimumLengthError: {
     id: 'SIGN_UP_FORM.USERNAME_MINIMUM_LENGTH_ERROR',

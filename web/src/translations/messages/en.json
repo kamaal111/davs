@@ -30,7 +30,7 @@
     "PASSWORD_FIELD_PLACEHOLDER": "Enter your password",
     "PASSWORD_MINIMUM_LENGTH_ERROR": "Password should be at least 5 character long",
     "PASSWORD_NOT_SAME_AS_VERIFICATION_PASSWORD": "Password is not the same as the verification password",
-    "SIGN_IN_BUTTON": "Sign in",
+    "SIGN_IN_BUTTON": "Log in",
     "SUBMIT_BUTTON": "Create an account",
     "USERNAME_FIELD_LABEL": "Username",
     "USERNAME_FIELD_PLACEHOLDER": "Enter your username",

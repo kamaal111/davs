@@ -9,6 +9,7 @@ import messages from './messages';
 import { useSignUpMutation } from '@/users/api';
 import Form, { type FormField } from '@/components/form';
 import SignUpPayload from '@/users/validators/sign-up-payload';
+import { useRouter } from 'next/navigation';
 
 type FormInput = z.infer<typeof SignUpPayload>;
 
@@ -16,6 +17,8 @@ function SignUpForm() {
   const [signUp, signUpResult] = useSignUpMutation();
 
   const intl = useIntl();
+
+  const router = useRouter();
 
   const formFields: Array<FormField<keyof FormInput>> = React.useMemo(
     () => makeFormFields(intl),
@@ -39,6 +42,10 @@ function SignUpForm() {
     console.log('result.data', result.data);
   }
 
+  function handleLogin() {
+    router.push('/login');
+  }
+
   return (
     <Form
       fields={formFields}
@@ -47,6 +54,10 @@ function SignUpForm() {
       header={intl.formatMessage(messages.header)}
       disabled={signUpFormIsLoading}
       onSubmit={handleSubmit}
+      secondaryButton={{
+        label: intl.formatMessage(messages.signInButton),
+        onClick: handleLogin,
+      }}
     />
   );
 }

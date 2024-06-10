@@ -16,44 +16,38 @@ type Props = {
   onFocus?: (event: React.FocusEvent<HTMLInputElement, Element>) => void;
 };
 
-const TextField = React.forwardRef<HTMLInputElement, Props>(
-  (
-    {
-      label,
-      placeholder,
-      id,
-      onChange,
-      value,
-      type,
-      disabled,
-      isInvalid,
-      invalidMessage,
-      onFocus,
-    },
-    ref
-  ) => {
-    return (
-      <Box mb="5" position="relative">
-        <Flex align="baseline" justify="between" mb="1">
-          {label()}
-        </Flex>
-        <RadixTextField.Root
-          ref={ref}
-          className={isInvalid ? styles.isInvalid : undefined}
-          type={type}
-          value={value}
-          placeholder={placeholder}
-          id={id}
-          onChange={e => onChange(e.target.value)}
-          disabled={disabled}
-          onFocus={onFocus}
-        />
-        {isInvalid && invalidMessage ? (
-          <p className={styles.invalidMessage}>{invalidMessage}</p>
-        ) : null}
-      </Box>
-    );
-  }
-);
+function TextField({
+  label,
+  placeholder,
+  id,
+  onChange,
+  value,
+  type,
+  disabled,
+  isInvalid,
+  invalidMessage,
+  onFocus,
+}: Props) {
+  return (
+    <Box mb="5" position="relative">
+      <Flex align="baseline" justify="between" mb="1">
+        {label()}
+      </Flex>
+      <RadixTextField.Root
+        className={isInvalid ? styles.isInvalid : undefined}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        id={id}
+        onChange={e => onChange(e.target.value)}
+        disabled={disabled}
+        onFocus={onFocus}
+      />
+      {isInvalid && invalidMessage ? (
+        <p className={styles.invalidMessage}>{invalidMessage}</p>
+      ) : null}
+    </Box>
+  );
+}
 
 export default TextField;
