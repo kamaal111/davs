@@ -43,6 +43,11 @@ const messages = defineMessages({
     defaultMessage: 'Login',
     description: 'Login button',
   },
+  signUpButton: {
+    id: 'LOGIN_FORM.SIGN_UP_BUTTON',
+    defaultMessage: 'Sign up',
+    description: 'Sign up button',
+  },
 });
 
 export default messages;

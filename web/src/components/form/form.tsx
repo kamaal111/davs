@@ -8,25 +8,30 @@ import TextField from '../text-field';
 import type { FormField } from './types';
 import messages from './messages';
 
-function Form<
-  FieldIDS extends string,
-  Schema extends z.AnyZodObject,
-  Payload extends z.infer<Schema>,
->({
+type Props<FieldIDS extends string, Schema extends z.AnyZodObject> = {
+  header: string;
+  submitButtonText: string;
+  schema: Schema;
+  fields: Array<FormField<FieldIDS>>;
+  disabled?: boolean;
+  onSubmit: (payload: z.infer<Schema>) => void;
+  secondaryButton?: {
+    label: string;
+    onClick: () => void;
+  };
+};
+
+function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
   schema,
   fields,
   header,
   submitButtonText,
   disabled,
   onSubmit,
-}: {
-  header: string;
-  submitButtonText: string;
-  schema: Schema;
-  fields: Array<FormField<FieldIDS>>;
-  disabled?: boolean;
-  onSubmit: (payload: Payload) => void;
-}) {
+  secondaryButton,
+}: Props<FieldIDS, Schema>) {
+  type Payload = z.infer<Schema>;
+
   const fieldIds = fields.map(field => field.id);
 
   const [formData, setFormData] = React.useState<Payload>(
@@ -147,6 +152,15 @@ function Form<
           }
         )}
         <Flex mt="6" justify="end" gap="3" align="center">
+          {secondaryButton != null ? (
+            <Button
+              variant="solid"
+              type="button"
+              onClick={secondaryButton.onClick}
+            >
+              {secondaryButton.label}
+            </Button>
+          ) : null}
           <Button variant="outline" type="submit" disabled={disabled}>
             {submitButtonText}
           </Button>

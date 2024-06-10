@@ -41,6 +41,10 @@ function LoginForm() {
     router.push('/');
   }
 
+  function handleSignUp() {
+    router.push('/sign-up');
+  }
+
   return (
     <Form
       fields={formFields}
@@ -49,6 +53,10 @@ function LoginForm() {
       header={intl.formatMessage(messages.header)}
       disabled={loginFormIsLoading}
       onSubmit={handleSubmit}
+      secondaryButton={{
+        label: intl.formatMessage(messages.signUpButton),
+        onClick: handleSignUp,
+      }}
     />
   );
 }

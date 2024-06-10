@@ -15,6 +15,7 @@
     "HEADER": "Login",
     "PASSWORD_FIELD_LABEL": "Password",
     "PASSWORD_FIELD_PLACEHOLDER": "Enter your password",
+    "SIGN_UP_BUTTON": "Sign up",
     "SUBMIT_BUTTON": "Login",
     "USERNAME_FIELD_LABEL": "Username",
     "USERNAME_FIELD_PLACEHOLDER": "Enter your username"
