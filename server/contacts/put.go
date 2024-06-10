@@ -32,10 +32,6 @@ func putHandler() func(context *gin.Context) {
 type putResponse struct {
 }
 
-type putHeaders struct {
-	users.BasicLoginHeaders
-}
-
 type putPayload struct {
 	FirstName string               `json:"first_name" binding:"required,min=1"`
 	LastName  *string              `json:"last_name" binding:"min=1"`

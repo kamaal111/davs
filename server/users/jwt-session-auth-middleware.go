@@ -1,6 +1,7 @@
 package users
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"net/http"
@@ -33,27 +34,8 @@ func jwtSessionAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		tokenString := splittedHeadersToken[len(splittedHeadersToken)-1]
-		claims, err := verifyUserToken(tokenString)
+		user, err := jwtLogin(db)(tokenString)
 		if err != nil {
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Forbidden",
-				Status:  http.StatusForbidden,
-			})
-			return
-		}
-
-		userID, ok := claims["sub"].(float64)
-		if !ok {
-			ginErrors.ErrorHandler(context, ginErrors.Error{
-				Message: "Forbidden",
-				Status:  http.StatusForbidden,
-			})
-			return
-		}
-
-		parsedUserID := fmt.Sprintf("%v", int(math.Round(userID)))
-		user := getUserByID(db)(parsedUserID)
-		if user == nil {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Forbidden",
 				Status:  http.StatusForbidden,
@@ -63,5 +45,27 @@ func jwtSessionAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 
 		context.Set("user", *user)
 		context.Next()
+	}
+}
+
+func jwtLogin(db *gorm.DB) func(auth string) (*User, error) {
+	return func(auth string) (*User, error) {
+		claims, err := verifyUserToken(auth)
+		if err != nil {
+			return nil, err
+		}
+
+		userID, ok := claims["sub"].(float64)
+		if !ok {
+			return nil, errors.New("invalid jwt")
+		}
+
+		parsedUserID := fmt.Sprintf("%v", int(math.Round(userID)))
+		user := getUserByID(db)(parsedUserID)
+		if user == nil {
+			return nil, errors.New("user not found")
+		}
+
+		return user, nil
 	}
 }

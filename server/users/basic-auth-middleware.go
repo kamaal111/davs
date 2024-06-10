@@ -12,20 +12,29 @@ import (
 	"gorm.io/gorm"
 )
 
-var errInvalidToken = errors.New("invalid authentication token provided")
+var errInvalidBasicToken = errors.New("invalid authentication token provided")
 
-type BasicLoginHeaders struct {
+type basicLoginHeaders struct {
 	Authorization string `header:"authorization" binding:"required,len=70" example:"Basic R0lGODlhAQAB"`
 }
 
-func BasicAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
+func basicAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		headers, headersAreValid := utils.ValidateHeaders[BasicLoginHeaders](context)
+		headers, headersAreValid := utils.ValidateHeaders[basicLoginHeaders](context)
 		if !headersAreValid {
 			return
 		}
 
-		user, err := basicLogin(db)(headers.Authorization)
+		authSplit := strings.Split(headers.Authorization, "Basic ")
+		if len(authSplit) != 2 {
+			ginErrors.ErrorHandler(context, ginErrors.Error{
+				Message: "Forbidden",
+				Status:  http.StatusForbidden,
+			})
+			return
+		}
+
+		user, err := basicLogin(db)(authSplit[1])
 		if err != nil {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Forbidden",
@@ -41,19 +50,14 @@ func BasicAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 
 func basicLogin(db *gorm.DB) func(auth string) (*User, error) {
 	return func(auth string) (*User, error) {
-		authSplit := strings.Split(auth, "Basic ")
-		if len(authSplit) != 2 {
-			return nil, errInvalidToken
-		}
-
-		decodedAuth, err := base64.StdEncoding.DecodeString(authSplit[len(authSplit)-1])
+		decodedAuth, err := base64.StdEncoding.DecodeString(auth)
 		if err != nil {
-			return nil, errInvalidToken
+			return nil, errInvalidBasicToken
 		}
 
 		decodedAuthSplit := strings.Split(string(decodedAuth), ":")
 		if len(decodedAuthSplit) != 2 {
-			return nil, errInvalidToken
+			return nil, errInvalidBasicToken
 		}
 
 		username := decodedAuthSplit[0]
