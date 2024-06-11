@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C2C32E32C185E550044C09E /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C32E02C185E550044C09E /* Sidebar.swift */; };
+		2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */ = {isa = PBXBuildFile; productRef = 2C2C32EC2C18614E0044C09E /* DavsContacts */; };
 		2C7A9A1C2C179BC500AD8DF7 /* DavsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */; };
 		2C7A9A1E2C179BC500AD8DF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */; };
 		2C7A9A222C179BC600AD8DF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C7A9A212C179BC600AD8DF7 /* Assets.xcassets */; };
 		2C7A9A262C179BC600AD8DF7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C7A9A252C179BC600AD8DF7 /* Preview Assets.xcassets */; };
 		2C7A9A302C179BC600AD8DF7 /* DavsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A9A2F2C179BC600AD8DF7 /* DavsTests.swift */; };
+		2CD6E6E22C1854580021207C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 2CD6E6E12C1854580021207C /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C2C32E02C185E550044C09E /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		2C2C32E82C185F0A0044C09E /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		2C7A9A182C179BC500AD8DF7 /* Davs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Davs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavsApp.swift; sourceTree = "<group>"; };
 		2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -34,6 +39,7 @@
 		2C7A9A2B2C179BC600AD8DF7 /* DavsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DavsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7A9A2F2C179BC600AD8DF7 /* DavsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavsTests.swift; sourceTree = "<group>"; };
 		2CD6E6D52C184DEC0021207C /* Davs.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Davs.xctestplan; sourceTree = "<group>"; };
+		2CD6E6E12C1854580021207C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,11 +61,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C2C32E12C185E550044C09E /* SupportedViews */ = {
+			isa = PBXGroup;
+			children = (
+				2C2C32E02C185E550044C09E /* Sidebar.swift */,
+			);
+			path = SupportedViews;
+			sourceTree = "<group>";
+		};
+		2C2C32E52C185E7D0044C09E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2C2C32E12C185E550044C09E /* SupportedViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2C2C32E62C185EAA0044C09E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				2C2C32E82C185F0A0044C09E /* Features */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		2C2C32E92C1860BA0044C09E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2C7A9A0F2C179BC500AD8DF7 = {
 			isa = PBXGroup;
 			children = (
 				2C7A9A1A2C179BC500AD8DF7 /* Davs */,
 				2C7A9A2E2C179BC600AD8DF7 /* DavsTests */,
+				2C2C32E92C1860BA0044C09E /* Frameworks */,
+				2C2C32E62C185EAA0044C09E /* Modules */,
 				2C7A9A192C179BC500AD8DF7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -75,11 +115,13 @@
 		2C7A9A1A2C179BC500AD8DF7 /* Davs */ = {
 			isa = PBXGroup;
 			children = (
-				2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */,
-				2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */,
-				2C7A9A212C179BC600AD8DF7 /* Assets.xcassets */,
 				2C7A9A232C179BC600AD8DF7 /* Davs.entitlements */,
+				2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */,
+				2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */,
+				2C7A9A212C179BC600AD8DF7 /* Assets.xcassets */,
+				2CD6E6E12C1854580021207C /* Localizable.xcstrings */,
 				2C7A9A242C179BC600AD8DF7 /* Preview Content */,
+				2C2C32E52C185E7D0044C09E /* Views */,
 			);
 			path = Davs;
 			sourceTree = "<group>";
@@ -117,6 +159,9 @@
 			dependencies = (
 			);
 			name = Davs;
+			packageProductDependencies = (
+				2C2C32EC2C18614E0044C09E /* DavsContacts */,
+			);
 			productName = Davs;
 			productReference = 2C7A9A182C179BC500AD8DF7 /* Davs.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +212,9 @@
 				Base,
 			);
 			mainGroup = 2C7A9A0F2C179BC500AD8DF7;
+			packageReferences = (
+				2CD6E6E72C1859270021207C /* XCRemoteSwiftPackageReference "KamaalSwift" */,
+			);
 			productRefGroup = 2C7A9A192C179BC500AD8DF7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -184,6 +232,7 @@
 			files = (
 				2C7A9A262C179BC600AD8DF7 /* Preview Assets.xcassets in Resources */,
 				2C7A9A222C179BC600AD8DF7 /* Assets.xcassets in Resources */,
+				2CD6E6E22C1854580021207C /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C2C32E32C185E550044C09E /* Sidebar.swift in Sources */,
 				2C7A9A1E2C179BC500AD8DF7 /* ContentView.swift in Sources */,
 				2C7A9A1C2C179BC500AD8DF7 /* DavsApp.swift in Sources */,
 			);
@@ -282,6 +332,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -336,6 +387,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
@@ -365,14 +417,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.Davs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -404,14 +456,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.Davs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -494,6 +546,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2CD6E6E72C1859270021207C /* XCRemoteSwiftPackageReference "KamaalSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2C2C32EC2C18614E0044C09E /* DavsContacts */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DavsContacts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2C7A9A102C179BC500AD8DF7 /* Project object */;
 }
