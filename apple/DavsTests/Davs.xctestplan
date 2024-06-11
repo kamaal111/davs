@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "9BF821B0-8DFE-4380-AF72-782ECD962A28",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Davs.xcodeproj",
+      "identifier" : "2C7A9A172C179BC500AD8DF7",
+      "name" : "Davs"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Davs.xcodeproj",
+        "identifier" : "2C7A9A2A2C179BC600AD8DF7",
+        "name" : "DavsTests"
+      }
+    }
+  ],
+  "version" : 1
+}
