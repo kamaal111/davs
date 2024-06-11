@@ -8,12 +8,6 @@
 import SwiftUI
 import DavsContacts
 
-enum Tabs: Equatable, Hashable, Identifiable {
-    case contacts
-
-    var id: Tabs { self }
-}
-
 struct AppNavigation: View {
     @State private var selectedTab: Tabs = .contacts
 
@@ -26,7 +20,7 @@ struct AppNavigation: View {
         })
         #else
         TabView(selection: $selectedTab) {
-            Tab("Contacts", systemImage: "person.crop.circle.fill", value: .contacts) {
+            Tab(Tabs.contacts.title, systemImage: Tabs.contacts.imageSystemName, value: .contacts) {
                 NavigationStack {
                     ContactsScreen()
                 }
