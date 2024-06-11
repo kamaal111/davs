@@ -8,6 +8,7 @@
 
 import SwiftUI
 import KamaalUI
+import KamaalExtensions
 
 public struct ContactsScreen: View {
     @State private var contacts: [Contact] = []
@@ -26,18 +27,23 @@ public struct ContactsScreen: View {
                 }
                 .buttonStyle(.plain)
                 .ktakeSizeEagerly(alignment: .top)
+                #if os(macOS)
+                .padding(.top, 8)
+                #endif
             } else {
                 List(contacts) { contact in
-                    Text(contact.name)
+                    Text(contact.name ?? NSLocalizedString("No name", comment: ""))
                 }
             }
         }
-        #if os(macOS)
-        .padding(.top, 8)
-        #endif
         .toolbar { toolbarItems }
         .navigationTitle(Text("Contacts"))
-        .sheet(isPresented: $showAddContactsSheet) { AddContactSheet() }
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.large)
+        #endif
+        .sheet(isPresented: $showAddContactsSheet) {
+            AddContactSheet(isPresented: $showAddContactsSheet, onSave: handleOnContactSave)
+        }
     }
 
     private var toolbarItems: some ToolbarContent {
@@ -49,17 +55,12 @@ public struct ContactsScreen: View {
         }
     }
 
+    private func handleOnContactSave(_ contact: Contact) {
+        contacts = contacts.prepended(contact)
+    }
+
     private func handleAddContact() {
         showAddContactsSheet = true
-    }
-}
-
-struct AddContactSheet: View {
-    var body: some View {
-        VStack {
-            Text("Add contact")
-        }
-        .presentationSizing(.form)
     }
 }
 

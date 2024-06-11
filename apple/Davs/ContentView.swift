@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
-import DavsContacts
 
 struct ContentView: View {
     var body: some View {
-        NavigationSplitView(sidebar: { Sidebar() }, detail: { ContactsScreen() })
+        AppNavigation()
     }
 }
 

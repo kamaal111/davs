@@ -20,6 +20,7 @@ let package = Package(
             name: "DavsContacts",
             dependencies: [
                 .product(name: "KamaalUI", package: "KamaalSwift"),
+                .product(name: "KamaalExtensions", package: "KamaalSwift"),
             ]
         ),
         .testTarget(

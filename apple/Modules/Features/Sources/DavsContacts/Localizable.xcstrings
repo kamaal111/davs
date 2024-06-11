@@ -4,10 +4,22 @@
     "Add contact" : {
 
     },
+    "Cancel" : {
+
+    },
     "Contacts" : {
 
     },
+    "Name" : {
+
+    },
     "No contacts yet\nPress here to add one" : {
+
+    },
+    "No name" : {
+
+    },
+    "Save" : {
 
     }
   },

@@ -9,5 +9,7 @@ import Foundation
 
 struct Contact: Hashable, Identifiable {
     let id: UUID
-    let name: String
+    let name: String?
+    let createdAt: Date
+    let updatedAt: Date?
 }
