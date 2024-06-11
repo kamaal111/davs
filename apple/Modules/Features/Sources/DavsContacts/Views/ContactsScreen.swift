@@ -8,6 +8,7 @@
 
 import SwiftUI
 import KamaalUI
+import DavsClient
 import KamaalExtensions
 
 public struct ContactsScreen: View {
@@ -44,6 +45,12 @@ public struct ContactsScreen: View {
         .sheet(isPresented: $showAddContactsSheet) {
             AddContactSheet(isPresented: $showAddContactsSheet, onSave: handleOnContactSave)
         }
+        .onAppear(perform: {
+            Task {
+                let response = await DavsClient.shared.health.ping()
+                print("response", response)
+            }
+        })
     }
 
     private var toolbarItems: some ToolbarContent {

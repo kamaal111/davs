@@ -14,6 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "2.3.1")),
+        .package(path: "../Networking")
     ],
     targets: [
         .target(
@@ -21,6 +22,7 @@ let package = Package(
             dependencies: [
                 .product(name: "KamaalUI", package: "KamaalSwift"),
                 .product(name: "KamaalExtensions", package: "KamaalSwift"),
+                .product(name: "DavsClient", package: "Networking")
             ]
         ),
         .testTarget(

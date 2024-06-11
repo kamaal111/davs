@@ -32,6 +32,7 @@
 		2C2C32E02C185E550044C09E /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		2C2C32E82C185F0A0044C09E /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		2C3F2DC02C187E7A00991500 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
+		2C3F2DC22C18819E00991500 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		2C7A9A182C179BC500AD8DF7 /* Davs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Davs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavsApp.swift; sourceTree = "<group>"; };
 		2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				2C2C32E82C185F0A0044C09E /* Features */,
+				2C3F2DC22C18819E00991500 /* Networking */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
