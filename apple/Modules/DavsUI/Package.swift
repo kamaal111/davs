@@ -12,12 +12,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "2.3.1")),
+        .package(path: "../swift-validator"),
     ],
     targets: [
         .target(
             name: "DavsUI",
             dependencies: [
                 .product(name: "KamaalUI", package: "KamaalSwift"),
+                .product(name: "SwiftValidator", package: "swift-validator"),
             ]
         ),
         .testTarget(name: "DavsUITests", dependencies: ["DavsUI"]),

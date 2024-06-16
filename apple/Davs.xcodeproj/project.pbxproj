@@ -37,6 +37,7 @@
 		2C3F2DC22C18819E00991500 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		2C3F2DC32C18992F00991500 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
 		2C3F2DC72C1F416500991500 /* DavsUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DavsUI; sourceTree = "<group>"; };
+		2C3F2DC82C1F7FAF00991500 /* swift-validator */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "swift-validator"; sourceTree = "<group>"; };
 		2C7A9A182C179BC500AD8DF7 /* Davs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Davs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavsApp.swift; sourceTree = "<group>"; };
 		2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,6 +76,7 @@
 				2C3F2DC72C1F416500991500 /* DavsUI */,
 				2C2C32E82C185F0A0044C09E /* Features */,
 				2C3F2DC22C18819E00991500 /* Networking */,
+				2C3F2DC82C1F7FAF00991500 /* swift-validator */,
 			);
 			path = Modules;
 			sourceTree = "<group>";

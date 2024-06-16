@@ -7,29 +7,78 @@
 
 import DavsUI
 import SwiftUI
+import KamaalUI
+import SwiftValidator
 
 public struct LoginScreen: View {
     @Environment(Authentication.self) private var authentication
 
     @State private var username = ""
+    @State private var usernameError: (valid: Bool, message: String?)?
     @State private var password = ""
+    @State private var passwordError: (valid: Bool, message: String?)?
+
+    @FocusState private var focusedTextfield: FocusFields?
 
     public init() { }
 
     public var body: some View {
-        Form {
+        VStack {
             DavsTextField(
                 value: $username,
+                errorResult: $usernameError,
                 localizedLabel: "Username",
                 bundle: .module,
-                configration: .init(capitalazation: .never)
+                configration: DavsTextFieldConfiguration(capitalazation: .never, bordered: true),
+                validations: [
+                    .minimumLength(
+                        length: 1,
+                        message: NSLocalizedString("Username should be atleast 1 character long", comment: "")
+                    )
+                ]
             )
-            DavsTextField(value: $password, localizedLabel: "Password", bundle: .module, variant: .secure)
+            .focused($focusedTextfield, equals: .username)
+            DavsTextField(
+                value: $password,
+                errorResult: $passwordError,
+                localizedLabel: "Password",
+                bundle: .module,
+                variant: .secure,
+                configration: DavsTextFieldConfiguration(capitalazation: .never, bordered: true),
+                validations: [
+                    .minimumLength(
+                        length: 5,
+                        message: NSLocalizedString("Password should be atleast 5 characters long", comment: "")
+                    )
+                ]
+            )
+            .focused($focusedTextfield, equals: .password)
+            Button(action: { }) {
+                Text("Login")
+                    .bold()
+                    .foregroundStyle(formIsValid ? Color.accentColor : Color.secondary)
+            }
+            .disabled(!formIsValid)
+            .ktakeWidthEagerly(alignment: .trailing)
         }
+        .padding(24)
+        .ktakeSizeEagerly(alignment: .top)
         .navigationTitle(Text("Davs"))
+    }
+
+    private var formIsValid: Bool {
+        usernameError?.valid == true && passwordError?.valid == true
     }
 }
 
+private enum FocusFields {
+    case username
+    case password
+}
+
 #Preview {
-    LoginScreen()
+    NavigationStack {
+        LoginScreen()
+    }
+    .authenticationEnvironment(authentication: Authentication())
 }

@@ -4,10 +4,19 @@
     "Davs" : {
 
     },
+    "Login" : {
+
+    },
     "Password" : {
 
     },
+    "Password should be atleast 5 characters long" : {
+
+    },
     "Username" : {
+
+    },
+    "Username should be atleast 1 character long" : {
 
     }
   },
