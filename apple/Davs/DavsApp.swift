@@ -7,10 +7,21 @@
 
 import SwiftUI
 import SwiftData
+import Authentication
 
 @main
 struct DavsApp: App {
-    var sharedModelContainer: ModelContainer = {
+    @State private var authentication = Authentication()
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .authenticationEnvironment(authentication: authentication)
+        }
+        .modelContainer(sharedModelContainer)
+    }
+
+    private var sharedModelContainer: ModelContainer = {
         let schema = Schema([])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -20,11 +31,4 @@ struct DavsApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-        .modelContainer(sharedModelContainer)
-    }
 }

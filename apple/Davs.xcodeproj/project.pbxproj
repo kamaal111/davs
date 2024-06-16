@@ -11,6 +11,7 @@
 		2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */ = {isa = PBXBuildFile; productRef = 2C2C32EC2C18614E0044C09E /* DavsContacts */; };
 		2C3F2DC12C187E7A00991500 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3F2DC02C187E7A00991500 /* AppNavigation.swift */; };
 		2C3F2DC42C18993000991500 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3F2DC32C18992F00991500 /* Tabs.swift */; };
+		2C3F2DC62C189D9F00991500 /* Authentication in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3F2DC52C189D9F00991500 /* Authentication */; };
 		2C7A9A1C2C179BC500AD8DF7 /* DavsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */; };
 		2C7A9A1E2C179BC500AD8DF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */; };
 		2C7A9A222C179BC600AD8DF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C7A9A212C179BC600AD8DF7 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		2C3F2DC02C187E7A00991500 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		2C3F2DC22C18819E00991500 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		2C3F2DC32C18992F00991500 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
+		2C3F2DC72C1F416500991500 /* DavsUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DavsUI; sourceTree = "<group>"; };
 		2C7A9A182C179BC500AD8DF7 /* Davs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Davs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7A9A1B2C179BC500AD8DF7 /* DavsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavsApp.swift; sourceTree = "<group>"; };
 		2C7A9A1D2C179BC500AD8DF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C3F2DC62C189D9F00991500 /* Authentication in Frameworks */,
 				2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,6 +72,7 @@
 		2C2C32E62C185EAA0044C09E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				2C3F2DC72C1F416500991500 /* DavsUI */,
 				2C2C32E82C185F0A0044C09E /* Features */,
 				2C3F2DC22C18819E00991500 /* Networking */,
 			);
@@ -161,6 +165,7 @@
 			name = Davs;
 			packageProductDependencies = (
 				2C2C32EC2C18614E0044C09E /* DavsContacts */,
+				2C3F2DC52C189D9F00991500 /* Authentication */,
 			);
 			productName = Davs;
 			productReference = 2C7A9A182C179BC500AD8DF7 /* Davs.app */;
@@ -564,6 +569,10 @@
 		2C2C32EC2C18614E0044C09E /* DavsContacts */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DavsContacts;
+		};
+		2C3F2DC52C189D9F00991500 /* Authentication */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Authentication;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

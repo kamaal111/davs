@@ -39,9 +39,6 @@ public struct ContactsScreen: View {
         }
         .toolbar { toolbarItems }
         .navigationTitle(Text("Contacts"))
-        #if os(iOS)
-        .navigationBarTitleDisplayMode(.large)
-        #endif
         .sheet(isPresented: $showAddContactsSheet) {
             AddContactSheet(isPresented: $showAddContactsSheet, onSave: handleOnContactSave)
         }

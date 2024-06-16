@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 11/06/2024.
 //
 
+import DavsUI
 import SwiftUI
 import KamaalUI
 
@@ -30,14 +31,7 @@ struct AddContactSheet: View {
                 }
                 .ktakeWidthEagerly(alignment: .trailing)
             }
-            VStack {
-                if !name.isEmpty {
-                    Text("Name")
-                        .font(.caption)
-                        .ktakeWidthEagerly(alignment: .leading)
-                }
-                TextField("Name", text: $name)
-            }
+            DavsTextField(value: $name, localizedLabel: "Name", bundle: .module)
         }
         .padding()
         .frame(minWidth: 400)
