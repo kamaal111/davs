@@ -17,6 +17,7 @@ public struct LoginScreen: View {
     @State private var usernameError: (valid: Bool, message: String?)?
     @State private var password = ""
     @State private var passwordError: (valid: Bool, message: String?)?
+    @State private var isLogingIn = false
 
     @FocusState private var focusedTextfield: FocusFields?
 
@@ -38,6 +39,7 @@ public struct LoginScreen: View {
                 ]
             )
             .focused($focusedTextfield, equals: .username)
+            .onSubmit { login() }
             DavsTextField(
                 value: $password,
                 errorResult: $passwordError,
@@ -53,7 +55,8 @@ public struct LoginScreen: View {
                 ]
             )
             .focused($focusedTextfield, equals: .password)
-            Button(action: { }) {
+            .onSubmit { login() }
+            Button(action: login) {
                 Text("Login")
                     .bold()
                     .foregroundStyle(formIsValid ? Color.accentColor : Color.secondary)
@@ -64,10 +67,23 @@ public struct LoginScreen: View {
         .padding(24)
         .ktakeSizeEagerly(alignment: .top)
         .navigationTitle(Text("Davs"))
+        .disabled(isLogingIn)
     }
 
     private var formIsValid: Bool {
         usernameError?.valid == true && passwordError?.valid == true
+    }
+
+    private func login() {
+        guard formIsValid else { return }
+
+        Task { await withIsLogingIn { await authentication.login(username: username, password: password) } }
+    }
+
+    private func withIsLogingIn(_ callback: () async -> Void) async {
+        isLogingIn = true
+        await authentication.login(username: username, password: password)
+        isLogingIn = false
     }
 }
 

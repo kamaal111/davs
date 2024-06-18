@@ -11,8 +11,8 @@ import SwiftValidator
 
 @usableFromInline
 let DEFAULT_DAVS_TEXT_FIELD_VARIANT: DavsTextFieldVariants = .text
-
 private let ANIMATION_INTERPOLATION_TIME = 0.5
+private let MACOS_LABEL_HORIZONTAL_PADDING: CGFloat = 8
 
 #if os(macOS)
 public enum TextInputAutocapitalization {
@@ -211,7 +211,7 @@ private struct DavsTextFieldTextField: View {
                     .font(.caption)
                     .foregroundStyle(.red)
                     #if os(macOS)
-                    .padding(.horizontal, 12)
+                    .padding(.horizontal, MACOS_LABEL_HORIZONTAL_PADDING / 2)
                     #endif
             }
         }
@@ -235,7 +235,7 @@ private struct DavsTextFieldLabel: View {
             .foregroundStyle(showError ? Color.red : Color.accentColor)
             .ktakeWidthEagerly(alignment: .leading)
             #if os(macOS)
-            .padding(.horizontal, 12)
+            .padding(.horizontal, MACOS_LABEL_HORIZONTAL_PADDING)
             #endif
     }
 }
@@ -261,7 +261,7 @@ private enum LabelAnimationValues {
         case .inactive: 0
         case .active:
             #if os(macOS)
-            -4
+            -MACOS_LABEL_HORIZONTAL_PADDING
             #else
             0
             #endif
