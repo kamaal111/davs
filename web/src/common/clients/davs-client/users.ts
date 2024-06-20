@@ -23,10 +23,11 @@ class DavsUsersClient {
   };
 
   login = async (body: z.infer<typeof LoginPayload>) => {
-    return this.encryptedCall({
-      body,
-      path: 'login',
+    const url = new URL(`${this.baseURL.toString()}/login`);
+    return fetch(url, {
       method: METHODS.POST,
+      body: JSON.stringify({ message: body }),
+      headers: { authorization: `Token ${this.apiKey}` },
     });
   };
 
