@@ -82,7 +82,7 @@ public struct LoginScreen: View {
 
     private func withIsLogingIn(_ callback: () async -> Void) async {
         isLogingIn = true
-        await authentication.login(username: username, password: password)
+        await callback()
         isLogingIn = false
     }
 }

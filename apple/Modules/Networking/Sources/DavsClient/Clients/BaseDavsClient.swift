@@ -11,16 +11,44 @@ enum RequestErrors: Error {
     case requestFailed(context: Error)
     case invalidResponse(status: Int?)
     case decodingFailed(context: Error)
+    case encodingFailed(context: Error)
+}
+
+enum RequestMethods: String {
+    case get = "GET"
+    case post = "POST"
 }
 
 public class BaseDavsClient {
     private let jsonDecoder = JSONDecoder()
 
-    func request<T: Decodable>(for url: URL) async -> Result<T, RequestErrors> {
+    func request<Response: Decodable, Payload: Encodable>(
+        for url: URL,
+        method: RequestMethods,
+        payloadObject: Payload
+    ) async -> Result<Response, RequestErrors> {
+        let encodedPayload: Data
+        do {
+            encodedPayload = try JSONEncoder().encode(payloadObject)
+        } catch {
+            return .failure(.encodingFailed(context: error))
+        }
+
+        return await request(for: url, method: method, payloadData: encodedPayload)
+    }
+
+    func request<Response: Decodable>(
+        for url: URL,
+        method: RequestMethods = .get,
+        payloadData: Data? = nil
+    ) async -> Result<Response, RequestErrors> {
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.httpBody = payloadData
         let data: Data
         let response: URLResponse
         do {
-            (data, response) = try await URLSession.shared.data(from: url)
+            (data, response) = try await URLSession.shared.data(for: request)
         } catch {
             return .failure(.requestFailed(context: error))
         }
@@ -30,9 +58,9 @@ public class BaseDavsClient {
         let statusCode = httpResponse.statusCode
         guard statusCode < 300 else { return .failure(.invalidResponse(status: statusCode)) }
 
-        let result: T
+        let result: Response
         do {
-            result = try jsonDecoder.decode(T.self, from: data)
+            result = try jsonDecoder.decode(Response.self, from: data)
         } catch {
             return .failure(.decodingFailed(context: error))
         }

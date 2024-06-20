@@ -15,6 +15,7 @@ public enum DavsHealthPingError: Error {
     case requestFailed(context: Error)
     case invalidResponse(status: Int?)
     case decodingFailed(context: Error)
+    case encodingFailed(context: Error)
 }
 
 final public class DavsHealthClient: BaseDavsClient {
@@ -34,6 +35,8 @@ final public class DavsHealthClient: BaseDavsClient {
                     return .invalidResponse(status: status)
                 case .decodingFailed:
                     return .decodingFailed(context: error)
+                case .encodingFailed:
+                    return .encodingFailed(context: error)
                 }
             })
     }
