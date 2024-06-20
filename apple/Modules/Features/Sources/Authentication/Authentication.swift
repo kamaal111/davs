@@ -16,7 +16,11 @@ public enum LoginErrors: Error {
 
 @Observable
 final public class Authentication {
-    public init() { }
+    private var authorizationToken: String?
+
+    public init() {
+        self.authorizationToken = try? Keychain.get(forKey: KeychainKeys.authorizationToken.key).get()
+    }
 
     public func login(username: String, password: String) async -> Result<Void, LoginErrors> {
         let response = await DavsClient.shared.users.login(
@@ -37,8 +41,16 @@ final public class Authentication {
         case .failure(let failure): return .failure(failure)
         case .success(let success): authorizationToken = success.authorizationToken
         }
-        print("authorizationToken", authorizationToken)
 
-        return .success(())
+        return Keychain.add(authorizationToken, forKey: KeychainKeys.authorizationToken.key)
+            .mapError({ error -> LoginErrors in .generalFailure(context: error) })
+    }
+}
+
+private enum KeychainKeys: String {
+    case authorizationToken
+
+    var key: String {
+        "\(Bundle.main.bundleIdentifier!).Authentication.Keychain.\(self.rawValue)"
     }
 }

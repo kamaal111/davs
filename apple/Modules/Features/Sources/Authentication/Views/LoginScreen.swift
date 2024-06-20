@@ -24,13 +24,13 @@ public struct LoginScreen: View {
     public init() { }
 
     public var body: some View {
-        VStack {
+        Form {
             DavsTextField(
                 value: $username,
                 errorResult: $usernameError,
                 localizedLabel: "Username",
                 bundle: .module,
-                configration: DavsTextFieldConfiguration(capitalazation: .never, bordered: true),
+                configration: DavsTextFieldConfiguration(capitalazation: .never),
                 validations: [
                     .minimumLength(
                         length: 1,
@@ -46,7 +46,7 @@ public struct LoginScreen: View {
                 localizedLabel: "Password",
                 bundle: .module,
                 variant: .secure,
-                configration: DavsTextFieldConfiguration(capitalazation: .never, bordered: true),
+                configration: DavsTextFieldConfiguration(capitalazation: .never),
                 validations: [
                     .minimumLength(
                         length: 5,
@@ -64,8 +64,6 @@ public struct LoginScreen: View {
             .disabled(!formIsValid)
             .ktakeWidthEagerly(alignment: .trailing)
         }
-        .padding(24)
-        .ktakeSizeEagerly(alignment: .top)
         .navigationTitle(Text("Davs"))
         .disabled(isLogingIn)
     }
@@ -77,7 +75,9 @@ public struct LoginScreen: View {
     private func login() {
         guard formIsValid else { return }
 
-        Task { await withIsLogingIn { await authentication.login(username: username, password: password) } }
+        Task { await withIsLogingIn {
+            await authentication.login(username: username, password: password) }
+        }
     }
 
     private func withIsLogingIn(_ callback: () async -> Void) async {

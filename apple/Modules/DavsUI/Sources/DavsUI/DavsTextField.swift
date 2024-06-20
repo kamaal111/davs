@@ -31,11 +31,9 @@ public enum DavsTextFieldValidationRules {
 
 public struct DavsTextFieldConfiguration {
     public let capitalazation: TextInputAutocapitalization?
-    public let bordered: Bool
 
-    public init(capitalazation: TextInputAutocapitalization? = nil, bordered: Bool = false) {
+    public init(capitalazation: TextInputAutocapitalization? = nil) {
         self.capitalazation = capitalazation
-        self.bordered = bordered
     }
 }
 
@@ -127,16 +125,6 @@ public struct DavsTextField: View {
             .focused($isFocused)
         }
         .padding(.vertical, 8)
-        #if !os(macOS)
-        .applyIf(configration.bordered, transformation: { view in
-            view
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(.secondary.opacity(0.5), lineWidth: 1)
-                )
-        })
-        #endif
         .animation(.spring(response: ANIMATION_INTERPOLATION_TIME), value: labelAnimationValue)
         .onChange(of: value) { oldValue, newValue in handleValueChange(value: newValue) }
         .onAppear { handleValueChange(value: value) }
