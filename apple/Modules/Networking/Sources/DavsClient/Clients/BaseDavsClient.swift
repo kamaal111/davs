@@ -40,11 +40,13 @@ public class BaseDavsClient {
     func request<Response: Decodable>(
         for url: URL,
         method: RequestMethods = .get,
-        payloadData: Data? = nil
+        payloadData: Data? = nil,
+        headersDict: [String: String]? = nil
     ) async -> Result<Response, RequestErrors> {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.httpBody = payloadData
+        request.allHTTPHeaderFields = headersDict
         let data: Data
         let response: URLResponse
         do {

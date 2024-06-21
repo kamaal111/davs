@@ -12,10 +12,8 @@ public struct DavsHealthPingResponse: Codable {
 }
 
 public enum DavsHealthPingError: Error {
-    case requestFailed(context: Error)
     case invalidResponse(status: Int?)
-    case decodingFailed(context: Error)
-    case encodingFailed(context: Error)
+    case generalFailure(context: Error)
 }
 
 final public class DavsHealthClient: BaseDavsClient {
@@ -29,14 +27,8 @@ final public class DavsHealthClient: BaseDavsClient {
         await request(for: baseURL.appending(path: "ping"))
             .mapError({ error -> DavsHealthPingError in
                 switch error {
-                case .requestFailed:
-                    return .requestFailed(context: error)
-                case .invalidResponse(let status):
-                    return .invalidResponse(status: status)
-                case .decodingFailed:
-                    return .decodingFailed(context: error)
-                case .encodingFailed:
-                    return .encodingFailed(context: error)
+                case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
+                case .invalidResponse(let status): .invalidResponse(status: status)
                 }
             })
     }

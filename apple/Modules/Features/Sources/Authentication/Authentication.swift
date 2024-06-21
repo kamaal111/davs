@@ -16,10 +16,20 @@ public enum LoginErrors: Error {
 
 @Observable
 final public class Authentication {
-    private var authorizationToken: String?
+    public private(set) var validatingToken: Bool
+    private var session: DavsUsersSessionResponse?
 
     public init() {
-        self.authorizationToken = try? Keychain.get(forKey: KeychainKeys.authorizationToken.key).get()
+        if let authorizationToken = try? Keychain.get(forKey: KeychainKeys.authorizationToken.key).get() {
+            self.validatingToken = true
+            Task { await loadSession(authorizationToken: authorizationToken) }
+        } else {
+            self.validatingToken = false
+        }
+    }
+
+    public var isLoggedIn: Bool {
+        session != nil
     }
 
     public func login(username: String, password: String) async -> Result<Void, LoginErrors> {
@@ -28,7 +38,7 @@ final public class Authentication {
         )
             .mapError({ error -> LoginErrors in
                 switch error {
-                case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
+                case .generalFailure: .generalFailure(context: error)
                 case .invalidResponse(let status):
                     switch status {
                     case 403: .invalidCredentials
@@ -44,6 +54,37 @@ final public class Authentication {
 
         return Keychain.add(authorizationToken, forKey: KeychainKeys.authorizationToken.key)
             .mapError({ error -> LoginErrors in .generalFailure(context: error) })
+    }
+
+    private func loadSession(authorizationToken: String) async {
+        await withValidatingToken {
+            let result = await DavsClient.shared.users.session(
+                headers: DavsUsersSessionHeaders(authorization: authorizationToken)
+            )
+            switch result {
+            case .failure: Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
+            case .success(let success): await setSession(success)
+            }
+        }
+    }
+
+    private func withValidatingToken<Return>(_ callback: () async -> Return) async -> Return {
+        await setValidatingToken(true)
+        let result = await callback()
+        await setValidatingToken(false)
+        return result
+    }
+
+    @MainActor
+    private func setValidatingToken(_ value: Bool) {
+        guard validatingToken != value else { return }
+
+        validatingToken = value
+    }
+
+    @MainActor
+    private func setSession(_ session: DavsUsersSessionResponse?) {
+        self.session = session
     }
 }
 

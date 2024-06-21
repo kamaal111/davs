@@ -8,10 +8,13 @@
 import Foundation
 
 public enum DavsUsersLoginError: Error {
-    case requestFailed(context: Error)
     case invalidResponse(status: Int?)
-    case decodingFailed(context: Error)
-    case encodingFailed(context: Error)
+    case generalFailure(context: Error)
+}
+
+public enum DavsUsersSessionError: Error {
+    case invalidResponse(status: Int?)
+    case generalFailure(context: Error)
 }
 
 public struct DavsUsersLoginPayload: Encodable {
@@ -24,12 +27,24 @@ public struct DavsUsersLoginPayload: Encodable {
     }
 }
 
+public struct DavsUsersSessionHeaders {
+    public let authorization: String
+
+    public init(authorization: String) {
+        self.authorization = authorization
+    }
+}
+
 public struct DavsUsersLoginResponse: Decodable {
     public let authorizationToken: String
 
     enum CodingKeys: String, CodingKey {
         case authorizationToken = "authorization_token"
     }
+}
+
+public struct DavsUsersSessionResponse: Decodable {
+    public let username: String
 }
 
 final public class DavsUsersClient: BaseDavsClient {
@@ -39,18 +54,28 @@ final public class DavsUsersClient: BaseDavsClient {
         self.baseURL = baseURL.appending(path: "users")
     }
 
+    public func session(
+        headers: DavsUsersSessionHeaders
+    ) async -> Result<DavsUsersSessionResponse, DavsUsersSessionError> {
+        let headers = [
+            "authorization": "Bearer \(headers.authorization)"
+        ]
+
+        return await request(for: baseURL.appending(path: "session"), method: .get, headersDict: headers)
+            .mapError({ error in
+                switch error {
+                case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
+                case .invalidResponse(let status): .invalidResponse(status: status)
+                }
+            })
+    }
+
     public func login(payload: DavsUsersLoginPayload) async -> Result<DavsUsersLoginResponse, DavsUsersLoginError> {
         await request(for: baseURL.appending(path: "login"), method: .post, payloadObject: payload)
-            .mapError({ error -> DavsUsersLoginError in
+            .mapError({ error in
                 switch error {
-                case .requestFailed:
-                    return .requestFailed(context: error)
-                case .invalidResponse(let status):
-                    return .invalidResponse(status: status)
-                case .decodingFailed:
-                    return .decodingFailed(context: error)
-                case .encodingFailed:
-                    return .encodingFailed(context: error)
+                case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
+                case .invalidResponse(let status): .invalidResponse(status: status)
                 }
             })
     }

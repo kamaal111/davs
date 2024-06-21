@@ -16,6 +16,10 @@ enum KeychainGetErrors: Error {
     case generalError(status: OSStatus)
 }
 
+enum KeychainDeleteErrors: Error {
+    case generalError(status: OSStatus)
+}
+
 struct Keychain {
     private init() { }
 
@@ -49,5 +53,17 @@ struct Keychain {
         guard let data = dataTypeRef as? Data else { return .success(nil) }
 
         return .success(String(data: data, encoding: .utf8))
+    }
+
+    @discardableResult
+    static func delete(forKey key: String) -> Result<Void, KeychainDeleteErrors> {
+        let query = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key,
+        ] as CFDictionary
+        let status = SecItemDelete(query)
+        guard status == errSecSuccess else { return .failure(.generalError(status: status)) }
+
+        return .success(())
     }
 }
