@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2C2C32E32C185E550044C09E /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2C32E02C185E550044C09E /* Sidebar.swift */; };
 		2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */ = {isa = PBXBuildFile; productRef = 2C2C32EC2C18614E0044C09E /* DavsContacts */; };
+		2C3F112A2C261C1100D23975 /* KamaalUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3F11292C261C1100D23975 /* KamaalUI */; };
+		2C3F112D2C261F1E00D23975 /* MainDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3F112C2C261F1E00D23975 /* MainDetailsView.swift */; };
 		2C3F2DC12C187E7A00991500 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3F2DC02C187E7A00991500 /* AppNavigation.swift */; };
 		2C3F2DC42C18993000991500 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3F2DC32C18992F00991500 /* Tabs.swift */; };
 		2C3F2DC62C189D9F00991500 /* Authentication in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3F2DC52C189D9F00991500 /* Authentication */; };
@@ -33,6 +35,7 @@
 /* Begin PBXFileReference section */
 		2C2C32E02C185E550044C09E /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		2C2C32E82C185F0A0044C09E /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
+		2C3F112C2C261F1E00D23975 /* MainDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailsView.swift; sourceTree = "<group>"; };
 		2C3F2DC02C187E7A00991500 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		2C3F2DC22C18819E00991500 /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Networking; sourceTree = "<group>"; };
 		2C3F2DC32C18992F00991500 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = "<group>"; };
@@ -55,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C3F112A2C261C1100D23975 /* KamaalUI in Frameworks */,
 				2C3F2DC62C189D9F00991500 /* Authentication in Frameworks */,
 				2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */,
 			);
@@ -91,9 +95,10 @@
 		2C3F2DBE2C187E5500991500 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				2C3F2DC32C18992F00991500 /* Tabs.swift */,
 				2C3F2DC02C187E7A00991500 /* AppNavigation.swift */,
+				2C3F112C2C261F1E00D23975 /* MainDetailsView.swift */,
 				2C2C32E02C185E550044C09E /* Sidebar.swift */,
+				2C3F2DC32C18992F00991500 /* Tabs.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -168,6 +173,7 @@
 			packageProductDependencies = (
 				2C2C32EC2C18614E0044C09E /* DavsContacts */,
 				2C3F2DC52C189D9F00991500 /* Authentication */,
+				2C3F11292C261C1100D23975 /* KamaalUI */,
 			);
 			productName = Davs;
 			productReference = 2C7A9A182C179BC500AD8DF7 /* Davs.app */;
@@ -259,6 +265,7 @@
 			files = (
 				2C2C32E32C185E550044C09E /* Sidebar.swift in Sources */,
 				2C7A9A1E2C179BC500AD8DF7 /* ContentView.swift in Sources */,
+				2C3F112D2C261F1E00D23975 /* MainDetailsView.swift in Sources */,
 				2C7A9A1C2C179BC500AD8DF7 /* DavsApp.swift in Sources */,
 				2C3F2DC42C18993000991500 /* Tabs.swift in Sources */,
 				2C3F2DC12C187E7A00991500 /* AppNavigation.swift in Sources */,
@@ -436,6 +443,7 @@
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.0;
+				_EXPERIMENTAL_SWIFT_EXPLICIT_MODULES = YES;
 			};
 			name = Debug;
 		};
@@ -475,6 +483,7 @@
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.0;
+				_EXPERIMENTAL_SWIFT_EXPLICIT_MODULES = YES;
 			};
 			name = Release;
 		};
@@ -571,6 +580,11 @@
 		2C2C32EC2C18614E0044C09E /* DavsContacts */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DavsContacts;
+		};
+		2C3F11292C261C1100D23975 /* KamaalUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD6E6E72C1859270021207C /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalUI;
 		};
 		2C3F2DC52C189D9F00991500 /* Authentication */ = {
 			isa = XCSwiftPackageProductDependency;

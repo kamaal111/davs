@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import DavsContacts
-import Authentication
 
 struct AppNavigation: View {
     @State private var selectedTab: Tabs = .contacts
@@ -17,14 +15,12 @@ struct AppNavigation: View {
         NavigationSplitView(sidebar: {
             Sidebar()
         }, detail: {
-            LoginScreen()
+            MainDetailsView()
         })
         #else
         TabView(selection: $selectedTab) {
             Tab(Tabs.contacts.title, systemImage: Tabs.contacts.imageSystemName, value: .contacts) {
-                NavigationStack {
-                    LoginScreen()
-                }
+                MainDetailsView()
             }
         }
         .tabViewStyle(.sidebarAdaptable)

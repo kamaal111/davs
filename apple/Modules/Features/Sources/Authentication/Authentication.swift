@@ -16,15 +16,15 @@ public enum LoginErrors: Error {
 
 @Observable
 final public class Authentication {
-    public private(set) var validatingToken: Bool
+    public private(set) var initiallyValidatingToken: Bool
     private var session: DavsUsersSessionResponse?
 
     public init() {
         if let authorizationToken = try? Keychain.get(forKey: KeychainKeys.authorizationToken.key).get() {
-            self.validatingToken = true
+            self.initiallyValidatingToken = true
             Task { await loadSession(authorizationToken: authorizationToken) }
         } else {
-            self.validatingToken = false
+            self.initiallyValidatingToken = false
         }
     }
 
@@ -57,29 +57,21 @@ final public class Authentication {
     }
 
     private func loadSession(authorizationToken: String) async {
-        await withValidatingToken {
-            let result = await DavsClient.shared.users.session(
-                headers: DavsUsersSessionHeaders(authorization: authorizationToken)
-            )
-            switch result {
-            case .failure: Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
-            case .success(let success): await setSession(success)
-            }
+        let result = await DavsClient.shared.users.session(
+            headers: DavsUsersSessionHeaders(authorization: authorizationToken)
+        )
+        switch result {
+        case .failure: Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
+        case .success(let success): await setSession(success)
         }
-    }
-
-    private func withValidatingToken<Return>(_ callback: () async -> Return) async -> Return {
-        await setValidatingToken(true)
-        let result = await callback()
-        await setValidatingToken(false)
-        return result
+        await setInitiallyValidatingToken(false)
     }
 
     @MainActor
-    private func setValidatingToken(_ value: Bool) {
-        guard validatingToken != value else { return }
+    private func setInitiallyValidatingToken(_ value: Bool) {
+        guard initiallyValidatingToken != value else { return }
 
-        validatingToken = value
+        initiallyValidatingToken = value
     }
 
     @MainActor
