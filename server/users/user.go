@@ -50,11 +50,12 @@ func (user *User) create(db *gorm.DB) error {
 
 func (user *User) Login(db *gorm.DB) func(password string) error {
 	return func(password string) error {
-		_, err := user.getByUsername(db)
+		fetchedUser, err := getUserByUsername(db)(user.Username)
 		if err != nil {
 			return err
 		}
 
+		user = fetchedUser
 		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 		if err != nil {
 			return errWrongPassword
@@ -64,13 +65,17 @@ func (user *User) Login(db *gorm.DB) func(password string) error {
 	}
 }
 
-func (user *User) getByUsername(db *gorm.DB) (*gorm.DB, error) {
-	result := db.Take(user, "username = ?", user.Username)
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return result, errDoesNotExist
+func getUserByUsername(db *gorm.DB) func(username string) (*User, error) {
+	return func(username string) (*User, error) {
+		var user User
+		result := db.Take(&user, "username = ?", username)
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, errDoesNotExist
+		}
+
+		return &user, nil
 	}
 
-	return result, nil
 }
 
 func getUserByID(db *gorm.DB) func(id string) *User {
