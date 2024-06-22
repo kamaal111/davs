@@ -7,6 +7,9 @@ import (
 
 func initializeMigrations(db *gorm.DB) error {
 	err := users.MigrationStrategyForUser(db)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return nil
 }

@@ -20,8 +20,9 @@ var invalidUserCharacters = []string{
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"not null"`
-	Password string `gorm:"not null"`
+	Username string    `gorm:"not null"`
+	Password string    `gorm:"not null"`
+	Contacts []Contact `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 func (user *User) create(db *gorm.DB) error {
@@ -97,10 +98,4 @@ func GetUserFromContext(context *gin.Context) *User {
 	}
 
 	return &convertedUser
-}
-
-func MigrationStrategyForUser(db *gorm.DB) error {
-	err := db.AutoMigrate(&User{})
-
-	return err
 }
