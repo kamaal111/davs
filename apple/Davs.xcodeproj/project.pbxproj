@@ -20,6 +20,7 @@
 		2C7A9A262C179BC600AD8DF7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C7A9A252C179BC600AD8DF7 /* Preview Assets.xcassets */; };
 		2C7A9A302C179BC600AD8DF7 /* DavsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A9A2F2C179BC600AD8DF7 /* DavsTests.swift */; };
 		2CD6E6E22C1854580021207C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 2CD6E6E12C1854580021207C /* Localizable.xcstrings */; };
+		2CF33E7E2C2705AF00734C1F /* KamaalPopUp in Frameworks */ = {isa = PBXBuildFile; productRef = 2CF33E7D2C2705AF00734C1F /* KamaalPopUp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 			files = (
 				2C3F112A2C261C1100D23975 /* KamaalUI in Frameworks */,
 				2C3F2DC62C189D9F00991500 /* Authentication in Frameworks */,
+				2CF33E7E2C2705AF00734C1F /* KamaalPopUp in Frameworks */,
 				2C2C32ED2C18614E0044C09E /* DavsContacts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,6 +176,7 @@
 				2C2C32EC2C18614E0044C09E /* DavsContacts */,
 				2C3F2DC52C189D9F00991500 /* Authentication */,
 				2C3F11292C261C1100D23975 /* KamaalUI */,
+				2CF33E7D2C2705AF00734C1F /* KamaalPopUp */,
 			);
 			productName = Davs;
 			productReference = 2C7A9A182C179BC500AD8DF7 /* Davs.app */;
@@ -589,6 +592,11 @@
 		2C3F2DC52C189D9F00991500 /* Authentication */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Authentication;
+		};
+		2CF33E7D2C2705AF00734C1F /* KamaalPopUp */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CD6E6E72C1859270021207C /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalPopUp;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

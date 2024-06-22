@@ -4,19 +4,25 @@
     "Davs" : {
 
     },
+    "Invalid login credentials provided" : {
+
+    },
     "Login" : {
 
     },
     "Password" : {
 
     },
-    "Password should be atleast 5 characters long" : {
+    "Password should be at least 5 characters long" : {
+
+    },
+    "Something went wrong" : {
 
     },
     "Username" : {
 
     },
-    "Username should be atleast 1 character long" : {
+    "Username should be at least 1 character long" : {
 
     }
   },

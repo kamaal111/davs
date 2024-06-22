@@ -52,8 +52,15 @@ final public class Authentication {
         case .success(let success): authorizationToken = success.authorizationToken
         }
 
-        return Keychain.add(authorizationToken, forKey: KeychainKeys.authorizationToken.key)
+        let addToKeyChainResult = Keychain.add(authorizationToken, forKey: KeychainKeys.authorizationToken.key)
             .mapError({ error -> LoginErrors in .generalFailure(context: error) })
+        switch addToKeyChainResult {
+        case .failure(let failure): return .failure(failure)
+        case .success: break
+        }
+
+        await loadSession(authorizationToken: authorizationToken)
+        return .success(())
     }
 
     private func loadSession(authorizationToken: String) async {

@@ -7,11 +7,14 @@
 
 import SwiftUI
 import KamaalUI
+import KamaalPopUp
 import DavsContacts
 import Authentication
 
 struct MainDetailsView: View {
     @Environment(Authentication.self) private var authentication
+
+    @StateObject private var popUpManager = KPopUpManager()
 
     var body: some View {
         NavigationStack {
@@ -25,6 +28,7 @@ struct MainDetailsView: View {
                     LoginScreen()
                 }
             }
+            .withKPopUp(popUpManager)
         }
     }
 }

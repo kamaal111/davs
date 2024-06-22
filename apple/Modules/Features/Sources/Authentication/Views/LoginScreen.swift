@@ -8,10 +8,12 @@
 import DavsUI
 import SwiftUI
 import KamaalUI
+import KamaalPopUp
 import SwiftValidator
 
 public struct LoginScreen: View {
     @Environment(Authentication.self) private var authentication
+    @EnvironmentObject private var popUpManager: KPopUpManager
 
     @State private var username = ""
     @State private var usernameError: (valid: Bool, message: String?)?
@@ -34,7 +36,7 @@ public struct LoginScreen: View {
                 validations: [
                     .minimumLength(
                         length: 1,
-                        message: NSLocalizedString("Username should be atleast 1 character long", comment: "")
+                        message: NSLocalizedString("Username should be at least 1 character long", comment: "")
                     )
                 ]
             )
@@ -50,7 +52,7 @@ public struct LoginScreen: View {
                 validations: [
                     .minimumLength(
                         length: 5,
-                        message: NSLocalizedString("Password should be atleast 5 characters long", comment: "")
+                        message: NSLocalizedString("Password should be at least 5 characters long", comment: "")
                     )
                 ]
             )
@@ -75,9 +77,31 @@ public struct LoginScreen: View {
     private func login() {
         guard formIsValid else { return }
 
-        Task { await withIsLogingIn {
-            let result = await authentication.login(username: username, password: password) }
-            #warning("DO SOMETHING WITH RESULT")
+        Task {
+            await withIsLogingIn {
+                let result = await authentication.login(username: username, password: password)
+                switch result {
+                case .failure(let failure): handleLoginFailure(failure)
+                case .success: popUpManager.hidePopUp()
+                }
+            }
+        }
+    }
+
+    private func handleLoginFailure(_ failure: LoginErrors) {
+        switch failure {
+        case .invalidCredentials:
+            popUpManager.showPopUp(style: .bottom(
+                title: NSLocalizedString("Invalid login credentials provided", comment: ""),
+                type: .error,
+                description: nil
+            ))
+        case .generalFailure:
+            popUpManager.showPopUp(style: .bottom(
+                title: NSLocalizedString("Something went wrong", comment: ""),
+                type: .error,
+                description: nil
+            ))
         }
     }
 

@@ -33,6 +33,7 @@ let package = Package(
             name: "Authentication",
             dependencies: [
                 .product(name: "KamaalUI", package: "KamaalSwift"),
+                .product(name: "KamaalPopUp", package: "KamaalSwift"),
                 .product(name: "DavsClient", package: "Networking"),
                 .product(name: "DavsUI", package: "DavsUI"),
             ]
