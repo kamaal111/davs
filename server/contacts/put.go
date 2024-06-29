@@ -1,7 +1,6 @@
 package contacts
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -36,8 +35,7 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		fileContent := string(fileContentBytes)
-		if len(fileContent) == 0 {
+		if len(fileContentBytes) == 0 {
 			context.AbortWithStatus(http.StatusBadRequest)
 			return
 		}
@@ -46,15 +44,12 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 		contact, _ := users.GetContactByUserIDAndName(db)(*user, filename)
 		var etag string
 		if contact == nil {
-			createdContact := users.CreateContact(db)(*user, fileContent, filename)
-			etag = fmt.Sprintf("%d-%d", createdContact.ID, createdContact.UpdatedAt.Unix())
+			createdContact := users.CreateContact(db)(*user, fileContentBytes, filename)
+			etag = createdContact.GetEtag()
 		} else {
-			// TODO: Handle update
-			context.AbortWithStatus(http.StatusNotFound)
-			return
+			updatedContact := users.UpdateContactCard(db)(*contact, fileContentBytes)
+			etag = updatedContact.GetEtag()
 		}
-
-		fmt.Println(contact)
 
 		context.Data(http.StatusCreated, "text/plain", []byte(etag))
 	}

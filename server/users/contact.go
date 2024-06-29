@@ -2,6 +2,7 @@ package users
 
 import (
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -18,11 +19,22 @@ type Contact struct {
 	UserID uint `gorm:"not null"`
 }
 
-func CreateContact(db *gorm.DB) func(user User, card string, name string) Contact {
-	return func(user User, card, name string) Contact {
-		contact := Contact{Card: []byte(card), Name: name, UserID: user.ID}
+func (contact *Contact) GetEtag() string {
+	return fmt.Sprintf("%d-%d", contact.ID, contact.UpdatedAt.Unix())
+}
+
+func CreateContact(db *gorm.DB) func(user User, card []byte, name string) Contact {
+	return func(user User, card []byte, name string) Contact {
+		contact := Contact{Card: card, Name: name, UserID: user.ID}
 		db.Create(&contact)
 
+		return contact
+	}
+}
+
+func UpdateContactCard(db *gorm.DB) func(contact Contact, card []byte) Contact {
+	return func(contact Contact, card []byte) Contact {
+		// TODO: ACTUALLY UPDATE
 		return contact
 	}
 }
