@@ -7,46 +7,6 @@
 
 import Foundation
 
-public enum DavsUsersLoginError: Error {
-    case invalidResponse(status: Int?)
-    case generalFailure(context: Error)
-}
-
-public enum DavsUsersSessionError: Error {
-    case invalidResponse(status: Int?)
-    case generalFailure(context: Error)
-}
-
-public struct DavsUsersLoginPayload: Encodable {
-    public let username: String
-    public let password: String
-
-    public init(username: String, password: String) {
-        self.username = username
-        self.password = password
-    }
-}
-
-public struct DavsUsersSessionHeaders {
-    public let authorization: String
-
-    public init(authorization: String) {
-        self.authorization = authorization
-    }
-}
-
-public struct DavsUsersLoginResponse: Decodable {
-    public let authorizationToken: String
-
-    enum CodingKeys: String, CodingKey {
-        case authorizationToken = "authorization_token"
-    }
-}
-
-public struct DavsUsersSessionResponse: Decodable {
-    public let username: String
-}
-
 final public class DavsUsersClient: BaseDavsClient {
     private let baseURL: URL
 

@@ -10,8 +10,11 @@ var errContactDoesNotExist = errors.New("Contact does not exist")
 
 type Contact struct {
 	gorm.Model
-	Card   string `gorm:"not null"`
-	Name   string `gorm:"not null"`
+	// VCard of contact
+	Card string `gorm:"not null"`
+	// Look up name
+	Name string `gorm:"not null"`
+	// Associated user id the contact belongs to
 	UserID uint
 }
 

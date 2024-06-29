@@ -7,15 +7,6 @@
 
 import Foundation
 
-public struct DavsHealthPingResponse: Codable {
-    public let message: String
-}
-
-public enum DavsHealthPingError: Error {
-    case invalidResponse(status: Int?)
-    case generalFailure(context: Error)
-}
-
 final public class DavsHealthClient: BaseDavsClient {
     private let baseURL: URL
 
