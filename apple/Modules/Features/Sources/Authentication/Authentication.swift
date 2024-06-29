@@ -64,11 +64,12 @@ final public class Authentication {
     }
 
     private func loadSession(authorizationToken: String) async {
-        let result = await DavsClient.shared.users.session(
-            headers: DavsUsersSessionHeaders(authorization: authorizationToken)
-        )
+        await DavsClient.shared.setAuthorizationToken(authorizationToken)
+        let result = await DavsClient.shared.users.session()
         switch result {
-        case .failure: Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
+        case .failure:
+            await DavsClient.shared.clearAuthorizationToken()
+            Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
         case .success(let success): await setSession(success)
         }
         await setInitiallyValidatingToken(false)

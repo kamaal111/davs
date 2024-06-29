@@ -63,11 +63,11 @@ func basicLogin(db *gorm.DB) func(auth string) (*User, error) {
 		username := decodedAuthSplit[0]
 		userPassword := decodedAuthSplit[1]
 		user := User{Username: username}
-		err = user.Login(db)(userPassword)
+		loggedInUser, err := user.Login(db)(userPassword)
 		if err != nil {
 			return nil, errDoesNotExist
 		}
 
-		return &user, nil
+		return loggedInUser, nil
 	}
 }

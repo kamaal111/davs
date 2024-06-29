@@ -17,10 +17,17 @@ enum RequestErrors: Error {
 enum RequestMethods: String {
     case get = "GET"
     case post = "POST"
+    case put = "PUT"
 }
 
 public class BaseDavsClient {
     private let jsonDecoder = JSONDecoder()
+
+    func makeAuthorizationHeader() async -> (key: String, value: String)? {
+        guard let authorizationToken = await getAuthorizationToken() else { return nil }
+
+        return ("authorization", "Bearer \(authorizationToken)")
+    }
 
     func request<Response: Decodable, Payload: Encodable>(
         for url: URL,
@@ -68,5 +75,9 @@ public class BaseDavsClient {
         }
 
         return .success(result)
+    }
+
+    private func getAuthorizationToken() async -> String? {
+        await DavsClientState.shared.authorizationToken
     }
 }

@@ -3,6 +3,7 @@ package contacts
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/users"
@@ -12,7 +13,19 @@ import (
 func putHandler(db *gorm.DB) func(context *gin.Context) {
 	return func(context *gin.Context) {
 		filename := context.Param("filename")
-		if len(filename) == 0 {
+		if len(filename) < 5 {
+			context.AbortWithStatus(http.StatusBadRequest)
+			return
+		}
+
+		fileComponents := strings.Split(filename, ".")
+		if len(fileComponents) < 2 {
+			context.AbortWithStatus(http.StatusBadRequest)
+			return
+		}
+
+		fileExtension := fileComponents[len(fileComponents)-1]
+		if fileExtension != "vcf" {
 			context.AbortWithStatus(http.StatusBadRequest)
 			return
 		}

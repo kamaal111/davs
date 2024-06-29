@@ -18,7 +18,7 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 		}
 
 		user := User{Username: payload.Username, Password: payload.Password}
-		err := user.Login(db)(payload.Password)
+		loggedInUser, err := user.Login(db)(payload.Password)
 		if err != nil {
 			ginErrors.ErrorHandler(context, ginErrors.Error{
 				Message: "Forbidden",
@@ -27,7 +27,7 @@ func loginHandler(db *gorm.DB) func(context *gin.Context) {
 			return
 		}
 
-		tokenString, err := signUserToken(user)
+		tokenString, err := signUserToken(*loggedInUser)
 		if err != nil {
 			log.Println("Token could not be signed")
 			ginErrors.ErrorHandler(context, ginErrors.Error{

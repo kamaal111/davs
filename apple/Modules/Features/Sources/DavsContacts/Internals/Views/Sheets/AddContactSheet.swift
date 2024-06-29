@@ -8,6 +8,7 @@
 import DavsUI
 import SwiftUI
 import KamaalUI
+import KamaalExtensions
 
 struct AddContactSheet: View {
     @State private var name = ""
@@ -43,8 +44,19 @@ struct AddContactSheet: View {
     }
 
     private func handleSave() {
-        let name: String? = if self.name.isEmpty { nil } else { self.name }
-        let contact = Contact(id: UUID(), name: name, createdAt: Date(), updatedAt: Date())
+        let nameComponents: [String.SubSequence] = if !self.name.isEmpty {
+            self.name.split(separator: " ")
+        } else {
+            []
+        }
+        let firstName: String? = if !nameComponents.isEmpty {
+            nameComponents.ranged(from: 0, to: nameComponents.count - 1).joined(separator: " ")
+        } else {
+            nil
+        }
+        let lastName: String? = if nameComponents.count > 1 { String(nameComponents.last!) } else { nil }
+        let now = Date()
+        let contact = Contact(id: UUID(), firstName: firstName, lastnName: lastName, createdAt: now, updatedAt: now)
         onSave(contact)
         isPresented = false
     }

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import KamaalUI
+import DavsClient
 import KamaalExtensions
 
 public struct ContactsScreen: View {
@@ -32,7 +33,7 @@ public struct ContactsScreen: View {
                 #endif
             } else {
                 List(contacts) { contact in
-                    Text(contact.name ?? NSLocalizedString("No name", comment: ""))
+                    Text(contact.firstName ?? NSLocalizedString("No firstname", comment: ""))
                 }
             }
         }
@@ -54,6 +55,11 @@ public struct ContactsScreen: View {
 
     private func handleOnContactSave(_ contact: Contact) {
         contacts = contacts.prepended(contact)
+        Task {
+            let result = await DavsClient.shared.contacts
+                .mutate(payload: .init(filename: "Test.vcf", vcard: contact.vcard))
+            print("result", result)
+        }
     }
 
     private func handleAddContact() {

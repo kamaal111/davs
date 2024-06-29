@@ -21,4 +21,12 @@ final public class DavsClient {
     }
 
     public static let shared = DavsClient()
+
+    public func setAuthorizationToken(_ token: String) async {
+        await DavsClientState.shared.setAuthorizationToken(token)
+    }
+
+    public func clearAuthorizationToken() async {
+        await DavsClientState.shared.clearAuthorizationToken()
+    }
 }

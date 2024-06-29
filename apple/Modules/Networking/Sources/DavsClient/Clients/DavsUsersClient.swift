@@ -14,11 +14,11 @@ final public class DavsUsersClient: BaseDavsClient {
         self.baseURL = baseURL.appending(path: "users")
     }
 
-    public func session(
-        headers: DavsUsersSessionHeaders
-    ) async -> Result<DavsUsersSessionResponse, DavsUsersSessionError> {
+    public func session() async -> Result<DavsUsersSessionResponse, DavsUsersSessionError> {
+        guard let authorizationHeader = await makeAuthorizationHeader() else { return .failure(.notLoggedIn) }
+
         let headers = [
-            "authorization": "Bearer \(headers.authorization)"
+            authorizationHeader.key: authorizationHeader.value
         ]
 
         return await request(for: baseURL.appending(path: "session"), method: .get, headersDict: headers)

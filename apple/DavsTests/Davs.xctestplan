@@ -17,11 +17,19 @@
   },
   "testTargets" : [
     {
+      "enabled" : false,
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:Davs.xcodeproj",
         "identifier" : "2C7A9A2A2C179BC600AD8DF7",
         "name" : "DavsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/Features",
+        "identifier" : "DavsContactsTests",
+        "name" : "DavsContactsTests"
       }
     }
   ],

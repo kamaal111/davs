@@ -48,20 +48,19 @@ func (user *User) create(db *gorm.DB) error {
 	return nil
 }
 
-func (user *User) Login(db *gorm.DB) func(password string) error {
-	return func(password string) error {
+func (user *User) Login(db *gorm.DB) func(password string) (*User, error) {
+	return func(password string) (*User, error) {
 		fetchedUser, err := getUserByUsername(db)(user.Username)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		user = fetchedUser
-		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+		err = bcrypt.CompareHashAndPassword([]byte(fetchedUser.Password), []byte(password))
 		if err != nil {
-			return errWrongPassword
+			return nil, errWrongPassword
 		}
 
-		return nil
+		return fetchedUser, nil
 	}
 }
 
