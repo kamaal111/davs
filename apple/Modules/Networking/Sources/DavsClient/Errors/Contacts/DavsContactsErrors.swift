@@ -9,4 +9,5 @@ public enum DavsContactsErrors: Error {
     case invalidResponse(status: Int?)
     case generalFailure(context: Error)
     case notLoggedIn
+    case decodingFailed(context: Error?)
 }

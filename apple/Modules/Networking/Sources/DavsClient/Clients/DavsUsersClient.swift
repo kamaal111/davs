@@ -21,7 +21,7 @@ final public class DavsUsersClient: BaseDavsClient {
             authorizationHeader.key: authorizationHeader.value
         ]
 
-        return await request(for: baseURL.appending(path: "session"), method: .get, headersDict: headers)
+        return await requestJSON(for: baseURL.appending(path: "session"), method: .get, headersDict: headers)
             .mapError({ error in
                 switch error {
                 case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
@@ -31,7 +31,7 @@ final public class DavsUsersClient: BaseDavsClient {
     }
 
     public func login(payload: DavsUsersLoginPayload) async -> Result<DavsUsersLoginResponse, DavsUsersLoginError> {
-        await request(for: baseURL.appending(path: "login"), method: .post, payloadObject: payload)
+        await requestJSON(for: baseURL.appending(path: "login"), method: .post, jsonPayload: payload)
             .mapError({ error in
                 switch error {
                 case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)

@@ -29,27 +29,50 @@ public class BaseDavsClient {
         return ("authorization", "Bearer \(authorizationToken)")
     }
 
-    func request<Response: Decodable, Payload: Encodable>(
+    func requestJSON<Response: Decodable, Payload: Encodable>(
         for url: URL,
         method: RequestMethods,
-        payloadObject: Payload
+        jsonPayload: Payload
     ) async -> Result<Response, RequestErrors> {
         let encodedPayload: Data
         do {
-            encodedPayload = try JSONEncoder().encode(payloadObject)
+            encodedPayload = try JSONEncoder().encode(jsonPayload)
         } catch {
             return .failure(.encodingFailed(context: error))
         }
 
-        return await request(for: url, method: method, payloadData: encodedPayload)
+        return await requestJSON(for: url, method: method, payloadData: encodedPayload)
     }
 
-    func request<Response: Decodable>(
+    func requestJSON<Response: Decodable>(
         for url: URL,
         method: RequestMethods = .get,
         payloadData: Data? = nil,
         headersDict: [String: String]? = nil
     ) async -> Result<Response, RequestErrors> {
+        let data: Data
+        let result = await request(for: url, method: method, payloadData: payloadData, headersDict: headersDict)
+        switch result {
+        case .failure(let failure): return .failure(failure)
+        case .success(let success): data = success
+        }
+
+        let decodedData: Response
+        do {
+            decodedData = try jsonDecoder.decode(Response.self, from: data)
+        } catch {
+            return .failure(.decodingFailed(context: error))
+        }
+
+        return .success(decodedData)
+    }
+
+    func request(
+        for url: URL,
+        method: RequestMethods = .get,
+        payloadData: Data? = nil,
+        headersDict: [String: String]? = nil
+    ) async -> Result<Data, RequestErrors> {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.httpBody = payloadData
@@ -67,14 +90,7 @@ public class BaseDavsClient {
         let statusCode = httpResponse.statusCode
         guard statusCode < 300 else { return .failure(.invalidResponse(status: statusCode)) }
 
-        let result: Response
-        do {
-            result = try jsonDecoder.decode(Response.self, from: data)
-        } catch {
-            return .failure(.decodingFailed(context: error))
-        }
-
-        return .success(result)
+        return .success(data)
     }
 
     private func getAuthorizationToken() async -> String? {

@@ -15,7 +15,7 @@ final public class DavsHealthClient: BaseDavsClient {
     }
 
     public func ping() async -> Result<DavsHealthPingResponse, DavsHealthPingError> {
-        await request(for: baseURL.appending(path: "ping"))
+        await requestJSON(for: baseURL.appending(path: "ping"))
             .mapError({ error -> DavsHealthPingError in
                 switch error {
                 case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)

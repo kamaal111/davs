@@ -33,6 +33,7 @@ struct AddContactSheet: View {
                 .ktakeWidthEagerly(alignment: .trailing)
             }
             DavsTextField(value: $name, localizedLabel: "Name", bundle: .module)
+                .onSubmit(handleSave)
         }
         .padding()
         .frame(minWidth: 400)

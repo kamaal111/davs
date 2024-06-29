@@ -31,7 +31,9 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 			contact = &updatedContact
 		}
 
-		context.Data(http.StatusCreated, "text/plain", []byte(contact.GetEtag()))
+		responseContentType := "text/plain"
+		context.Writer.Header().Set("Content-Type", responseContentType)
+		context.Data(http.StatusCreated, responseContentType, []byte(contact.GetEtag()))
 	}
 }
 

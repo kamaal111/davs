@@ -20,21 +20,32 @@ final public class DavsContactsClient: BaseDavsClient {
             authorizationHeader.key: authorizationHeader.value
         ]
 
-        return await request(
+        let result = await request(
             for: baseURL.appending(path: payload.filename),
             method: .put,
             payloadData: payload.vcard.data(using: .utf8),
             headersDict: headers
         )
-        .mapError({ error in
-            switch error {
-            case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
-            case .invalidResponse(status: let status):
-                switch status {
-                case 403: .notLoggedIn
-                default: .invalidResponse(status: status)
+            .map({ data in String(data: data, encoding: .utf8) })
+            .mapError({ error -> DavsContactsErrors in
+                switch error {
+                case .requestFailed, .encodingFailed: .generalFailure(context: error)
+                case .decodingFailed: .decodingFailed(context: error)
+                case .invalidResponse(status: let status):
+                    switch status {
+                    case 403: .notLoggedIn
+                    default: .invalidResponse(status: status)
+                    }
                 }
-            }
-        })
+            })
+        let response: String?
+        switch result {
+        case .failure(let failure): return .failure(failure)
+        case .success(let success): response = success
+        }
+
+        guard let response else { return .failure(.decodingFailed(context: nil)) }
+
+        return .success(response)
     }
 }
