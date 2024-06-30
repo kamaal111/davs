@@ -10,13 +10,13 @@
     "Contacts" : {
 
     },
-    "Name" : {
+    "First name" : {
+
+    },
+    "Last name" : {
 
     },
     "No contacts yet\nPress here to add one" : {
-
-    },
-    "No firstname" : {
 
     },
     "Save" : {

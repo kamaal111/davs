@@ -6,33 +6,28 @@
 //
 
 import Foundation
-import KamaalExtensions
 
 struct Contact: Hashable, Identifiable {
     let id: UUID
-    let firstName: String?
-    let lastnName: String?
+    let firstName: String
+    let lastName: String?
     let createdAt: Date
     let updatedAt: Date?
 
     var vcard: String {
-        var base = """
-BEGIN:VCARD
-VERSION:1.0
-PRODID:-//Davs/EN
-"""
-        if let fullname {
-            base += "\nN:\(fullname.split(separator: " ").reversed().joined(separator: ";"));;;"
-        }
-        return base + "\nEND:VCARD"
+        """
+        BEGIN:VCARD
+        VERSION:1.0
+        PRODID:-//Davs/EN
+        N:\(fullname.split(separator: " ").reversed().joined(separator: ";"));;;
+        END:VCARD
+        """
     }
 
-    var fullname: String? {
-        let unpackedNames = [firstName, lastnName]
-            .unpacked()
-        guard !unpackedNames.isEmpty else { return nil }
+    var fullname: String {
+        guard let lastName else { return firstName }
 
-        return unpackedNames
+        return [firstName, lastName]
             .joined(separator: " ")
     }
 }

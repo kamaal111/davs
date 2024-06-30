@@ -14,9 +14,9 @@ type Contact struct {
 	// VCard of contact
 	Card []byte `gorm:"not null"`
 	// Look up name
-	Name string `gorm:"not null"`
+	Name string `gorm:"not null;index:idx_name,unique"`
 	// Associated user id the contact belongs to
-	UserID uint `gorm:"not null"`
+	UserID uint `gorm:"not null;index:idx_name,unique"`
 }
 
 func (contact *Contact) GetEtag() string {

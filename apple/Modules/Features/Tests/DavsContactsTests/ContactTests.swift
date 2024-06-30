@@ -15,7 +15,7 @@ struct ContactTests {
         let contact = Contact(
             id: UUID(uuidString: "8d1f182d-c116-4074-88df-0bb5291d9287")!,
             firstName: "Kamaal",
-            lastnName: "Farah",
+            lastName: "Farah",
             createdAt: Date(timeIntervalSince1970: 1719674251),
             updatedAt: Date(timeIntervalSince1970: 1719674251)
         )

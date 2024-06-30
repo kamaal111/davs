@@ -33,7 +33,7 @@ public struct ContactsScreen: View {
                 #endif
             } else {
                 List(contacts) { contact in
-                    Text(contact.firstName ?? NSLocalizedString("No firstname", comment: ""))
+                    Text(contact.firstName)
                 }
             }
         }

@@ -11,11 +11,12 @@ import KamaalUI
 import KamaalExtensions
 
 struct AddContactSheet: View {
-    @State private var name = ""
-
     @Binding var isPresented: Bool
 
     let onSave: (Contact) -> Void
+
+    @State private var firstName = ""
+    @State private var lastName = ""
 
     var body: some View {
         VStack(spacing: 8) {
@@ -30,35 +31,52 @@ struct AddContactSheet: View {
                 Button(action: handleSave) {
                     Text("Save")
                 }
+                .disabled(!contactIsValid)
                 .ktakeWidthEagerly(alignment: .trailing)
             }
-            DavsTextField(value: $name, localizedLabel: "Name", bundle: .module)
-                .onSubmit(handleSave)
+            DavsTextField(value: $firstName, localizedLabel: "First name", bundle: .module)
+            DavsTextField(value: $lastName, localizedLabel: "Last name", bundle: .module)
         }
+        .onSubmit(handleSave)
         .padding()
         .frame(minWidth: 400)
         .ktakeSizeEagerly(alignment: .top)
     }
 
+    private var contactIsValid: Bool {
+        names != nil
+    }
+
+    private var names: (firstName: String, lastName: String?)? {
+        let firstName = self.firstName.trimmingByWhitespacesAndNewLines
+        guard !firstName.isEmpty else { return nil }
+
+        let trimmedLastName = lastName.trimmingByWhitespacesAndNewLines
+        let lastName: String? = if !trimmedLastName.isEmpty { trimmedLastName } else { nil }
+
+        return (firstName, lastName)
+    }
+
     private func handleCancel() {
-        isPresented = false
+        dismissSheet()
     }
 
     private func handleSave() {
-        let nameComponents: [String.SubSequence] = if !self.name.isEmpty {
-            self.name.split(separator: " ")
-        } else {
-            []
-        }
-        let firstName: String? = if !nameComponents.isEmpty {
-            nameComponents.ranged(from: 0, to: nameComponents.count - 1).joined(separator: " ")
-        } else {
-            nil
-        }
-        let lastName: String? = if nameComponents.count > 1 { String(nameComponents.last!) } else { nil }
+        guard let names else { return }
+
         let now = Date()
-        let contact = Contact(id: UUID(), firstName: firstName, lastnName: lastName, createdAt: now, updatedAt: now)
+        let contact = Contact(
+            id: UUID(),
+            firstName: names.firstName,
+            lastName: names.lastName,
+            createdAt: now,
+            updatedAt: now
+        )
         onSave(contact)
+        dismissSheet()
+    }
+
+    private func dismissSheet() {
         isPresented = false
     }
 }
