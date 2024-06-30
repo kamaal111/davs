@@ -1,6 +1,7 @@
 package contacts
 
 import (
+	"log"
 	"net/http"
 	"strings"
 
@@ -22,13 +23,11 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 		}
 
 		user := users.GetUserFromContext(context)
-		contact, _ := users.GetContactByUserIDAndName(db)(*user, params.Filename)
-		if contact == nil {
-			createdContact := users.CreateContact(db)(*user, payload.Content, params.Filename)
-			contact = &createdContact
-		} else {
-			updatedContact := users.UpdateContactCard(db)(*contact, payload.Content)
-			contact = &updatedContact
+		contact, err := users.CreateOrUpdateContactCard(db)(*user, params.Filename)(payload.Content)
+		if err != nil {
+			log.Println("Failed to create or update contact card", err)
+			context.AbortWithStatus(http.StatusInternalServerError)
+			return
 		}
 
 		responseContentType := "text/plain"
