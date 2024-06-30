@@ -17,7 +17,8 @@ final public class DavsContactsClient: BaseDavsClient {
         guard let authorizationHeader = await makeAuthorizationHeader() else { return .failure(.notLoggedIn) }
 
         let headers = [
-            authorizationHeader.key: authorizationHeader.value
+            authorizationHeader.key: authorizationHeader.value,
+            "Content-Type": "text/vcard; charset=utf-8"
         ]
 
         let result = await request(

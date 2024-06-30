@@ -135,7 +135,9 @@ public struct DavsTextField: View {
     }
 
     private var showError: Bool {
-         !isFocused && !value.isEmpty && errorResult?.valid != true
+        guard !validations.isEmpty else { return false }
+
+        return !isFocused && !value.isEmpty && errorResult?.valid != true
     }
 
     private var textFieldError: (show: Bool, message: String?) {
