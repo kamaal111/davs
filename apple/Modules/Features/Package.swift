@@ -23,9 +23,11 @@ let package = Package(
             dependencies: [
                 .product(name: "KamaalUI", package: "KamaalSwift"),
                 .product(name: "KamaalExtensions", package: "KamaalSwift"),
+                .product(name: "KamaalPopUp", package: "KamaalSwift"),
                 .product(name: "DavsClient", package: "Networking"),
                 .product(name: "DavsUI", package: "DavsUI"),
                 .product(name: "SwiftValidator", package: "swift-validator"),
+                "Authentication"
             ]
         ),
         .testTarget(name: "DavsContactsTests", dependencies: ["DavsContacts"]),

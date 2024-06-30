@@ -6,30 +6,48 @@
 //
 
 import Foundation
+import KamaalExtensions
 
 struct Contact: Hashable, Identifiable {
     let id: UUID
-    let firstName: String
-    let lastName: String?
-    let createdAt: Date
-    let updatedAt: Date?
+    let etag: String
+    let vcard: String
+    private let vcardMap: [String: String]
 
-    var vcard: String {
-        let fullName = self.fullName
-        return """
-        BEGIN:VCARD
-        VERSION:1.0
-        PRODID:-//Davs/EN
-        N:\(fullName.split(separator: " ").reversed().joined(separator: ";"));;;
-        FN:\(fullName)
-        END:VCARD
-        """
+    init(id: UUID, etag: String, vcard: String) {
+        self.id = id
+        self.etag = etag
+        self.vcard = vcard
+        self.vcardMap = vcard
+            .splitLines
+            .reduce([:], { result, line in
+                let separator = ":"
+                let splittenLine = line.split(separator: separator)
+                guard splittenLine.count >= 2 else { return result }
+
+                let key = splittenLine[0]
+                let value = splittenLine.ranged(from: 1).joined(separator: separator)
+
+                return result
+                    .merged(with: [
+                        String(key): value
+                    ])
+            })
     }
 
-    var fullName: String {
-        guard let lastName else { return firstName }
+    var firstName: String? {
+        let name = vcardMap["N"]
+        guard let name else { return nil }
 
-        return [firstName, lastName]
+        let firstName = name
+            .split(separator: ";;;")
+            .first?
+            .split(separator: ";")
+            .dropFirst()
+            .reversed()
             .joined(separator: " ")
+        guard let firstName else { return nil }
+
+        return firstName
     }
 }

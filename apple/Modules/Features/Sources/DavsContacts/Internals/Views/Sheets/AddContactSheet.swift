@@ -13,7 +13,7 @@ import KamaalExtensions
 struct AddContactSheet: View {
     @Binding var isPresented: Bool
 
-    let onSave: (Contact) -> Void
+    let onSave: (AddContactPayload) -> Void
 
     @State private var firstName = ""
     @State private var lastName = ""
@@ -64,16 +64,8 @@ struct AddContactSheet: View {
     private func handleSave() {
         guard let names else { return }
 
-        let now = Date()
-        let contact = Contact(
-            id: UUID(),
-            firstName: names.firstName,
-            lastName: names.lastName,
-            createdAt: now,
-            updatedAt: now
-        )
+        let contact = AddContactPayload(firstName: names.firstName, lastName: names.lastName)
         onSave(contact)
-        dismissSheet()
     }
 
     private func dismissSheet() {

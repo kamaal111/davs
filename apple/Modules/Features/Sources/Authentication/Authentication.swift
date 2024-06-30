@@ -32,6 +32,12 @@ final public class Authentication {
         session != nil
     }
 
+    public func logout() async {
+        await DavsClient.shared.clearAuthorizationToken()
+        Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
+        await setSession(nil)
+    }
+
     public func login(username: String, password: String) async -> Result<Void, LoginErrors> {
         let response = await DavsClient.shared.users.login(
             payload: DavsUsersLoginPayload(username: username, password: password)
@@ -67,9 +73,7 @@ final public class Authentication {
         await DavsClient.shared.setAuthorizationToken(authorizationToken)
         let result = await DavsClient.shared.users.session()
         switch result {
-        case .failure:
-            await DavsClient.shared.clearAuthorizationToken()
-            Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
+        case .failure: await logout()
         case .success(let success): await setSession(success)
         }
         await setInitiallyValidatingToken(false)

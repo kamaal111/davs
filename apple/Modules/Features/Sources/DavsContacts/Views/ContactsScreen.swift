@@ -9,9 +9,14 @@
 import SwiftUI
 import KamaalUI
 import DavsClient
+import KamaalPopUp
+import Authentication
 import KamaalExtensions
 
 public struct ContactsScreen: View {
+    @Environment(Authentication.self) private var authentication
+    @EnvironmentObject private var popUpManager: KPopUpManager
+
     @State private var contacts: [Contact] = []
     @State private var showAddContactsSheet = false
 
@@ -33,7 +38,7 @@ public struct ContactsScreen: View {
                 #endif
             } else {
                 List(contacts) { contact in
-                    Text(contact.firstName)
+                    Text(contact.firstName ?? NSLocalizedString("No first name", comment: ""))
                 }
             }
         }
@@ -53,18 +58,69 @@ public struct ContactsScreen: View {
         }
     }
 
-    private func handleOnContactSave(_ contact: Contact) {
-        contacts = contacts.prepended(contact)
-        let filename = "\(contact.id.uuidString).vcf"
-        let payload = DavsContactsMutatePayload(filename: filename, vcard: contact.vcard)
+    private func handleOnContactSave(_ contactPayload: AddContactPayload) {
+        let id = UUID()
+        let filename = "\(id.uuidString).vcf"
+        let payload = DavsContactsMutatePayload(filename: filename, vcard: contactPayload.vcard)
         Task {
             let result = await DavsClient.shared.contacts.mutate(payload: payload)
-            print("🐸🐸🐸 result", result)
+            let etag: String
+            switch result {
+            case .failure(let failure):
+                await handleContactSaveFailure(failure)
+                return
+            case .success(let success):
+                popUpManager.hidePopUp()
+                etag = success
+            }
+
+            let contact = Contact(id: id, etag: etag, vcard: contactPayload.vcard)
+            addToContacts(contact)
+            closeAddContactSheet()
+        }
+    }
+
+    private func addToContacts(_ contact: Contact) {
+        let contactsMappedByWhetherTheyHaveAFirstName = contacts
+            .appended(contact)
+            .reduce((hasFirstName: [Contact](), doesNotHaveFirstName: [Contact]()), { result, contact in
+                let hasFirstName = contact.firstName != nil
+
+                if hasFirstName {
+                    return (result.hasFirstName.appended(contact), result.doesNotHaveFirstName)
+                }
+
+                return (result.hasFirstName, result.doesNotHaveFirstName.appended(contact))
+            })
+        contacts = (contactsMappedByWhetherTheyHaveAFirstName.hasFirstName)
+            .sorted(by: \.firstName!, using: .orderedAscending)
+            .concat(contactsMappedByWhetherTheyHaveAFirstName.doesNotHaveFirstName)
+    }
+
+    private func handleContactSaveFailure(_ failure: DavsContactsErrors) async {
+        switch failure {
+        case .invalidResponse, .generalFailure, .decodingFailed:
+            popUpManager.showPopUp(style: .bottom(
+                title: NSLocalizedString("Something went wrong", comment: ""),
+                type: .error,
+                description: nil
+            ), timeout: 3)
+        case .notLoggedIn:
+            popUpManager.showPopUp(style: .bottom(
+                title: NSLocalizedString("Not logged in", comment: ""),
+                type: .error,
+                description: nil
+            ), timeout: 3)
+            await authentication.logout()
         }
     }
 
     private func handleAddContact() {
         showAddContactsSheet = true
+    }
+
+    private func closeAddContactSheet() {
+        showAddContactsSheet = false
     }
 }
 

@@ -19,7 +19,16 @@
     "No contacts yet\nPress here to add one" : {
 
     },
+    "No first name" : {
+
+    },
+    "Not logged in" : {
+
+    },
     "Save" : {
+
+    },
+    "Something went wrong" : {
 
     }
   },
