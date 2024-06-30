@@ -56,7 +56,8 @@ func createContact(db *gorm.DB) func(user User, card []byte, name string) Contac
 
 func updateContactCard(db *gorm.DB) func(contact Contact, card []byte) Contact {
 	return func(contact Contact, card []byte) Contact {
-		// TODO: ACTUALLY UPDATE
+		db.Model(&contact).Update("card", card)
+
 		return contact
 	}
 }
