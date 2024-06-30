@@ -23,16 +23,23 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 		}
 
 		user := users.GetUserFromContext(context)
-		contact, err := users.CreateOrUpdateContactCard(db)(*user, params.Filename)(payload.Content)
+		contact, created, err := users.CreateOrUpdateContactCard(db)(*user, params.Filename)(payload.Content)
 		if err != nil {
 			log.Println("Failed to create or update contact card", err)
 			context.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
 
+		var statusCode int
+		if created {
+			statusCode = http.StatusCreated
+		} else {
+			statusCode = http.StatusOK
+		}
+
 		responseContentType := "text/plain"
 		context.Writer.Header().Set("Content-Type", responseContentType)
-		context.Data(http.StatusCreated, responseContentType, []byte(contact.GetEtag()))
+		context.Data(statusCode, responseContentType, []byte(contact.GetEtag()))
 	}
 }
 
