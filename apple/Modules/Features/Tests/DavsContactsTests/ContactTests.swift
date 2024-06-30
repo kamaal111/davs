@@ -25,6 +25,7 @@ BEGIN:VCARD
 VERSION:1.0
 PRODID:-//Davs/EN
 N:Farah;Kamaal;;;
+FN:Kamaal Farah
 END:VCARD
 """)
     }

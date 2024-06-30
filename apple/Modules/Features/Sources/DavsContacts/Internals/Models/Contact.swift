@@ -15,16 +15,18 @@ struct Contact: Hashable, Identifiable {
     let updatedAt: Date?
 
     var vcard: String {
-        """
+        let fullName = self.fullName
+        return """
         BEGIN:VCARD
         VERSION:1.0
         PRODID:-//Davs/EN
-        N:\(fullname.split(separator: " ").reversed().joined(separator: ";"));;;
+        N:\(fullName.split(separator: " ").reversed().joined(separator: ";"));;;
+        FN:\(fullName)
         END:VCARD
         """
     }
 
-    var fullname: String {
+    var fullName: String {
         guard let lastName else { return firstName }
 
         return [firstName, lastName]
