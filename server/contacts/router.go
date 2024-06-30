@@ -10,7 +10,7 @@ import (
 func InitializeRouter(server *gin.Engine, basePath string, db *gorm.DB) {
 	group := server.Group(files.AppendFileToPath(basePath, "contacts"))
 
-	group.Use(users.BasicOrJWTAuthMiddleware(db), contentTypeEnforcementMiddleware("text/vcard"))
+	group.Use(users.BasicOrJWTAuthMiddleware(db))
 
-	group.PUT("/:filename", putHandler(db))
+	group.PUT("/:address_book/:filename", contentTypeEnforcementMiddleware("text/vcard"), putHandler(db))
 }

@@ -13,5 +13,10 @@ func MigrationStrategyForUser(db *gorm.DB) error {
 		return err
 	}
 
+	err = db.AutoMigrate(&AddressBook{})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -61,7 +61,11 @@ public struct ContactsScreen: View {
     private func handleOnContactSave(_ contactPayload: AddContactPayload) {
         let id = UUID()
         let filename = "\(id.uuidString).vcf"
-        let payload = DavsContactsMutatePayload(filename: filename, vcard: contactPayload.vcard)
+        let payload = DavsContactsMutatePayload(
+            addressBookName: Constants.rootAddressBook,
+            filename: filename,
+            vcard: contactPayload.vcard
+        )
         Task {
             let result = await DavsClient.shared.contacts.mutate(payload: payload)
             let etag: String

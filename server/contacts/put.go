@@ -23,7 +23,17 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 		}
 
 		user := users.GetUserFromContext(context)
-		contact, created, err := users.CreateOrUpdateContactCard(db)(*user, params.Filename)(payload.Content)
+		addressBook, err := users.GetOrCreateAddressBook(db)(*user, params.AddressBook)
+		if err == users.ErrAddressBookNameIsTooShort {
+			context.AbortWithStatus(http.StatusBadRequest)
+			return
+		} else if err != nil {
+			log.Println("Failed to get or create address book", err)
+			context.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		contact, created, err := users.CreateOrUpdateContactCard(db)(*addressBook, params.Filename)(payload.Content)
 		if err != nil {
 			log.Println("Failed to create or update contact card", err)
 			context.AbortWithStatus(http.StatusInternalServerError)
@@ -63,10 +73,17 @@ func validatePutHandlerPayload(context *gin.Context) (*putHandlerPayload, bool) 
 }
 
 type putHandlerParams struct {
-	Filename string
+	AddressBook string
+	Filename    string
 }
 
 func validatePutHandlerParams(context *gin.Context) (*putHandlerParams, bool) {
+	addressBook := context.Param("address_book")
+	if len(addressBook) < 1 {
+		context.AbortWithStatus(http.StatusBadRequest)
+		return nil, false
+	}
+
 	filename := context.Param("filename")
 	if len(filename) < 5 {
 		context.AbortWithStatus(http.StatusBadRequest)
@@ -85,5 +102,5 @@ func validatePutHandlerParams(context *gin.Context) (*putHandlerParams, bool) {
 		return nil, false
 	}
 
-	return &putHandlerParams{Filename: filename}, true
+	return &putHandlerParams{AddressBook: addressBook, Filename: filename}, true
 }

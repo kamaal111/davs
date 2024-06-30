@@ -15,17 +15,17 @@ type Contact struct {
 	Card []byte `gorm:"not null"`
 	// Look up name
 	Name string `gorm:"not null;index:idx_name,unique"`
-	// Associated user id the contact belongs to
-	UserID uint `gorm:"not null;index:idx_name,unique"`
+	// Associated address book id the contact belongs to
+	AddressBookID uint `gorm:"not null;index:idx_name,unique"`
 }
 
 func (contact *Contact) GetEtag() string {
 	return fmt.Sprintf("%d-%d", contact.ID, contact.UpdatedAt.Unix())
 }
 
-func CreateOrUpdateContactCard(db *gorm.DB) func(user User, name string) func(card []byte) (*Contact, bool, error) {
-	return func(user User, name string) func(card []byte) (*Contact, bool, error) {
-		contact, err := getContactByUserIDAndName(db)(user, name)
+func CreateOrUpdateContactCard(db *gorm.DB) func(addressBook AddressBook, name string) func(card []byte) (*Contact, bool, error) {
+	return func(addressBook AddressBook, name string) func(card []byte) (*Contact, bool, error) {
+		contact, err := getContactByAddressBookIDAndName(db)(addressBook, name)
 		userDoesNotExist := err == errContactDoesNotExist
 		if err != nil && !userDoesNotExist {
 			return func(card []byte) (*Contact, bool, error) {
@@ -35,7 +35,7 @@ func CreateOrUpdateContactCard(db *gorm.DB) func(user User, name string) func(ca
 
 		return func(card []byte) (*Contact, bool, error) {
 			if userDoesNotExist {
-				createdContact := createContact(db)(user, card, name)
+				createdContact := createContact(db)(addressBook, card, name)
 				return &createdContact, true, nil
 			}
 
@@ -45,9 +45,9 @@ func CreateOrUpdateContactCard(db *gorm.DB) func(user User, name string) func(ca
 	}
 }
 
-func createContact(db *gorm.DB) func(user User, card []byte, name string) Contact {
-	return func(user User, card []byte, name string) Contact {
-		contact := Contact{Card: card, Name: name, UserID: user.ID}
+func createContact(db *gorm.DB) func(addressBook AddressBook, card []byte, name string) Contact {
+	return func(addressBook AddressBook, card []byte, name string) Contact {
+		contact := Contact{Card: card, Name: name, AddressBookID: addressBook.ID}
 		db.Create(&contact)
 
 		return contact
@@ -62,10 +62,10 @@ func updateContactCard(db *gorm.DB) func(contact Contact, card []byte) Contact {
 	}
 }
 
-func getContactByUserIDAndName(db *gorm.DB) func(user User, name string) (*Contact, error) {
-	return func(user User, name string) (*Contact, error) {
+func getContactByAddressBookIDAndName(db *gorm.DB) func(addressBook AddressBook, name string) (*Contact, error) {
+	return func(addressBook AddressBook, name string) (*Contact, error) {
 		var contact Contact
-		result := db.Take(&contact, "user_id = ? AND name = ?", user.ID, name)
+		result := db.Take(&contact, "address_book_id = ? AND name = ?", addressBook.ID, name)
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, errContactDoesNotExist
 		}

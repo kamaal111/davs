@@ -6,10 +6,12 @@
 //
 
 public struct DavsContactsMutatePayload {
+    public let addressBookName: String
     public let filename: String
     public let vcard: String
 
-    public init(filename: String, vcard: String) {
+    public init(addressBookName: String, filename: String, vcard: String) {
+        self.addressBookName = addressBookName
         self.filename = filename
         self.vcard = vcard
     }

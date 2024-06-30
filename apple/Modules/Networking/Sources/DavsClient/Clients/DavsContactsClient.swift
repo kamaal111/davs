@@ -22,7 +22,7 @@ final public class DavsContactsClient: BaseDavsClient {
         ]
 
         let result = await request(
-            for: baseURL.appending(path: payload.filename),
+            for: baseURL.appending(path: payload.addressBookName).appending(path: payload.filename),
             method: .put,
             payloadData: payload.vcard.data(using: .utf8),
             headersDict: headers

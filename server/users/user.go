@@ -20,9 +20,9 @@ var invalidUserCharacters = []string{
 
 type User struct {
 	gorm.Model
-	Username string    `gorm:"not null"`
-	Password string    `gorm:"not null"`
-	Contacts []Contact `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
+	Username     string        `gorm:"not null"`
+	Password     string        `gorm:"not null"`
+	AddressBooks []AddressBook `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
 
 func (user *User) create(db *gorm.DB) error {
