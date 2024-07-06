@@ -58,12 +58,14 @@ struct LoginScreen: View {
             .focused($focusedTextfield, equals: .password)
             .onSubmit(login)
             HStack {
-                Button(action: navigateToSignUp) {
-                    Text("Sign Up")
-                        .bold()
-                        .foregroundStyle(Color.accentColor)
+                if authentication.signUpIsSupported {
+                    Button(action: navigateToSignUp) {
+                        Text("Sign Up")
+                            .bold()
+                            .foregroundStyle(Color.accentColor)
+                    }
+                    .buttonStyle(.borderless)
                 }
-                .buttonStyle(.borderless)
                 Spacer()
                 Button(action: login) {
                     Text("Login")

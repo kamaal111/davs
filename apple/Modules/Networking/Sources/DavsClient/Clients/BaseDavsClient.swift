@@ -32,7 +32,8 @@ public class BaseDavsClient {
     func requestJSON<Response: Decodable, Payload: Encodable>(
         for url: URL,
         method: RequestMethods,
-        jsonPayload: Payload
+        jsonPayload: Payload,
+        headersDict: [String: String]? = nil
     ) async -> Result<Response, RequestErrors> {
         let encodedPayload: Data
         do {
@@ -41,7 +42,7 @@ public class BaseDavsClient {
             return .failure(.encodingFailed(context: error))
         }
 
-        return await requestJSON(for: url, method: method, payloadData: encodedPayload)
+        return await requestJSON(for: url, method: method, payloadData: encodedPayload, headersDict: headersDict)
     }
 
     func requestJSON<Response: Decodable>(

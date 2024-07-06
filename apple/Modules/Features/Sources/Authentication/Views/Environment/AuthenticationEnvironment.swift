@@ -28,14 +28,15 @@ private struct AuthenticationEnvironment: ViewModifier {
         KJustStack {
             if authentication.initiallyValidatingToken {
                 KLoading()
-            }
-            if !authentication.isLoggedIn {
-                NavigationStack {
-                    LoginScreen()
-                }
-                .withKPopUp(popUpManager)
             } else {
-                content
+                if !authentication.isLoggedIn {
+                    NavigationStack {
+                        LoginScreen()
+                    }
+                    .withKPopUp(popUpManager)
+                } else {
+                    content
+                }
             }
         }
         .environment(authentication)

@@ -38,6 +38,10 @@ final public class Authentication {
         session != nil
     }
 
+    var signUpIsSupported: Bool {
+        DavsClient.shared.users.signUpIsSupported
+    }
+
     public func logout() async {
         await DavsClient.shared.clearAuthorizationToken()
         Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
@@ -45,7 +49,36 @@ final public class Authentication {
     }
 
     public func signUp(username: String, password: String) async -> Result<Void, SignUpErrors> {
-        fatalError()
+        guard signUpIsSupported else { fatalError("Unsupported endpoint, should not have came here at all") }
+
+        let response = await DavsClient.shared.users.signUp(payload: .init(username: username, password: password))
+            .mapError({ error -> SignUpErrors in
+                switch error {
+                case .unsupported: fatalError("Unsupported endpoint, should not have came here at all")
+                case .generalFailure: .generalFailure(context: error)
+                case .invalidResponse(status: let status):
+                    switch status {
+                    case 409: .userAlreadyExists
+                    case 403, 400, 401: .invalidCredentials
+                    default: .generalFailure(context: error)
+                    }
+                }
+            })
+        let authorizationToken: String
+        switch response {
+        case .failure(let failure): return .failure(failure)
+        case .success(let success): authorizationToken = success.authorizationToken
+        }
+
+        let addToKeyChainResult = Keychain.add(authorizationToken, forKey: KeychainKeys.authorizationToken.key)
+            .mapError({ error -> SignUpErrors in .generalFailure(context: error) })
+        switch addToKeyChainResult {
+        case .failure(let failure): return .failure(failure)
+        case .success: break
+        }
+
+        await loadSession(authorizationToken: authorizationToken)
+        return .success(())
     }
 
     public func login(username: String, password: String) async -> Result<Void, LoginErrors> {

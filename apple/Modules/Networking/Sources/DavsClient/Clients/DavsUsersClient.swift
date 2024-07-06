@@ -9,9 +9,15 @@ import Foundation
 
 final public class DavsUsersClient: BaseDavsClient {
     private let baseURL: URL
+    private let apiKey: String?
 
-    init(baseURL: URL) {
+    init(baseURL: URL, apiKey: String?) {
         self.baseURL = baseURL.appending(path: "users")
+        self.apiKey = apiKey
+    }
+
+    public var signUpIsSupported: Bool {
+        apiKey != nil
     }
 
     public func session() async -> Result<DavsUsersSessionResponse, DavsUsersSessionError> {
@@ -38,5 +44,25 @@ final public class DavsUsersClient: BaseDavsClient {
                 case .invalidResponse(let status): .invalidResponse(status: status)
                 }
             })
+    }
+
+    public func signUp(payload: DavsUsersSignUpPayload) async -> Result<DavsUsersSignUpResponse, DavsUsersSignUpError> {
+        guard let apiKey else { return .failure(.unsupported) }
+
+        let headers = [
+            "authorization": "Token \(apiKey)",
+        ]
+        return await requestJSON(
+            for: baseURL.appending(path: "sign-up"),
+            method: .post,
+            jsonPayload: payload,
+            headersDict: headers
+        )
+        .mapError({ error in
+            switch error {
+            case .requestFailed, .decodingFailed, .encodingFailed: .generalFailure(context: error)
+            case .invalidResponse(let status): .invalidResponse(status: status)
+            }
+        })
     }
 }
