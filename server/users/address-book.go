@@ -13,9 +13,9 @@ var ErrAddressBookNameIsTooShort = errors.New("name of address book too short")
 type AddressBook struct {
 	gorm.Model
 	// Look up name
-	Name string `gorm:"not null;index:idx_name,unique"`
+	Name string `gorm:"not null;index:idx_user_name,unique"`
 	// Associated user id the contact belongs to
-	UserID uint `gorm:"not null;index:idx_name,unique"`
+	UserID uint `gorm:"not null;index:idx_user_name,unique"`
 }
 
 func GetOrCreateAddressBook(db *gorm.DB) func(user User, name string) (*AddressBook, error) {
