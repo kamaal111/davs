@@ -1,4 +1,4 @@
-package contacts
+package utils
 
 import (
 	"net/http"
@@ -6,12 +6,11 @@ import (
 
 	ginErrors "github.com/Kamaalio/kamaalgo/gin/errors"
 	"github.com/gin-gonic/gin"
-	"github.com/kamaal111/davs/utils"
 )
 
-func contentTypeEnforcementMiddleware(contentType string) gin.HandlerFunc {
+func ContentTypeEnforcementMiddleware(contentType string) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		headers, valid := utils.ValidateHeaders[contentTypeEnforcementHeaders](context)
+		headers, valid := ValidateHeaders[ContentTypeEnforcementHeaders](context)
 		if !valid {
 			return
 		}
@@ -38,6 +37,6 @@ func contentTypeEnforcementMiddleware(contentType string) gin.HandlerFunc {
 	}
 }
 
-type contentTypeEnforcementHeaders struct {
+type ContentTypeEnforcementHeaders struct {
 	ContentType string `header:"content-type" binding:"required"`
 }

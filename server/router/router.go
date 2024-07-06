@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/contacts"
+	"github.com/kamaal111/davs/discovery"
 	"github.com/kamaal111/davs/health"
 	"github.com/kamaal111/davs/users"
 	"github.com/kamaal111/davs/utils"
@@ -31,6 +32,7 @@ func initializeServer() *gin.Engine {
 
 func initializeRoutes(server *gin.Engine, basePath string, db *gorm.DB) {
 	health.InitializeRouter(server, basePath)
+	discovery.InitializeRouter(server, db)
 	contacts.InitializeRouter(server, basePath, db)
 	users.InitializeRouter(server, basePath, db)
 	server.NoRoute(notFound)
