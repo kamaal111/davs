@@ -1,8 +1,8 @@
 //
-//  LoginScreen.swift
+//  SignUpScreen.swift
 //
 //
-//  Created by Kamaal M Farah on 11/06/2024.
+//  Created by Kamaal M Farah on 06/07/2024.
 //
 
 import DavsUI
@@ -11,7 +11,7 @@ import KamaalUI
 import KamaalPopUp
 import SwiftValidator
 
-struct LoginScreen: View {
+struct SignUpScreen: View {
     @Environment(Authentication.self) private var authentication
     @EnvironmentObject private var popUpManager: KPopUpManager
 
@@ -19,10 +19,13 @@ struct LoginScreen: View {
     @State private var usernameError: (valid: Bool, message: String?)?
     @State private var password = ""
     @State private var passwordError: (valid: Bool, message: String?)?
-    @State private var isLogingIn = false
-    @State private var signUpScreenIsShown = false
+    @State private var verificationPassword = ""
+    @State private var verificationPasswordError: (valid: Bool, message: String?)?
+    @State private var isSigningUp = false
 
     @FocusState private var focusedTextfield: FocusFields?
+
+    @Binding var isShown: Bool
 
     var body: some View {
         Form {
@@ -40,7 +43,7 @@ struct LoginScreen: View {
                 ]
             )
             .focused($focusedTextfield, equals: .username)
-            .onSubmit(login)
+            .onSubmit(signUp)
             DavsTextField(
                 value: $password,
                 errorResult: $passwordError,
@@ -56,17 +59,36 @@ struct LoginScreen: View {
                 ]
             )
             .focused($focusedTextfield, equals: .password)
-            .onSubmit(login)
+            .onSubmit(signUp)
+            DavsTextField(
+                value: $verificationPassword,
+                errorResult: $verificationPasswordError,
+                localizedLabel: "Verification Password",
+                bundle: .module,
+                variant: .secure,
+                configration: DavsTextFieldConfiguration(capitalazation: .never),
+                validations: [
+                    .isSameAs(
+                        value: password,
+                        message:  NSLocalizedString(
+                            "Verification password should be the same as the given password",
+                            comment: ""
+                        )
+                    )
+                ]
+            )
+            .focused($focusedTextfield, equals: .verificationPassword)
+            .onSubmit(signUp)
             HStack {
-                Button(action: navigateToSignUp) {
-                    Text("Sign Up")
+                Button(action: navigateBack) {
+                    Text("Login")
                         .bold()
                         .foregroundStyle(Color.accentColor)
                 }
                 .buttonStyle(.borderless)
                 Spacer()
-                Button(action: login) {
-                    Text("Login")
+                Button(action: signUp) {
+                    Text("Sign Up")
                         .bold()
                         .foregroundStyle(formIsValid ? Color.accentColor : Color.secondary)
                 }
@@ -74,43 +96,49 @@ struct LoginScreen: View {
                 .disabled(!formIsValid)
             }
         }
-        .disabled(isLogingIn)
-        .navigationTitle(Text("Login"))
-        .navigationDestination(isPresented: $signUpScreenIsShown) { SignUpScreen(isShown: $signUpScreenIsShown) }
+        .disabled(isSigningUp)
+        .navigationTitle(Text("Sign Up"))
     }
 
     private var formIsValid: Bool {
         let errorResults: [(valid: Bool, message: String?)?] = [
             usernameError,
             passwordError,
+            verificationPasswordError,
         ]
         return errorResults
             .allSatisfy({ result in result?.valid == true })
     }
 
-    private func login() {
+    private func signUp() {
         guard formIsValid else { return }
 
         Task {
-            await withIsLogingIn {
-                let result = await authentication.login(username: username, password: password)
+            await withIsSigningUp {
+                let result = await authentication.signUp(username: username, password: password)
                 switch result {
-                case .failure(let failure): handleLoginFailure(failure)
+                case .failure(let failure): handleSignUpFailure(failure)
                 case .success: popUpManager.hidePopUp()
                 }
             }
         }
     }
 
-    private func navigateToSignUp() {
-        signUpScreenIsShown = true
+    private func navigateBack() {
+        isShown = false
     }
 
-    private func handleLoginFailure(_ failure: LoginErrors) {
+    private func handleSignUpFailure(_ failure: SignUpErrors) {
         switch failure {
         case .invalidCredentials:
             popUpManager.showPopUp(style: .bottom(
-                title: NSLocalizedString("Invalid login credentials provided", comment: ""),
+                title: NSLocalizedString("Invalid credentials provided", comment: ""),
+                type: .error,
+                description: nil
+            ))
+        case .userAlreadyExists:
+            popUpManager.showPopUp(style: .bottom(
+                title: NSLocalizedString("User already exists, do you prefer to login?", comment: ""),
                 type: .error,
                 description: nil
             ))
@@ -123,21 +151,22 @@ struct LoginScreen: View {
         }
     }
 
-    private func withIsLogingIn(_ callback: () async -> Void) async {
-        isLogingIn = true
+    private func withIsSigningUp(_ callback: () async -> Void) async {
+        isSigningUp = true
         await callback()
-        isLogingIn = false
+        isSigningUp = false
     }
 }
 
 private enum FocusFields {
     case username
     case password
+    case verificationPassword
 }
 
 #Preview {
     NavigationStack {
-        LoginScreen()
+        SignUpScreen(isShown: .constant(true))
     }
     .authenticationEnvironment(authentication: Authentication())
 }

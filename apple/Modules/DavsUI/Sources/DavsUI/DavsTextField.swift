@@ -27,6 +27,7 @@ public enum DavsTextFieldVariants {
 
 public enum DavsTextFieldValidationRules {
     case minimumLength(length: Int, message: String?)
+    case isSameAs(value: String, message: String?)
 }
 
 public struct DavsTextFieldConfiguration {
@@ -68,6 +69,8 @@ public struct DavsTextField: View {
             switch validation {
             case let .minimumLength(length, message):
                 StringValidateMinimumLength(length: length, message: message)
+            case let .isSameAs(value, message):
+                StringIsTheSameValue(value: value, message: message)
             }
         })
     }

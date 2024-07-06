@@ -14,6 +14,12 @@ public enum LoginErrors: Error {
     case generalFailure(context: Error)
 }
 
+public enum SignUpErrors: Error {
+    case userAlreadyExists
+    case invalidCredentials
+    case generalFailure(context: Error)
+}
+
 @Observable
 final public class Authentication {
     public private(set) var initiallyValidatingToken: Bool
@@ -36,6 +42,10 @@ final public class Authentication {
         await DavsClient.shared.clearAuthorizationToken()
         Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
         await setSession(nil)
+    }
+
+    public func signUp(username: String, password: String) async -> Result<Void, SignUpErrors> {
+        fatalError()
     }
 
     public func login(username: String, password: String) async -> Result<Void, LoginErrors> {

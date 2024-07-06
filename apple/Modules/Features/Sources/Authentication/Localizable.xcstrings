@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Davs" : {
-
-    },
     "Invalid login credentials provided" : {
 
     },
@@ -16,6 +13,9 @@
     "Password should be at least 5 characters long" : {
 
     },
+    "Sign Up" : {
+
+    },
     "Something went wrong" : {
 
     },
@@ -23,6 +23,9 @@
 
     },
     "Username should be at least 1 character long" : {
+
+    },
+    "Verification Password" : {
 
     }
   },

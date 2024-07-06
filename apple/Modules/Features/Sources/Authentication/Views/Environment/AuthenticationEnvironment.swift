@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import KamaalUI
+import KamaalPopUp
 
 extension View {
     public func authenticationEnvironment(authentication: Authentication) -> some View {
@@ -14,6 +16,8 @@ extension View {
 }
 
 private struct AuthenticationEnvironment: ViewModifier {
+    @StateObject private var popUpManager = KPopUpManager()
+
     private var authentication: Authentication
 
     init(authentication: Authentication) {
@@ -21,7 +25,19 @@ private struct AuthenticationEnvironment: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        content
-            .environment(authentication)
+        KJustStack {
+            if authentication.initiallyValidatingToken {
+                KLoading()
+            }
+            if !authentication.isLoggedIn {
+                NavigationStack {
+                    LoginScreen()
+                }
+                .withKPopUp(popUpManager)
+            } else {
+                content
+            }
+        }
+        .environment(authentication)
     }
 }
