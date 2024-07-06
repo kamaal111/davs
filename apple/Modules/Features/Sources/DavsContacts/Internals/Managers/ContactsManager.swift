@@ -14,6 +14,8 @@ import KamaalExtensions
 final class ContactsManager {
     private(set) var contacts: [Contact] = []
 
+    func fetchContacts() async {}
+
     func createContact(payload: AddContactPayload) async -> Result<Void, DavsContactsErrors> {
         let id = UUID()
         let filename = "\(id.uuidString).vcf"

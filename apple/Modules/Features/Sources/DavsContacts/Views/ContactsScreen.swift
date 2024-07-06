@@ -47,6 +47,7 @@ public struct ContactsScreen: View {
         .sheet(isPresented: $showAddContactsSheet) {
             AddContactSheet(isPresented: $showAddContactsSheet, onSave: handleOnContactSave)
         }
+        .onAppear(perform: handleOnAppear)
     }
 
     private var toolbarItems: some ToolbarContent {
@@ -55,6 +56,12 @@ public struct ContactsScreen: View {
                 Image(systemName: "plus")
                     .bold()
             }
+        }
+    }
+
+    private func handleOnAppear() {
+        Task {
+            await contactsManager.fetchContacts()
         }
     }
 
