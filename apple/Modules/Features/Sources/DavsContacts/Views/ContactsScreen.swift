@@ -15,16 +15,16 @@ import KamaalExtensions
 
 public struct ContactsScreen: View {
     @Environment(Authentication.self) private var authentication
+    @Environment(ContactsManager.self) private var contactsManager
     @EnvironmentObject private var popUpManager: KPopUpManager
 
-    @State private var contacts: [Contact] = []
     @State private var showAddContactsSheet = false
 
     public init() { }
 
     public var body: some View {
         VStack {
-            if contacts.isEmpty {
+            if contactsManager.contacts.isEmpty {
                 Button(action: handleAddContact) {
                     Text("No contacts yet\nPress here to add one")
                         .multilineTextAlignment(.center)
@@ -37,7 +37,7 @@ public struct ContactsScreen: View {
                 .padding(.top, 8)
                 #endif
             } else {
-                List(contacts) { contact in
+                List(contactsManager.contacts) { contact in
                     Text(contact.firstName ?? NSLocalizedString("No first name", comment: ""))
                 }
             }
@@ -59,46 +59,18 @@ public struct ContactsScreen: View {
     }
 
     private func handleOnContactSave(_ contactPayload: AddContactPayload) {
-        let id = UUID()
-        let filename = "\(id.uuidString).vcf"
-        let payload = DavsContactsMutatePayload(
-            addressBookName: Constants.rootAddressBook,
-            filename: filename,
-            vcard: contactPayload.vcard
-        )
         Task {
-            let result = await DavsClient.shared.contacts.mutate(payload: payload)
-            let etag: String
+            let result = await contactsManager.createContact(payload: contactPayload)
             switch result {
             case .failure(let failure):
                 await handleContactSaveFailure(failure)
                 return
-            case .success(let success):
-                popUpManager.hidePopUp()
-                etag = success
+            case .success: break
             }
 
-            let contact = Contact(id: id, etag: etag, vcard: contactPayload.vcard)
-            addToContacts(contact)
+            popUpManager.hidePopUp()
             closeAddContactSheet()
         }
-    }
-
-    private func addToContacts(_ contact: Contact) {
-        let contactsMappedByWhetherTheyHaveAFirstName = contacts
-            .appended(contact)
-            .reduce((hasFirstName: [Contact](), doesNotHaveFirstName: [Contact]()), { result, contact in
-                let hasFirstName = contact.firstName != nil
-
-                if hasFirstName {
-                    return (result.hasFirstName.appended(contact), result.doesNotHaveFirstName)
-                }
-
-                return (result.hasFirstName, result.doesNotHaveFirstName.appended(contact))
-            })
-        contacts = (contactsMappedByWhetherTheyHaveAFirstName.hasFirstName)
-            .sorted(by: \.firstName!, using: .orderedAscending)
-            .concat(contactsMappedByWhetherTheyHaveAFirstName.doesNotHaveFirstName)
     }
 
     private func handleContactSaveFailure(_ failure: DavsContactsErrors) async {

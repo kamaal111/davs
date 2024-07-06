@@ -6,5 +6,5 @@
 //
 
 enum Constants {
-    static let rootAddressBook = "Root"
+    static let rootAddressBook = "My Contacts"
 }

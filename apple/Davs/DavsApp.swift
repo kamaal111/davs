@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import DavsContacts
 import Authentication
 
 @main
@@ -16,6 +17,7 @@ struct DavsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .davContactsEnvironment()
                 .authenticationEnvironment(authentication: authentication)
         }
         .modelContainer(sharedModelContainer)
