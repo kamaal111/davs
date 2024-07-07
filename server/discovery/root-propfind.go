@@ -12,8 +12,6 @@ import (
 	xmlutils "github.com/kamaal111/davs/xml-utils"
 )
 
-const PROPFIND_CONTENT_TYPE = "application/xml; charset=utf-8"
-
 func rootPropfindHandler() func(context *gin.Context) {
 	return func(context *gin.Context) {
 		var payload rootPropfindPayload

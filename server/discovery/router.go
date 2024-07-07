@@ -10,7 +10,8 @@ import (
 func InitializeRouter(server *gin.Engine, db *gorm.DB) {
 	group := server.Group("")
 
-	group.Use(users.BasicOrJWTAuthMiddleware(db))
+	group.Use(users.BasicOrJWTAuthMiddleware(db), utils.ContentTypeEnforcementMiddleware("application/xml"))
 
-	group.Handle("PROPFIND", "/", utils.ContentTypeEnforcementMiddleware("application/xml"), rootPropfindHandler())
+	group.Handle("PROPFIND", "/", rootPropfindHandler())
+	group.Handle("PROPFIND", "/principals/users/:username", userPrincipalsPropfind())
 }
