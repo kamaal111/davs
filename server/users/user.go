@@ -21,7 +21,7 @@ var invalidUserCharacters = []string{
 
 type User struct {
 	gorm.Model
-	Username     string        `gorm:"not null"`
+	Username     string        `gorm:"index:,unique;not null"`
 	Password     string        `gorm:"not null"`
 	AddressBooks []AddressBook `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }
