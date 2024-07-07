@@ -2,6 +2,7 @@ package users
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +24,10 @@ type User struct {
 	Username     string        `gorm:"not null"`
 	Password     string        `gorm:"not null"`
 	AddressBooks []AddressBook `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
+}
+
+func (user *User) UsersPrincipals() string {
+	return fmt.Sprintf("/principals/users/%s/", user.Username)
 }
 
 func (user *User) create(db *gorm.DB) error {

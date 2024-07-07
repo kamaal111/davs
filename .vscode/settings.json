@@ -4,6 +4,7 @@
         "davs",
         "Declarators",
         "minio",
+        "propfind",
         "unflatten"
     ]
 }

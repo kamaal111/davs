@@ -12,5 +12,5 @@ func InitializeRouter(server *gin.Engine, db *gorm.DB) {
 
 	group.Use(users.BasicOrJWTAuthMiddleware(db))
 
-	group.Handle("PROPFIND", "/", utils.ContentTypeEnforcementMiddleware("application/xml"), propfindHandler())
+	group.Handle("PROPFIND", "/", utils.ContentTypeEnforcementMiddleware("application/xml"), rootPropfindHandler())
 }
