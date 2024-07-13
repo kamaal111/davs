@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +11,7 @@ import (
 func AbortWithMultiStatusXML(context *gin.Context) func(code int, message string) {
 	return func(code int, message string) {
 		errorResponse := MultiStatusXML{
+			XMLNS: "DAV:",
 			Response: []MultiStatusXMLResponse{{Propstat: MultiStatusXMLPropstat{
 				Status: fmt.Sprintf("HTTP/1.1 %d %s", code, message),
 			},
@@ -22,13 +22,7 @@ func AbortWithMultiStatusXML(context *gin.Context) func(code int, message string
 			log.Fatalln("Could not marshal error response")
 		}
 
-		responseAsString := strings.Replace(
-			string(marshalledResponse),
-			"<d:multistatus xmlns:d=\"\">",
-			"<d:multistatus xmlns:d=\"DAV:\">",
-			1,
-		)
-
-		context.Data(code, "application/xml; charset=utf-8", []byte(responseAsString))
+		context.Data(code, "application/xml; charset=utf-8", marshalledResponse)
+		context.Abort()
 	}
 }

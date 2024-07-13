@@ -4,7 +4,7 @@ import "encoding/xml"
 
 type MultiStatusXML struct {
 	XMLName  xml.Name                 `xml:"d:multistatus"`
-	Key      string                   `xml:"xmlns:d,attr"`
+	XMLNS    string                   `xml:"xmlns:d,attr"`
 	Response []MultiStatusXMLResponse `xml:"d:response"`
 }
 

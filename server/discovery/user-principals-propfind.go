@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func userPrincipalsPropfind() func(context *gin.Context) {
+func userPrincipalsPropfind() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.Data(http.StatusMultiStatus, PROPFIND_CONTENT_TYPE, []byte("Hello"))
 	}

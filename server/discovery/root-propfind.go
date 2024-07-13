@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kamaal111/davs/users"
 	xmlutils "github.com/kamaal111/davs/xml-utils"
 )
 
-func rootPropfindHandler() func(context *gin.Context) {
+func rootPropfindHandler() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var payload rootPropfindPayload
 		err := context.ShouldBindBodyWithXML(&payload)
@@ -40,6 +39,7 @@ func rootPropfindHandler() func(context *gin.Context) {
 
 func makeRootPropfindResponse(payload rootPropfindPayload, user users.User) ([]byte, error) {
 	response := rootPropfindResponse{
+		XMLNS: "DAV:",
 		Response: rootPropfindResponseResponse{Propstat: rootPropfindResponseResponsePropstat{
 			Prop:   []rootPropfindResponseResponsePropstatProp{},
 			Status: fmt.Sprintf("HTTP/1.1 %d %s", http.StatusOK, "OK"),
@@ -61,18 +61,12 @@ func makeRootPropfindResponse(payload rootPropfindPayload, user users.User) ([]b
 		return nil, err
 	}
 
-	responseAsString := strings.Replace(
-		string(marshalledResponse),
-		"<d:multistatus xmlns:d=\"\">",
-		"<d:multistatus xmlns:d=\"DAV:\">",
-		1,
-	)
-
-	return []byte(responseAsString), nil
+	return marshalledResponse, nil
 }
 
 type rootPropfindResponse struct {
 	xmlutils.MultiStatusXML
+	XMLNS    string                       `xml:"xmlns:d,attr"`
 	Response rootPropfindResponseResponse `xml:"d:response"`
 }
 
