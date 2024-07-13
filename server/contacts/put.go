@@ -24,7 +24,9 @@ func putHandler(db *gorm.DB) func(context *gin.Context) {
 
 		user := users.GetUserFromContext(context)
 		addressBook, err := users.GetOrCreateAddressBook(db)(*user, params.AddressBook)
-		if err == users.ErrAddressBookNameIsTooShort {
+		if err == users.ErrAddressBookNameIsTooShort ||
+			err == users.ErrAddressBookNameIsTooLong ||
+			err == users.ErrInvalidCharacterInAddressBookName {
 			context.AbortWithStatus(http.StatusBadRequest)
 			return
 		} else if err != nil {

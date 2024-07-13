@@ -4,9 +4,21 @@ import (
 	"encoding/xml"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+func ValidatePayload[Payload any](context *gin.Context) (*Payload, bool) {
+	var payload Payload
+	err := context.ShouldBindBodyWithXML(&payload)
+	if err != nil {
+		AbortWithMultiStatusXML(context)(http.StatusBadRequest, "Bad Request")
+		return nil, false
+	}
+
+	return &payload, true
+}
 
 func AbortWithMultiStatusXML(context *gin.Context) func(code int, message string) {
 	return func(code int, message string) {

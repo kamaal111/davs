@@ -13,10 +13,8 @@ import (
 
 func rootPropfindHandler() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		var payload rootPropfindPayload
-		err := context.ShouldBindBodyWithXML(&payload)
-		if err != nil {
-			xmlutils.AbortWithMultiStatusXML(context)(http.StatusBadRequest, "Bad Request")
+		payload, payloadIsValid := xmlutils.ValidatePayload[rootPropfindPayload](context)
+		if !payloadIsValid {
 			return
 		}
 
@@ -26,7 +24,7 @@ func rootPropfindHandler() gin.HandlerFunc {
 		}
 
 		user := users.GetUserFromContext(context)
-		response, err := makeRootPropfindResponse(payload, *user)
+		response, err := makeRootPropfindResponse(*payload, *user)
 		if err != nil {
 			log.Println("Could not marshal response; error:", err)
 			xmlutils.AbortWithMultiStatusXML(context)(http.StatusInternalServerError, "Internal Server Error")
@@ -39,11 +37,14 @@ func rootPropfindHandler() gin.HandlerFunc {
 
 func makeRootPropfindResponse(payload rootPropfindPayload, user users.User) ([]byte, error) {
 	response := rootPropfindResponse{
-		XMLNS: "DAV:",
-		Response: rootPropfindResponseResponse{Propstat: rootPropfindResponseResponsePropstat{
-			Prop:   []rootPropfindResponseResponsePropstatProp{},
-			Status: fmt.Sprintf("HTTP/1.1 %d %s", http.StatusOK, "OK"),
-		}},
+		XMLNS: payload.XMLNS,
+		Response: rootPropfindResponseResponse{
+			HREF: "/",
+			Propstat: rootPropfindResponseResponsePropstat{
+				Prop:   []rootPropfindResponseResponsePropstatProp{},
+				Status: fmt.Sprintf("HTTP/1.1 %d %s", http.StatusOK, "OK"),
+			},
+		},
 	}
 	requestingCurrentUserPrinciple := payload.Prop.CurrentUserPrincipal != nil
 	if requestingCurrentUserPrinciple {
@@ -71,6 +72,7 @@ type rootPropfindResponse struct {
 }
 
 type rootPropfindResponseResponse struct {
+	HREF     string                               `xml:"d:href"`
 	Propstat rootPropfindResponseResponsePropstat `xml:"d:propstat"`
 }
 

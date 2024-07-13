@@ -6,5 +6,6 @@
 //
 
 enum Constants {
-    static let rootAddressBook = "My Contacts"
+    // TODO: Get this from discovery instead
+    static let rootAddressBook = "contacts"
 }

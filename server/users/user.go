@@ -3,7 +3,6 @@ package users
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -15,8 +14,8 @@ var errDoesNotExist = errors.New("User does not exist")
 var errWrongPassword = errors.New("wrong password")
 var errInvalidUserPayload = errors.New("invalid user payload")
 
-var invalidUserCharacters = []string{
-	":",
+var invalidUserCharacters = []rune{
+	':', '/', '\\', ' ',
 }
 
 type User struct {
@@ -31,9 +30,12 @@ func (user *User) UsersPrincipals() string {
 }
 
 func (user *User) create(db *gorm.DB) error {
-	for _, invalidCharacter := range invalidUserCharacters {
-		if strings.Contains(user.Username, invalidCharacter) || strings.Contains(user.Password, invalidCharacter) {
-			return errInvalidUserPayload
+	combinedUserValues := user.Username + user.Password
+	for _, character := range combinedUserValues {
+		for _, invalidCharacter := range invalidUserCharacters {
+			if character == invalidCharacter {
+				return errInvalidUserPayload
+			}
 		}
 	}
 
