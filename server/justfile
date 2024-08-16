@@ -4,6 +4,9 @@ set dotenv-load
 SERVER_PORT := "8000"
 DATABASE_PORT := "5432"
 CONTAINER_NAME := "davs"
+DATABASE_NAME := "davs_db"
+LOCAL_DATABASE_PASSWORD := "secure-password"
+LOCAL_DATABASE_USER := "davs-user"
 
 # List available commands
 default:
@@ -11,8 +14,15 @@ default:
 
 # Run main Docker container
 run: stop-and-remove-container
+    #!/bin/zsh
+
+    DSN="host=host.docker.internal user=$LOCAL_DATABASE_USER password=$LOCAL_DATABASE_PASSWORD dbname=$DATABASE_NAME port=$DATABASE_PORT sslmode=disable TimeZone=Europe/Amsterdam"
+    SERVER_ADDRESS="0.0.0.0:$SERVER_PORT"
+
     docker run -dp $SERVER_PORT:$SERVER_PORT --name $CONTAINER_NAME \
-        -e SERVER_PORT=$SERVER_PORT -e GIN_MODE="release" \
+        -e DSN=$DSN -e SERVER_ADDRESS=$SERVER_ADDRESS \
+        -e GIN_MODE="release" -e JWT_SECRET="jwt-secret+123" \
+        -e API_KEY="$API_KEY" \
         $CONTAINER_NAME
 
 # Build main Docker container
@@ -36,7 +46,6 @@ run-dev:
     export DATABASE_USER="davs-user"
     export DATABASE_PASSWORD="secure-password"
     export DATABASE_SSLMODE="disable"
-    export ENCRYPTION_SECRET_KEY="super_secret-123"
     export JWT_SECRET="jwt-secret+123"
 
     reflex -r "\.go" -s -- sh -c "go run *.go run-server"

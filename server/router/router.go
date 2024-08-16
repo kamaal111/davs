@@ -17,6 +17,7 @@ const DEFAULT_PORT = "8000"
 
 func Start(db *gorm.DB) {
 	serverAddress := getServerAddress()
+	log.Printf("Running server on %s 🚀", serverAddress)
 	server := initializeServer()
 	basePath := "api/v1"
 	initializeRoutes(server, basePath, db)

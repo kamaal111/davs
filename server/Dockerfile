@@ -1,5 +1,5 @@
 # App builder
-FROM golang:1.22.3-bookworm AS builder
+FROM golang:1.23-bookworm AS builder
 
 WORKDIR /go/src/github.com/kamaal111/davs/
 COPY . .
@@ -24,4 +24,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/bin/davs /go/bin/davs
 # Run the davs binary.
 EXPOSE 8000
-ENTRYPOINT ["/go/bin/davs run-server"]
+CMD [ "/go/bin/davs", "run-server" ]

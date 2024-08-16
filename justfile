@@ -11,6 +11,9 @@ build-server:
 run-dev-server:
     just server/run-dev
 
+start-services:
+    docker compose -f docker/docker-compose.services.yml up --detach
+
 run-dev-web:
     just web/run-dev
 

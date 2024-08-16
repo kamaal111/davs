@@ -34,12 +34,17 @@ func Connect() (*gorm.DB, error) {
 }
 
 func getDSN() (*string, error) {
+	dsn := os.Getenv("DSN")
+	if dsn != "" {
+		return &dsn, nil
+	}
+
 	variables, err := getDSNVariables()
 	if err != nil {
 		return nil, err
 	}
 
-	dsn := fmt.Sprintf(
+	dsn = fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
 		variables.Host,
 		variables.User,

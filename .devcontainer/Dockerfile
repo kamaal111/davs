@@ -1,4 +1,4 @@
-FROM golang:1.22.3-bookworm
+FROM golang:1.23-bookworm
 
 RUN apt update && apt install -y zsh curl git vim httpie jq unzip bash
 
