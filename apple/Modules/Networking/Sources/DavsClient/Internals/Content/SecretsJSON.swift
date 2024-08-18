@@ -10,7 +10,7 @@ import KamaalUtils
 
 struct Secrets: Decodable {
     let davsBaseURL: URL
-    let davsAPIKey: String?
+    let davsAPIKey: String
 
     enum CodingKeys: String, CodingKey {
         case davsBaseURL = "davs_base_url"

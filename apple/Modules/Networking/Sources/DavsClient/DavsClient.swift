@@ -12,7 +12,7 @@ final public class DavsClient {
     public let users: DavsUsersClient
     public let contacts: DavsContactsClient
 
-    private init() {
+    init() {
         let secrets = SecretsJSON.shared.content
         let baseURL = secrets.davsBaseURL.appending(path: "api/v1")
         self.health = DavsHealthClient(baseURL: baseURL)

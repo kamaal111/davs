@@ -39,10 +39,6 @@ final public class Authentication {
         session != nil
     }
 
-    var signUpIsSupported: Bool {
-        DavsClient.shared.users.signUpIsSupported
-    }
-
     public func logout() async {
         await DavsClient.shared.clearAuthorizationToken()
         Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
@@ -50,8 +46,6 @@ final public class Authentication {
     }
 
     public func signUp(username: String, password: String) async -> Result<Void, SignUpErrors> {
-        guard signUpIsSupported else { fatalError("Unsupported endpoint, should not have came here at all") }
-
         let response = await DavsClient.shared.users.signUp(payload: .init(username: username, password: password))
             .mapError({ error -> SignUpErrors in
                 switch error {
