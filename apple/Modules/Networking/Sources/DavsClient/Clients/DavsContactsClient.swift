@@ -6,7 +6,7 @@
 //
 import Foundation
 
-final public class DavsContactsClient: BaseDavsClient {
+public actor DavsContactsClient: DavsSubClient {
     private let baseURL: URL
 
     init(baseURL: URL) {

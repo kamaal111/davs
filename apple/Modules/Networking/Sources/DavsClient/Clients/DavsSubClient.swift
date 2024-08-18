@@ -1,6 +1,6 @@
 //
-//  BaseDavsClient.swift
-//  
+//  DavsSubClient.swift
+//
 //
 //  Created by Kamaal M Farah on 11/06/2024.
 //
@@ -20,9 +20,9 @@ enum RequestMethods: String {
     case put = "PUT"
 }
 
-public class BaseDavsClient {
-    private let jsonDecoder = JSONDecoder()
+protocol DavsSubClient { }
 
+extension DavsSubClient {
     func makeAuthorizationHeader() async -> (key: String, value: String)? {
         guard let authorizationToken = await getAuthorizationToken() else { return nil }
 
@@ -58,6 +58,7 @@ public class BaseDavsClient {
         case .success(let success): data = success
         }
 
+        let jsonDecoder = JSONDecoder()
         let decodedData: Response
         do {
             decodedData = try jsonDecoder.decode(Response.self, from: data)

@@ -5,7 +5,7 @@
 //  Created by Kamaal M Farah on 29/06/2024.
 //
 
-public struct DavsUsersLoginPayload: Encodable {
+public struct DavsUsersLoginPayload: Encodable, Sendable {
     public let username: String
     public let password: String
 

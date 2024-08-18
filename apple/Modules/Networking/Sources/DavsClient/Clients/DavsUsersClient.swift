@@ -7,7 +7,7 @@
 
 import Foundation
 
-final public class DavsUsersClient: BaseDavsClient {
+public actor DavsUsersClient: DavsSubClient {
     private let baseURL: URL
     private let apiKey: String
 

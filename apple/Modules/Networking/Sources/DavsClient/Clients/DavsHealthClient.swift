@@ -7,7 +7,7 @@
 
 import Foundation
 
-final public class DavsHealthClient: BaseDavsClient {
+public actor DavsHealthClient: DavsSubClient {
     private let baseURL: URL
 
     init(baseURL: URL) {

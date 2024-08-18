@@ -7,7 +7,7 @@
 
 import Foundation
 
-final public class DavsClient {
+public actor DavsClient {
     public let health: DavsHealthClient
     public let users: DavsUsersClient
     public let contacts: DavsContactsClient
@@ -21,7 +21,7 @@ final public class DavsClient {
         self.contacts = DavsContactsClient(baseURL: baseURL)
     }
 
-    nonisolated(unsafe) public static let shared = DavsClient()
+    public static let shared = DavsClient()
 
     public func setAuthorizationToken(_ token: String) async {
         await DavsClientState.shared.setAuthorizationToken(token)
