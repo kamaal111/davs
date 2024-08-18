@@ -10,6 +10,7 @@ import DavsClient
 import Observation
 import KamaalExtensions
 
+@MainActor
 @Observable
 final class ContactsManager {
     private(set) var contacts: [Contact] = []
@@ -32,7 +33,7 @@ final class ContactsManager {
         }
 
         let contact = Contact(id: id, etag: etag, vcard: payload.vcard)
-        await addToContacts(contact)
+        addToContacts(contact)
 
         return .success(())
     }

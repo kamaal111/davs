@@ -20,7 +20,7 @@ public enum TextInputAutocapitalization {
 }
 #endif
 
-public enum DavsTextFieldVariants {
+public enum DavsTextFieldVariants: Sendable {
     case text
     case secure
 }

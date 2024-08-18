@@ -20,6 +20,7 @@ public enum SignUpErrors: Error {
     case generalFailure(context: Error)
 }
 
+@MainActor
 @Observable
 final public class Authentication {
     public private(set) var initiallyValidatingToken: Bool
@@ -45,7 +46,7 @@ final public class Authentication {
     public func logout() async {
         await DavsClient.shared.clearAuthorizationToken()
         Keychain.delete(forKey: KeychainKeys.authorizationToken.key)
-        await setSession(nil)
+        setSession(nil)
     }
 
     public func signUp(username: String, password: String) async -> Result<Void, SignUpErrors> {
@@ -117,9 +118,9 @@ final public class Authentication {
         let result = await DavsClient.shared.users.session()
         switch result {
         case .failure: await logout()
-        case .success(let success): await setSession(success)
+        case .success(let success): setSession(success)
         }
-        await setInitiallyValidatingToken(false)
+        setInitiallyValidatingToken(false)
     }
 
     @MainActor

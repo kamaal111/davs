@@ -107,9 +107,8 @@ public struct ContactsScreen: View {
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     ContactsScreen()
         .frame(width: 400, height: 400)
         .padding(14)
-        .previewLayout(.sizeThatFits)
 }

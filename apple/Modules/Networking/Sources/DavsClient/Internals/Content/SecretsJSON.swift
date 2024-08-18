@@ -25,5 +25,5 @@ class SecretsJSON {
         self.content = try! JSONFileUnpacker<Secrets>(filename: "secrets", bundle: .module).content
     }
 
-    static let shared = SecretsJSON()
+    nonisolated(unsafe) static let shared = SecretsJSON()
 }

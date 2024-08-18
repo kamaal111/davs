@@ -5,7 +5,7 @@
 //  Created by Kamaal M Farah on 29/06/2024.
 //
 
-public struct DavsUsersLoginResponse: Decodable {
+public struct DavsUsersLoginResponse: Decodable, Sendable {
     public let authorizationToken: String
 
     enum CodingKeys: String, CodingKey {

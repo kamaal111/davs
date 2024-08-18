@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 import DavsContacts
 import Authentication
 
@@ -20,17 +19,5 @@ struct DavsApp: App {
                 .davContactsEnvironment()
                 .authenticationEnvironment(authentication: authentication)
         }
-        .modelContainer(sharedModelContainer)
     }
-
-    private var sharedModelContainer: ModelContainer = {
-        let schema = Schema([])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
 }

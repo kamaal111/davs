@@ -20,7 +20,7 @@ final public class DavsClient {
         self.contacts = DavsContactsClient(baseURL: baseURL)
     }
 
-    public static let shared = DavsClient()
+    nonisolated(unsafe) public static let shared = DavsClient()
 
     public func setAuthorizationToken(_ token: String) async {
         await DavsClientState.shared.setAuthorizationToken(token)

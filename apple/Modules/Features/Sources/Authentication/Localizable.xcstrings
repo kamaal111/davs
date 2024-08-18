@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Invalid credentials provided" : {
+
+    },
     "Invalid login credentials provided" : {
 
     },
@@ -19,6 +22,9 @@
     "Something went wrong" : {
 
     },
+    "User already exists, do you prefer to login?" : {
+
+    },
     "Username" : {
 
     },
@@ -26,6 +32,9 @@
 
     },
     "Verification Password" : {
+
+    },
+    "Verification password should be the same as the given password" : {
 
     }
   },
