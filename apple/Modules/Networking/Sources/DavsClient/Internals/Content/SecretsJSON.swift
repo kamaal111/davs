@@ -21,9 +21,7 @@ struct Secrets: Decodable {
 class SecretsJSON {
     private(set) var content: Secrets
 
-    private init() {
+    init() {
         self.content = try! JSONFileUnpacker<Secrets>(filename: "secrets", bundle: .module).content
     }
-
-    nonisolated(unsafe) static let shared = SecretsJSON()
 }

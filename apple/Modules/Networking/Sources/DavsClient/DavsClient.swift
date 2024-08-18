@@ -13,10 +13,11 @@ final public class DavsClient {
     public let contacts: DavsContactsClient
 
     init() {
-        let secrets = SecretsJSON.shared.content
-        let baseURL = secrets.davsBaseURL.appending(path: "api/v1")
+        let secrets = SecretsJSON()
+        let secretsContent = secrets.content
+        let baseURL = secretsContent.davsBaseURL.appending(path: "api/v1")
         self.health = DavsHealthClient(baseURL: baseURL)
-        self.users = DavsUsersClient(baseURL: baseURL, apiKey: secrets.davsAPIKey)
+        self.users = DavsUsersClient(baseURL: baseURL, apiKey: secretsContent.davsAPIKey)
         self.contacts = DavsContactsClient(baseURL: baseURL)
     }
 
