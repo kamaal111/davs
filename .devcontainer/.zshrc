@@ -9,7 +9,7 @@ plugins=(
 )
 
 . $ZSH/oh-my-zsh.sh
-
+. "$HOME/.atuin/bin/env"
 . "$HOME/.cargo/env"
 
 eval "$(atuin init zsh)"
