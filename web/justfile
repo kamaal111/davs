@@ -1,4 +1,7 @@
+set export
 set dotenv-load
+
+PORT := "3000"
 
 # List available commands
 default:
@@ -7,7 +10,6 @@ default:
 run-dev: install-modules build-locales
     #!/bin/zsh
 
-    export ENCRYPTION_SECRET_KEY="super_secret-123"
     export DAVS_SERVER_BASE_URL="http://host.docker.internal:8000"
 
     pnpm run dev
