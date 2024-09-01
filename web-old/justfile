@@ -4,7 +4,7 @@ set dotenv-load
 default:
     just --list --unsorted --list-heading $'Available commands\n'
 
-run-dev: install-modules build-locales
+run-dev: build-locales
     #!/bin/zsh
 
     export ENCRYPTION_SECRET_KEY="super_secret-123"
@@ -15,23 +15,16 @@ run-dev: install-modules build-locales
 test:
     npm run test
 
-lint:
-    npm run lint
-
-format:
-    npm run format
-
 bootstrap:
     #!/bin/zsh
 
     just install-modules
 
-build-locales:
+build-locales: install-modules
     npm run locales:build
 
-typecheck:
+typecheck: install-modules
     npm run typecheck
-    just typecheck
 
 [private]
 install-modules:

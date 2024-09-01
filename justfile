@@ -28,23 +28,14 @@ test-web:
 
 test: test-web test-server
 
+lint:
+    just web/lint
+
+format:
+    just web/format
+
 build-web-locales:
     just web/build-locales
-
-format-js:
-    #!/bin/zsh
-
-    npm run format
-
-lint-js:
-    #!/bin/zsh
-
-    npm run lint
-
-typecheck-js:
-    #!/bin/zsh
-
-    just web/typecheck    
 
 bootstrap:
     #!/bin/zsh
