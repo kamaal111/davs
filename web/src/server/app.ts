@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import type { AppRequest, AppRouter } from './types';
 import settings from './settings';
+import authorization from './middleware/authorization';
 
 const INTERNAL_SERVER_ERROR_MESSAGE = 'Things messed up, sorry!';
 const STATUS_CODE_TO_MESSAGE: Record<number, string> = {
@@ -35,6 +36,7 @@ class App {
     this.app.use(logger('dev'));
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use(authorization());
   };
 
   private initializeRoutes = (routers: AppRouter[]) => {
