@@ -10,29 +10,26 @@ run-dev: install-modules build-locales
     export ENCRYPTION_SECRET_KEY="super_secret-123"
     export DAVS_SERVER_BASE_URL="http://host.docker.internal:8000"
 
-    npm run dev
+    pnpm run dev
 
 test:
-    npm run test
+    pnpm run test
 
 lint:
-    npm run lint
+    pnpm run lint
 
 format:
-    npm run format
+    pnpm run format
 
-bootstrap:
-    #!/bin/zsh
-
-    just install-modules
+bootstrap: install-modules
 
 build-locales:
-    npm run locales:build
+    pnpm run locales:build
 
 typecheck:
-    npm run typecheck
+    pnpm run typecheck
     just typecheck
 
 [private]
 install-modules:
-    npm i
+    pnpm i

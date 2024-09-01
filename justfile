@@ -40,6 +40,6 @@ build-web-locales:
 bootstrap:
     #!/bin/zsh
 
-    npm i
+    pnpm i
     just server/bootstrap
     just web/bootstrap

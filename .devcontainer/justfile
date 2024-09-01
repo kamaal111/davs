@@ -3,7 +3,7 @@ default:
     just --list --unsorted --list-heading $'Available commands\n'
 
 # Set up dev container. This step runs after building the dev container
-post-create: setup-zsh-environment install-atuin
+post-create: setup-zsh-environment install-atuin install-pnpm
     just ../bootstrap
 
 [private]
@@ -18,3 +18,10 @@ install-atuin:
     #!/bin/zsh
 
     echo Y | bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+
+[private]
+install-pnpm:
+    #!/bin/zsh
+
+    echo Y | npm install -g pnpm
+    echo "Installed PNPM"
