@@ -1,5 +1,6 @@
+import { chunked } from '@kamaalio/kamaal/arrays/chunked';
+
 import type { AppRequest } from '../types';
-import chunked from './chunked';
 
 class CookiesParser {
   request: AppRequest;
