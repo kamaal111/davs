@@ -4,8 +4,8 @@ import type { AppRequest } from '../types';
 import CookiesParser from '../utils/cookies-parser';
 import davsClient from '../clients/davs-client';
 
-const LOGIN_PATH = '/login';
-const AUTHORIZATION_PATHS = [LOGIN_PATH, '/signup'];
+const LOGIN_PATH = '/login/';
+const AUTHORIZATION_PATHS = [LOGIN_PATH, '/signup/'];
 
 function authorization() {
   return async (
