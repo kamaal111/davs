@@ -15,6 +15,7 @@
   "dependencies": {
     "@kamaalio/kamaal": "~0.5",
     "@radix-ui/react-icons": "^1",
+    "@radix-ui/react-slot": "^1",
     "class-variance-authority": "~0.7",
     "clsx": "^2",
     "cors": "^2",

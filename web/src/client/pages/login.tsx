@@ -1,10 +1,11 @@
+import { Button } from '@/client/components/ui/button';
 import PageLayout from '../layouts/page';
 
 function LoginPage() {
   return (
     <PageLayout>
       <h1>Login</h1>
-      <h1>Hello there</h1>
+      <Button>Click me</Button>
     </PageLayout>
   );
 }
