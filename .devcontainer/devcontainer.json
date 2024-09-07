@@ -23,7 +23,8 @@
 				"naumovs.color-highlight",
 				"eamodio.gitlens",
 				"esbenp.prettier-vscode",
-				"aaron-bond.better-comments"
+				"aaron-bond.better-comments",
+				"bradlc.vscode-tailwindcss"
 			]
 		}
 	},
