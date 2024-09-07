@@ -2,12 +2,17 @@ import type { Response, NextFunction } from 'express';
 
 import type { AppRequest } from '../types';
 import CookiesParser from '../utils/cookies-parser';
+import davsClient from '../clients/davs-client';
 
 const LOGIN_PATH = '/login';
 const AUTHORIZATION_PATHS = [LOGIN_PATH, '/signup'];
 
 function authorization() {
-  return (request: AppRequest, response: Response, next: NextFunction) => {
+  return async (
+    request: AppRequest,
+    response: Response,
+    next: NextFunction
+  ) => {
     const accept = request.headers.accept;
     if (!accept) {
       response.status(400);
@@ -33,9 +38,14 @@ function authorization() {
       return;
     }
 
-    console.log('🐸🐸🐸', {
-      sessionToken,
+    const sessionResponse = await davsClient.users.session({
+      jwt: sessionToken,
     });
+    if (!sessionResponse.ok) {
+      response.redirect(LOGIN_PATH);
+      return;
+    }
+
     next('route');
   };
 }

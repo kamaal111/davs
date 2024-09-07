@@ -13,11 +13,7 @@ class CookiesParser {
     const cookies = this.request.header('cookie');
     if (cookies == null) return {};
 
-    const chunkedCookies = chunked(cookies.split('='), 2) as Array<
-      [key: string, value?: string]
-    >;
-
-    return Object.fromEntries(chunkedCookies);
+    return Object.fromEntries(chunked(cookies.split('='), 2));
   };
 
   get = (key: string): string | null => {
