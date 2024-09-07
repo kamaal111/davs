@@ -9,7 +9,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "locales:build": "ts-node scripts/build-locales.ts || true",
+    "locales:build": "tsx scripts/build-locales.ts || true",
     "typecheck": "tsc"
   },
   "dependencies": {

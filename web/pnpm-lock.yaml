@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@kamaalio/kamaal':
         specifier: ~0.5
-        version: 0.5.0
+        version: 0.5.1
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -702,8 +702,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@kamaalio/kamaal@0.5.0':
-    resolution: {integrity: sha512-4pXHFVIbrd/xnaNIpIFWhtMbDjmxKuwXQbdROB/hhbyla3uO3FNWDaMt0kNWWDrtPXH40i6/B2J+4BAg7x2lBg==}
+  '@kamaalio/kamaal@0.5.1':
+    resolution: {integrity: sha512-KHCNb1wi3sJk9nAIYYQZj/g6HlsJNZyQeNpwpbrvb/H5z4aT0dHMadeYuVZ8yki+zWrOj75xOoEdIW5SY5mCrg==}
     engines: {node: '>=21'}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -2698,7 +2698,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@kamaalio/kamaal@0.5.0':
+  '@kamaalio/kamaal@0.5.1':
     dependencies:
       '@thames/monads': 0.6.2
 

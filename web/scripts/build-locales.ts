@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 
 import fg from 'fast-glob';
 import { extract } from '@formatjs/cli-lib';
-import unflatten from '@kamaalio/kamaal/objects/unflatten';
+import { unflatten } from '@kamaalio/kamaal/objects/unflatten';
 import { run as jscodeshift } from 'jscodeshift/src/Runner';
 
 type MessageDescriptor = { defaultMessage: string };
