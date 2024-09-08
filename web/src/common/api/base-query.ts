@@ -3,7 +3,8 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 
-import METHODS, { type Method } from '../http/methods';
+import METHODS from '../http/methods';
+import type { Method } from '../http/methods';
 
 export type APIError = { details?: string };
 
@@ -28,7 +29,7 @@ function baseQuery({ baseUrl }: { baseUrl: string }) {
           url: args.url ?? '',
           method: args.method ?? METHODS.GET,
           body: args.body ? JSON.stringify(args.body) : null,
-          headers: {},
+          headers: { 'Content-Type': 'application/json' },
         },
         api,
         {}

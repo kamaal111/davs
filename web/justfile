@@ -30,7 +30,7 @@ lint:
 format:
     pnpm run format
 
-bootstrap: install-modules
+bootstrap: install-modules build-locales
 
 build-locales:
     pnpm run locales:build

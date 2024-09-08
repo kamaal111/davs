@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
+import { z } from 'zod';
 
 import Theme from '@/theme/theme-provider';
 import IntlProvider from '@/translations/intl-provider';
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   description: 'Davs client',
 };
 
+const sessionSchema = z.object({
+  username: z.string(),
+});
+
 function RootLayout({
   children,
 }: Readonly<{
@@ -24,9 +29,9 @@ function RootLayout({
 }>) {
   const requestHeaders = headers();
   const sessionHeader = requestHeaders.get('session');
-  const session: { username: string } | null = sessionHeader
-    ? JSON.parse(sessionHeader)
-    : null;
+  const session = sessionHeader
+    ? sessionSchema.safeParse(JSON.parse(sessionHeader)).data
+    : undefined;
 
   return (
     <html lang="en">

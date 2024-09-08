@@ -25,7 +25,6 @@ function useInputsStates<
   );
 
   React.useEffect(() => {
-    const eventsToRemove: Partial<Record<TargetKey, Array<Event>>> = {};
     (
       Object.entries(inputRefs.current) as Array<
         [TargetKey, HTMLInputElement | null]
@@ -38,13 +37,11 @@ function useInputsStates<
       if (listenersHaveBeenAttached) return;
 
       listenersHaveBeenAttachedToRefs.current[key] = true;
-      eventsToRemove[key] = [];
       for (const event of events) {
         ref.addEventListener(event, event => {
           const newState = event.type as Event;
           setStates({ ...states, [key]: newState });
         });
-        eventsToRemove[key].push(event);
       }
     });
   }, [events, states]);

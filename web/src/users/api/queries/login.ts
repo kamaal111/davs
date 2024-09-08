@@ -9,11 +9,14 @@ type LoginUserPayload = z.infer<typeof LoginPayload>;
 
 function loginQuery(builder: EndpointBuilder) {
   return builder.mutation<LoginUserResponse, LoginUserPayload>({
-    query: payload => ({
-      url: '/login',
-      method: METHODS.POST,
-      body: payload,
-    }),
+    query: payload => {
+      console.log('🐸🐸🐸 payload', payload);
+      return {
+        url: '/login',
+        method: METHODS.POST,
+        body: payload,
+      };
+    },
   });
 }
 
