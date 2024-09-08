@@ -1,7 +1,4 @@
-set export
 set dotenv-load
-
-PORT := "3000"
 
 # List available commands
 default:
@@ -40,7 +37,6 @@ build-locales:
 
 typecheck:
     pnpm run typecheck
-    just typecheck
 
 [private]
 install-modules:

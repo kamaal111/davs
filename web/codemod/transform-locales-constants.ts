@@ -47,7 +47,7 @@ function makeExportedMessagesKeysConstant(
 }
 
 function transformMessagesKeys(keys: string[]) {
-  return Object.fromEntries(keys.map(key => [key.replace(/./g, '_'), key]));
+  return Object.fromEntries(keys.map(key => [key.replaceAll('.', '_'), key]));
 }
 
 function getMessagesKeys(

@@ -23,5 +23,5 @@ install-atuin:
 install-pnpm:
     #!/bin/zsh
 
-    echo Y | npm install -g pnpm
+    echo Y | npm install -g pnpm@9.7.1
     echo "Installed PNPM"

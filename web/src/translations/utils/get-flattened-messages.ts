@@ -1,4 +1,4 @@
-import { flatten } from '@kamaalio/kamaal/objects/flatten';
+import flatten from '@kamaalio/kamaal/objects/flatten';
 
 import messages, { type Locale } from '../messages';
 import { type Messages } from '../types';
