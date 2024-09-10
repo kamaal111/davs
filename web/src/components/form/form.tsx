@@ -142,7 +142,9 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
                     {label}
                   </Text>
                 )}
-                onChange={handleFieldChange(idString)}
+                onChange={event => {
+                  handleFieldChange(idString)(event.target.value);
+                }}
                 onFocus={() => setFocusedField(idString)}
                 isInvalid={!isValid}
                 invalidMessage={errorMessage}

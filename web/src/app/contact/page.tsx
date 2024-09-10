@@ -1,7 +1,9 @@
+import AddContactForm from '@/contacts/components/add-contact-form';
+
 function Contact() {
   return (
     <main>
-      <h1>Contact</h1>
+      <AddContactForm />
     </main>
   );
 }

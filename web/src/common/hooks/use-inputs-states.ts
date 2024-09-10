@@ -1,5 +1,7 @@
 import React from 'react';
 
+import toEntries from '@/common/objects/to-entries';
+
 function useInputsStates<
   Event extends keyof HTMLElementEventMap,
   TargetKey extends string,
@@ -25,11 +27,7 @@ function useInputsStates<
   );
 
   React.useEffect(() => {
-    (
-      Object.entries(inputRefs.current) as Array<
-        [TargetKey, HTMLInputElement | null]
-      >
-    ).forEach(([key, ref]) => {
+    toEntries(inputRefs.current).forEach(([key, ref]) => {
       if (!ref) return;
 
       const listenersHaveBeenAttached =

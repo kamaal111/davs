@@ -24,7 +24,8 @@
 				"eamodio.gitlens",
 				"esbenp.prettier-vscode",
 				"aaron-bond.better-comments",
-				"bradlc.vscode-tailwindcss"
+				"bradlc.vscode-tailwindcss",
+				"syler.sass-indented"
 			]
 		}
 	},

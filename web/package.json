@@ -21,6 +21,7 @@
     "next": "^14",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7",
     "react-hot-toast": "^2",
     "react-intl": "^6",
     "react-redux": "^9",

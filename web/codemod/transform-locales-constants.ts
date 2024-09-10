@@ -6,6 +6,8 @@ import {
   VariableDeclarator,
 } from 'jscodeshift';
 
+import toEntries from '@/common/objects/to-entries';
+
 function transform(fileInfo: FileInfo, api: API) {
   const j = api.jscodeshift;
 
@@ -25,7 +27,7 @@ function makeExportedMessagesKeysConstant(
   j: JSCodeshift,
   transformedKeys: Record<string, string>
 ) {
-  const properties = Object.entries(transformedKeys).map(([key, value]) => {
+  const properties = toEntries(transformedKeys).map(([key, value]) => {
     return j.property('init', j.identifier(key), j.literal(value));
   });
   const declaration = j.variableDeclaration('const', [

@@ -6,6 +6,8 @@ import { extract } from '@formatjs/cli-lib';
 import { unflatten } from '@kamaalio/kamaal/objects/unflatten';
 import { run as jscodeshift } from 'jscodeshift/src/Runner';
 
+import toEntries from '@/common/objects/to-entries';
+
 type MessageDescriptor = { defaultMessage: string };
 type ExtractedMessages = Record<string, MessageDescriptor>;
 
@@ -106,7 +108,7 @@ function reformatMessagesWithJustDefaults(
   messages: ExtractedMessages
 ): Record<string, string> {
   return Object.fromEntries(
-    Object.entries(messages).map(([key, value]) => [key, value.defaultMessage])
+    toEntries(messages).map(([key, value]) => [key, value.defaultMessage])
   );
 }
 
