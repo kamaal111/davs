@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   sassOptions: {
     includePaths: [path.join(__dirname, 'src/styles')],
+    silenceDeprecations: ['legacy-js-api'],
   },
 };
 
