@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
@@ -22,17 +23,20 @@ const sessionSchema = z.object({
   username: z.string(),
 });
 
-const requestHeaders = await headers();
-const sessionHeader = requestHeaders.get('session');
-const session = sessionHeader
-  ? sessionSchema.safeParse(JSON.parse(sessionHeader)).data
-  : undefined;
-
 function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = React.use(
+    headers().then(requestHeaders => {
+      const sessionHeader = requestHeaders.get('session');
+      if (!sessionHeader) return null;
+
+      return sessionSchema.safeParse(JSON.parse(sessionHeader)).data ?? null;
+    })
+  );
+
   return (
     <html lang="en">
       <body className={inter.className}>
