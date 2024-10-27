@@ -33,10 +33,5 @@
 		"ghcr.io/guiyomh/features/just:0": {},
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
-	"forwardPorts": [
-		8000,
-		8080,
-		5432,
-		3000
-	]
+	"forwardPorts": []
 }
