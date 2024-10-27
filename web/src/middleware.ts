@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const davsSessions = cookies.getSession();
+  const davsSessions = await cookies.getSession();
   if (davsSessions == null) {
     return NextResponse.redirect(new URL('/login', request.url));
   }

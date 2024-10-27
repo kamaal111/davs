@@ -117,6 +117,7 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
             label,
             type,
             errorMessages,
+            autoComplete,
             extraValidation,
           }) => {
             const idString = id as string;
@@ -149,6 +150,7 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
                 isInvalid={!isValid}
                 invalidMessage={errorMessage}
                 disabled={disabled}
+                autoComplete={autoComplete}
               />
             );
           }

@@ -28,7 +28,7 @@ function signUpHandler(request: NextRequest) {
     }
 
     const responseJSON: { authorization_token: string } = await response.json();
-    cookies.setSession(responseJSON.authorization_token);
+    await cookies.setSession(responseJSON.authorization_token);
 
     return Response.json({ details: 'Created' }, { status: 201 });
   });

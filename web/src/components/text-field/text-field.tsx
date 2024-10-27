@@ -5,7 +5,7 @@ import styles from './text-field.module.sass';
 
 type InputProps = Pick<
   Partial<React.ComponentProps<'input'>>,
-  'onFocus' | 'onChange' | 'disabled' | 'onBlur'
+  'onFocus' | 'onChange' | 'disabled' | 'onBlur' | 'autoComplete'
 >;
 
 type Props = InputProps & {
@@ -28,6 +28,7 @@ const TextField = React.forwardRef<HTMLInputElement, Props>(
       type,
       isInvalid,
       invalidMessage,
+      autoComplete,
       ...inputProps
     },
     ref
@@ -46,6 +47,7 @@ const TextField = React.forwardRef<HTMLInputElement, Props>(
           placeholder={placeholder}
           id={id}
           ref={ref}
+          autoComplete={autoComplete}
           {...inputProps}
         />
         {isInvalid && invalidMessage ? (

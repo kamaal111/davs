@@ -70,6 +70,7 @@ function makeFormFields(intl: IntlShape): Array<FormField<keyof FormInput>> {
       errorMessages: {
         too_small: intl.formatMessage(messages.usernameMinimumLengthError),
       },
+      autoComplete: 'username',
     },
     {
       id: 'password',
@@ -79,6 +80,7 @@ function makeFormFields(intl: IntlShape): Array<FormField<keyof FormInput>> {
       errorMessages: {
         too_small: intl.formatMessage(messages.passwordMinimumLengthError),
       },
+      autoComplete: 'current-password',
     },
   ];
 }

@@ -25,7 +25,7 @@ function loginHandler(request: NextRequest) {
     }
 
     const responseJSON: { authorization_token: string } = await response.json();
-    cookies.setSession(responseJSON.authorization_token);
+    await cookies.setSession(responseJSON.authorization_token);
 
     return Response.json({ details: 'OK' }, { status: 200 });
   });

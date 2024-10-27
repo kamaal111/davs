@@ -7,8 +7,8 @@ const COOKIE_NAMES = {
 class Cookies {
   constructor() {}
 
-  setSession = (token: string) => {
-    const cookieStore = nextCookies();
+  setSession = async (token: string): Promise<void> => {
+    const cookieStore = await nextCookies();
     const oneDay = 24 * 60 * 60 * 1000;
     cookieStore.set(COOKIE_NAMES.DAVS_SESSION, token, {
       sameSite: 'strict',
@@ -16,8 +16,8 @@ class Cookies {
     });
   };
 
-  getSession = (): string | null => {
-    const cookieStore = nextCookies();
+  getSession = async (): Promise<string | null> => {
+    const cookieStore = await nextCookies();
 
     return cookieStore.get(COOKIE_NAMES.DAVS_SESSION)?.value ?? null;
   };
