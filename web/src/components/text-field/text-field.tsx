@@ -16,6 +16,8 @@ type Props = InputProps & {
   type?: Parameters<typeof RadixTextField.Root>[0]['type'];
   isInvalid?: boolean;
   invalidMessage?: string | null;
+  name?: string;
+  defaultValue?: string | number;
 };
 
 const TextField = ({
@@ -28,6 +30,8 @@ const TextField = ({
   invalidMessage,
   autoComplete,
   ref,
+  name,
+  defaultValue,
   ...inputProps
 }: Props) => {
   return (
@@ -45,6 +49,8 @@ const TextField = ({
         id={id}
         ref={ref}
         autoComplete={autoComplete}
+        name={name}
+        defaultValue={defaultValue}
         {...inputProps}
       />
       {isInvalid && invalidMessage ? (

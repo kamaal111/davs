@@ -14,7 +14,7 @@ type Props<FieldIDS extends string, Schema extends z.AnyZodObject> = {
   schema: Schema;
   fields: Array<FormField<FieldIDS>>;
   disabled?: boolean;
-  onSubmit: (payload: z.infer<Schema>) => void;
+  onSubmit: (payload: z.infer<Schema>) => Promise<void>;
   secondaryButton?: {
     label: string;
     onClick: () => void;
@@ -34,13 +34,64 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
 
   const fieldIds = fields.map(field => field.id);
 
-  const [formData, setFormData] = React.useState<Payload>(
-    fieldIds.reduce((acc, current) => {
-      return { ...acc, [current]: '' };
-    }, {} as Payload)
-  );
   const [focusedField, setFocusedField] = React.useState<keyof Payload | null>(
     null
+  );
+
+  const [state, submitAction, isPending] = React.useActionState<
+    Payload,
+    FormData
+  >(
+    async (_previousState, formData) => {
+      const formDataObject = Object.fromEntries(formData);
+      const result = schema.safeParse(formDataObject);
+      if (!result.success) {
+        const errorMessages =
+          extractErrorMessagesFromValidationResult(result) ?? [];
+        for (const {
+          path: errorMessagePaths,
+          code: errorMessageCode,
+        } of errorMessages) {
+          if (errorMessagePaths == null) continue;
+
+          const errorMessagePath = errorMessagePaths[0];
+          if (errorMessagePath == null) continue;
+
+          const field = fields.find(({ id }) => id === errorMessagePath);
+          if (field == null) continue;
+
+          const fieldErrorMessage = field.errorMessages?.[errorMessageCode];
+          if (fieldErrorMessage == null) continue;
+
+          toast.error(fieldErrorMessage);
+          return formDataObject;
+        }
+
+        toast.error(intl.formatMessage(messages.defaultFormValidationError));
+        return formDataObject;
+      }
+
+      for (const { extraValidation, id, errorMessages } of fields) {
+        if (extraValidation == null) continue;
+
+        const value = result.data[id];
+        const isValid = extraValidation({ value, payload: result.data });
+        if (isValid) continue;
+
+        const errorMessage =
+          errorMessages?.extra ??
+          intl.formatMessage(messages.defaultFormValidationError);
+        toast.error(errorMessage);
+        return result.data;
+      }
+
+      await onSubmit(result.data);
+
+      return result.data;
+    },
+    fieldIds.reduce<Awaited<Payload>>((acc, current) => {
+      return { ...acc, [current]: '' };
+    }, {} as Awaited<Payload>)
   );
 
   const intl = useIntl();
@@ -49,63 +100,8 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
     fieldIds.map(field => [field, schema.shape[field]])
   );
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (disabled) return;
-
-    const result = schema.safeParse(formData);
-    if (!result.success) {
-      const errorMessages =
-        extractErrorMessagesFromValidationResult(result) ?? [];
-      for (const {
-        path: errorMessagePaths,
-        code: errorMessageCode,
-      } of errorMessages) {
-        if (errorMessagePaths == null) continue;
-
-        const errorMessagePath = errorMessagePaths[0];
-        if (errorMessagePath == null) continue;
-
-        const field = fields.find(({ id }) => id === errorMessagePath);
-        if (field == null) continue;
-
-        const fieldErrorMessage = field.errorMessages?.[errorMessageCode];
-        if (fieldErrorMessage == null) continue;
-
-        toast.error(fieldErrorMessage);
-        return;
-      }
-
-      toast.error(intl.formatMessage(messages.defaultFormValidationError));
-      return;
-    }
-
-    for (const { extraValidation, id, errorMessages } of fields) {
-      if (extraValidation == null) continue;
-
-      const value = formData[id];
-      const isValid = extraValidation({ value, payload: formData });
-      if (isValid) continue;
-
-      const errorMessage =
-        errorMessages?.extra ??
-        intl.formatMessage(messages.defaultFormValidationError);
-      toast.error(errorMessage);
-      return;
-    }
-
-    onSubmit(result.data as Payload);
-  }
-
-  function handleFieldChange(key: keyof Payload) {
-    return (value: string) => {
-      setFormData({ ...formData, [key]: value });
-    };
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={submitAction}>
       <Card size="4">
         <Heading as="h3" size="6" trim="start" mb="5">
           {header}
@@ -121,20 +117,20 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
             extraValidation,
           }) => {
             const idString = id as string;
-            const value = formData[idString];
+            const value = state[idString];
             const { isValid, errorMessage } = validateField({
-              value: formData[idString],
+              value,
               isFocused: focusedField === idString,
               schema: validators[idString],
               errorMessages,
               extraValidation,
-              payload: formData,
+              payload: state,
             });
 
             return (
               <TextField
                 key={idString}
-                value={value}
+                name={id}
                 placeholder={placeholder}
                 id={idString}
                 type={type}
@@ -143,13 +139,11 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
                     {label}
                   </Text>
                 )}
-                onChange={event => {
-                  handleFieldChange(idString)(event.target.value);
-                }}
+                defaultValue={value}
                 onFocus={() => setFocusedField(idString)}
                 isInvalid={!isValid}
                 invalidMessage={errorMessage}
-                disabled={disabled}
+                disabled={disabled || isPending}
                 autoComplete={autoComplete}
               />
             );
@@ -165,7 +159,11 @@ function Form<FieldIDS extends string, Schema extends z.AnyZodObject>({
               {secondaryButton.label}
             </Button>
           ) : null}
-          <Button variant="outline" type="submit" disabled={disabled}>
+          <Button
+            variant="outline"
+            type="submit"
+            disabled={disabled || isPending}
+          >
             {submitButtonText}
           </Button>
         </Flex>
