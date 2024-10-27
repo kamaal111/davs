@@ -2,8 +2,9 @@ set dotenv-load
 
 # List available commands
 default:
-    just --list --unsorted --list-heading $'Available commands\n'
+    just --list --unsorted
 
+# Run in dev mode
 run-dev: install-modules build-locales
     #!/bin/zsh
 
@@ -11,6 +12,7 @@ run-dev: install-modules build-locales
 
     pnpm run dev
 
+# Run app
 run: build
     #!/bin/zsh
 
@@ -18,23 +20,33 @@ run: build
 
     pnpm start
 
+# Build app
 build: install-modules build-locales
     pnpm build
 
+# Test
 test:
     pnpm run test
 
+# Lint
 lint:
     pnpm run lint
 
+# Run quality checks
+quality: lint typecheck
+
+# Format code
 format:
     pnpm run format
 
+# Bootstrap project
 bootstrap: install-modules build-locales
 
+# Build locales
 build-locales:
     pnpm run locales:build
 
+# Validate types are correct
 typecheck:
     pnpm run typecheck
 

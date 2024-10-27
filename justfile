@@ -37,9 +37,9 @@ test-web:
 # Run all tests
 test: test-web test-server
 
-# Lint all
-lint:
-    just web/lint
+# Check for quility checks
+quality:
+    just web/quality
 
 # Format all
 format:
