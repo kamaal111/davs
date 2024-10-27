@@ -14,7 +14,7 @@ type ExtractedMessages = Record<string, MessageDescriptor>;
 const GENERATED_CONSTANTS_FILE_PATH =
   'scripts/build-locales-generated-constants.ts';
 
-const CODEMOD_TIMEOUT_IN_MILLISECONDS = 2000;
+const CODEMOD_TIMEOUT_IN_MILLISECONDS = 5000;
 
 class TimeoutError extends Error {
   constructor(millis: number) {

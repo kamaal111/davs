@@ -39,10 +39,7 @@ function makeExportedMessagesKeysConstant(
   const exportedDeclaration = j.exportDeclaration(false, declaration);
   let exportedDeclarationsSource = j(exportedDeclaration).toSource();
   if (exportedDeclarationsSource.at(-1) === ';') {
-    exportedDeclarationsSource = exportedDeclarationsSource.slice(
-      0,
-      exportedDeclarationsSource.length - 1
-    );
+    exportedDeclarationsSource = exportedDeclarationsSource.slice(0, -1);
   }
 
   return `${exportedDeclarationsSource} as const`;
