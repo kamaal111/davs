@@ -5,7 +5,7 @@ default:
     just --list --unsorted
 
 # Run in dev mode
-run-dev: install-modules build-locales
+run-dev: prepare
     #!/bin/zsh
 
     export DAVS_SERVER_BASE_URL="http://127.0.0.1:8000"
@@ -21,7 +21,7 @@ run: build
     pnpm start
 
 # Build app
-build: install-modules build-locales
+build: prepare
     pnpm build
 
 # Test
@@ -39,8 +39,11 @@ quality: lint typecheck
 format:
     pnpm run format
 
+# Prepare project for development
+prepare: install-modules build-locales
+
 # Bootstrap project
-bootstrap: install-modules build-locales
+bootstrap: prepare
 
 # Build locales
 build-locales:
@@ -52,4 +55,4 @@ typecheck:
 
 [private]
 install-modules:
-    pnpm i
+    npm i --force

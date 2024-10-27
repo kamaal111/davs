@@ -10,7 +10,7 @@ LOCAL_DATABASE_USER := "davs-user"
 
 # List available commands
 default:
-    just --list --unsorted --list-heading $'Available commands\n'
+    just --list --unsorted
 
 # Run main Docker container
 run: stop-and-remove-container
@@ -54,7 +54,11 @@ run-dev:
 go-mod-tidy:
     go mod tidy
 
-bootstrap: setup-go-environment go-mod-tidy
+# Prepare project for development
+prepare: go-mod-tidy
+
+# Bootstrap project
+bootstrap: setup-go-environment prepare
 
 [private]
 setup-go-environment:

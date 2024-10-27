@@ -49,13 +49,19 @@ format:
 build-web-locales:
     just web/build-locales
 
-# Bootstap project
-bootstrap: install-pnpm
-    #!/bin/zsh
+# Prepare project for development
+prepare: install-modules
+    just server/prepare
+    just web/prepare
 
-    pnpm i
+# Bootstap project
+bootstrap: install-pnpm prepare
     just server/bootstrap
     just web/bootstrap
+
+[private]
+install-modules:
+    npm i
 
 [private]
 install-pnpm:
