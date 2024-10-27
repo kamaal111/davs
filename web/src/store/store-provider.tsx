@@ -7,9 +7,9 @@ import store from './store';
 import type { Session } from '@/types';
 import { setSession } from '@/users/store';
 
-type Props = { children: React.ReactNode; session?: Session | null };
+type StoreProviderProps = React.PropsWithChildren<{ session?: Session | null }>;
 
-function StoreProvider({ children, session }: Props) {
+function StoreProvider({ children, session }: StoreProviderProps) {
   React.useEffect(() => {
     if (session != null) {
       store.dispatch(setSession(session));

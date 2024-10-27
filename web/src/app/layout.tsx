@@ -11,6 +11,8 @@ import StoreProvider from '@/store/store-provider';
 import '@radix-ui/themes/styles.css';
 import '@/styles/globals.sass';
 
+type RootLayoutProps = React.PropsWithChildren;
+
 const inter = Inter({ subsets: ['latin'] });
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -23,11 +25,7 @@ const sessionSchema = z.object({
   username: z.string(),
 });
 
-function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+function RootLayout({ children }: RootLayoutProps) {
   const session = React.use(
     headers().then(requestHeaders => {
       const sessionHeader = requestHeaders.get('session');

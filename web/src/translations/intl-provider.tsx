@@ -5,7 +5,9 @@ import { IntlProvider as ReactIntlProvider } from 'react-intl';
 import useMessages from './hooks/use-messages';
 import { DEFAULT_LANGUAGE } from './constants';
 
-function IntlProvider({ children }: { children: React.ReactNode }) {
+type IntlProviderProps = React.PropsWithChildren;
+
+function IntlProvider({ children }: IntlProviderProps) {
   const { locale, messages } = useMessages();
 
   return (

@@ -5,6 +5,8 @@ import {
 } from '@radix-ui/themes';
 import { type DefaultToastOptions, Toaster } from 'react-hot-toast';
 
+type ThemeProviderProps = React.PropsWithChildren<{ themePanel?: boolean }>;
+
 const theme: ThemeProps = {
   accentColor: 'amber',
   grayColor: 'olive',
@@ -19,13 +21,7 @@ const toastOptions: DefaultToastOptions = {
   },
 };
 
-function Theme({
-  children,
-  themePanel,
-}: {
-  children: React.ReactNode;
-  themePanel?: boolean;
-}) {
+function Theme({ children, themePanel }: ThemeProviderProps) {
   return (
     <RadixTheme {...theme}>
       {children}
