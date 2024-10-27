@@ -20,7 +20,6 @@
     "@reduxjs/toolkit": "^2",
     "next": "^15",
     "react": "19.0.0-rc-cae764ce-20241025",
-    "react-compiler-runtime": "^19.0.0-beta-8a03594-20241020",
     "react-dom": "19.0.0-rc-cae764ce-20241025",
     "react-hook-form": "^7",
     "react-hot-toast": "^2",
@@ -37,8 +36,8 @@
     "@types/jest": "^29",
     "@types/jscodeshift": "~0.11",
     "@types/node": "^22",
-    "@types/react": "npm:types-react@rc",
-    "@types/react-dom": "npm:types-react-dom@rc",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "babel-jest": "^29",
     "babel-plugin-react-compiler": "19.0.0-beta-8a03594-20241020",
     "eslint": "^9",
@@ -55,9 +54,5 @@
     "tsx": "^4",
     "typescript": "^5",
     "typescript-eslint": "^8"
-  },
-  "overrides": {
-    "@types/react": "npm:types-react@rc",
-    "@types/react-dom": "npm:types-react-dom@rc"
   }
 }

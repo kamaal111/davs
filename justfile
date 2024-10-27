@@ -61,11 +61,11 @@ bootstrap: install-pnpm prepare
 
 [private]
 install-modules:
-    npm i
+    pnpm i
 
 [private]
 install-pnpm:
     #!/bin/zsh
 
-    echo Y | npm install -g pnpm@9.7.1
+    echo Y | npm install -g pnpm@9.12.2
     echo "Installed PNPM"

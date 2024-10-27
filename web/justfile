@@ -55,4 +55,4 @@ typecheck:
 
 [private]
 install-modules:
-    npm i --force
+    pnpm i
