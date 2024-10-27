@@ -22,17 +22,17 @@ const sessionSchema = z.object({
   username: z.string(),
 });
 
+const requestHeaders = await headers();
+const sessionHeader = requestHeaders.get('session');
+const session = sessionHeader
+  ? sessionSchema.safeParse(JSON.parse(sessionHeader)).data
+  : undefined;
+
 function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const requestHeaders = headers();
-  const sessionHeader = requestHeaders.get('session');
-  const session = sessionHeader
-    ? sessionSchema.safeParse(JSON.parse(sessionHeader)).data
-    : undefined;
-
   return (
     <html lang="en">
       <body className={inter.className}>

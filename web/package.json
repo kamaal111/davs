@@ -18,7 +18,7 @@
     "@radix-ui/react-icons": "^1",
     "@radix-ui/themes": "^3",
     "@reduxjs/toolkit": "^2",
-    "next": "^14",
+    "next": "^15",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7",
