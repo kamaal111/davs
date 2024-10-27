@@ -5,7 +5,7 @@ import styles from './text-field.module.sass';
 
 type InputProps = Pick<
   Partial<React.ComponentProps<'input'>>,
-  'onFocus' | 'onChange' | 'disabled' | 'onBlur' | 'autoComplete'
+  'onFocus' | 'onChange' | 'disabled' | 'onBlur' | 'autoComplete' | 'ref'
 >;
 
 type Props = InputProps & {
@@ -18,44 +18,40 @@ type Props = InputProps & {
   invalidMessage?: string | null;
 };
 
-const TextField = React.forwardRef<HTMLInputElement, Props>(
-  (
-    {
-      label,
-      placeholder,
-      id,
-      value,
-      type,
-      isInvalid,
-      invalidMessage,
-      autoComplete,
-      ...inputProps
-    },
-    ref
-  ) => {
-    return (
-      <Box mb="5" position="relative">
-        {label ? (
-          <Flex align="baseline" justify="between" mb="1">
-            {label()}
-          </Flex>
-        ) : null}
-        <RadixTextField.Root
-          className={isInvalid ? styles.isInvalid : undefined}
-          type={type}
-          value={value}
-          placeholder={placeholder}
-          id={id}
-          ref={ref}
-          autoComplete={autoComplete}
-          {...inputProps}
-        />
-        {isInvalid && invalidMessage ? (
-          <p className={styles.invalidMessage}>{invalidMessage}</p>
-        ) : null}
-      </Box>
-    );
-  }
-);
+const TextField = ({
+  label,
+  placeholder,
+  id,
+  value,
+  type,
+  isInvalid,
+  invalidMessage,
+  autoComplete,
+  ref,
+  ...inputProps
+}: Props) => {
+  return (
+    <Box mb="5" position="relative">
+      {label ? (
+        <Flex align="baseline" justify="between" mb="1">
+          {label()}
+        </Flex>
+      ) : null}
+      <RadixTextField.Root
+        className={isInvalid ? styles.isInvalid : undefined}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        id={id}
+        ref={ref}
+        autoComplete={autoComplete}
+        {...inputProps}
+      />
+      {isInvalid && invalidMessage ? (
+        <p className={styles.invalidMessage}>{invalidMessage}</p>
+      ) : null}
+    </Box>
+  );
+};
 
 export default TextField;
