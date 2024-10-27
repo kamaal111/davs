@@ -8,7 +8,7 @@ default:
 run-dev: install-modules build-locales
     #!/bin/zsh
 
-    export DAVS_SERVER_BASE_URL="http://host.docker.internal:8000"
+    export DAVS_SERVER_BASE_URL="http://127.0.0.1:8000"
 
     pnpm run dev
 
@@ -16,7 +16,7 @@ run-dev: install-modules build-locales
 run: build
     #!/bin/zsh
 
-    export DAVS_SERVER_BASE_URL="http://host.docker.internal:8000"
+    export DAVS_SERVER_BASE_URL="http://127.0.0.1:8000"
 
     pnpm start
 
