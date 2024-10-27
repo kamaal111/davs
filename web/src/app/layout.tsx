@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
 import { z } from 'zod';
 
@@ -12,8 +11,6 @@ import '@radix-ui/themes/styles.css';
 import '@/styles/globals.sass';
 
 type RootLayoutProps = React.PropsWithChildren;
-
-const inter = Inter({ subsets: ['latin'] });
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
@@ -37,7 +34,7 @@ function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <StoreProvider session={session}>
           <Theme>
             <IntlProvider>{children}</IntlProvider>
